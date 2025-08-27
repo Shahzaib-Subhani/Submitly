@@ -28,14 +28,14 @@ export default function Input(
         {error && <p className="text-red-500 text-xs">{error}</p>}
 
         {type === "password" ? (
-          <div class="flex items-center mb-2">
+          <div className="flex items-center mb-2">
             <input
-              id="default-checkbox"
+              id={`default-checkbox${name}`}
               type="checkbox"
               onChange={ handlePasswordVisibility}
-              class="w-4 h-4 text-gray-600 bg-gray-100 rounded-md accent-gray-800"
+              className="w-4 h-4 text-gray-600 bg-gray-100 rounded-md accent-gray-800"
             />
-            <label for="default-checkbox" class="ms-2 text-sm  text-gray-400">
+            <label htmlFor={`default-checkbox${name}`} className="ms-2 text-sm  text-gray-400">
               Show Password
             </label>
           </div>
