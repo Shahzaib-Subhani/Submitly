@@ -27,8 +27,13 @@ const SidebarNav = ({ children }) => {
 
           <div className="border-t border-gray-300 py-3">
             <SidebarItem
-              icon={<LogOut size={20} />}
+              
+              Icon={LogOut}
               text="Logout"
+              path={"logout"}
+              currentPath={"logout"}
+              active={false}
+              expanded={true}
             />
           </div>
         </nav>

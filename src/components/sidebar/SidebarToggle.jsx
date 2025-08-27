@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { SidebarContext } from '../../context/SidebarContext';
 import { ChevronFirst, ChevronLast } from "lucide-react";
 
 const SidebarToggle = () => {
-    console.log("toggle");
 
-        const { expanded, setExpanded } = useContext(SidebarContext);
+    const { expanded, setExpanded } = useContext(SidebarContext);
     return (
         <>
             <button

@@ -1,19 +1,13 @@
 
-import { useState } from "react";
-import { SidebarProvider } from "../context/SidebarContext";
-import MainPage from "../components/layout/MainPage";
+import MainLayout from "../components/layout/MainLayout";
 
 const Dashboard = () => {
-  console.log("dashboard");
-
   return (
-
     <>
-      <SidebarProvider>
-        <MainPage />
-      </SidebarProvider>
+      <div className="text-center w-full h-full bg-amber-300">
+        <h1 className="text-2xl font-bold">Dashboard Page</h1>
+      </div>
     </>
-
   );
 };
 
