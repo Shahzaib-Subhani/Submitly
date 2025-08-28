@@ -1,19 +1,20 @@
 import { useContext } from 'react';
 import { SidebarContext } from '../../context/SidebarContext';
-import { ChevronFirst, ChevronLast } from "lucide-react";
+import { Menu } from "lucide-react";
 
 const SidebarToggle = () => {
 
-    const { expanded, setExpanded } = useContext(SidebarContext);
+    const { toggleSidebar} = useContext(SidebarContext);
+
     return (
         <>
             <button
-                onClick={() => setExpanded((curr) => !curr)}
-                className="flex items-center justify-center p-2 rounded-lg border border-indigo-300
-             bg-white shadow-sm transition-all duration-200
-             hover:bg-indigo-50 hover:shadow-md focus:outline-none  active:scale-95"
+                onClick={toggleSidebar}
+                className="items-center justify-center text-gray-500 border-gray-200 rounded-lg z-50 flex h-11 w-11 border"
+                aria-label="Toggle Sidebar"
             >
-                {expanded ? <ChevronFirst size={20} className="text-indigo-600" /> : <ChevronLast size={20} className="text-indigo-600" />}
+
+                <Menu />
             </button>
         </>
     );

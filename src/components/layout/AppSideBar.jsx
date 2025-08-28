@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { SidebarItem } from "../sidebar/SidebarItem";
 import { Navigate, useLocation } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { SidebarContext } from "../../context/SidebarContext";
 
 const sidebarMenu = {
@@ -61,16 +61,20 @@ export default function AppSideBar() {
   const { expanded } = useContext(SidebarContext);
 
   const pathRoleSegment = pathname.split("/")[1];
-  const menuItems = sidebarMenu[pathRoleSegment];
+  const menuItems = useMemo(() => sidebarMenu[pathRoleSegment], [pathRoleSegment]);
 
-  if (!menuItems) return <Navigate to={"not-found"}  replace/>;
+  if (!menuItems) return <Navigate to={"not-found"} replace />;
+console.log("Sidebar Rendered");
 
   return (
     <>
       <SidebarNav >
         {menuItems.map(({ icon: Icon, text, path }, index) => {
 
-          const isActive = pathname.includes(`/${pathRoleSegment}/${path}`);
+          const fullPath = path.startsWith("/")
+            ? path
+            : `/${pathRoleSegment}/${path}`;
+          const isActive = pathname === fullPath;
           return <SidebarItem key={index} Icon={Icon} text={text} path={path} active={isActive} expanded={expanded} />
         }
         )}

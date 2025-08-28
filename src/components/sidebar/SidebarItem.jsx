@@ -5,24 +5,33 @@ import { memo } from "react";
 
 export const SidebarItem = memo(
   function SidebarItem({ Icon, text, path, active, expanded }) {
+console.log(text + " Rendered");
 
     return (
-      <li
-        className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors  ${active
-          ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-neutral-900"
-          : "hover:bg-indigo-50 text-gray-900"
-          }`}
-      >
-        <span><Icon size={20} /></span>
-        <NavLink to={path}
-          className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"
-            }`}
-        >
-          {text}
-        </NavLink>
+      <>
+        <li>
 
 
-      </li>
+          <Link
+            to={path}
+            className={`relative flex items-center w-full gap-3 px-3 py-2 font-medium rounded-lg text-theme-sm group ${active
+              ? "bg-blue-50 text-indigo-600 "
+              : "text-gray-700 hover:bg-gray-100 "}`}
+          >
+            <span >
+              <Icon size={active ? 25 : 22} />
+            </span>
+            {expanded &&
+              <span className="menu-item-text">{text}</span>
+            }
+          </Link>
+
+
+
+        </li>
+
+      </>
+
     );
   },
   (prevProps, nextProps) => {

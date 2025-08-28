@@ -3,20 +3,45 @@ import { Link } from "react-router-dom";
 import SidebarToggle from "../sidebar/SidebarToggle";
 
 const AppHeader = ({ title }) => {
+console.log("Header Rendered");
+
     return (
         <>
-            <header className="bg-zinc-50 border-b border-gray-300">
-                <div className="mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-                    <SidebarToggle />
 
-                    <div className="text-2xl text-neutral-900 font-medium">  <h5>{title}</h5></div>
+            <header className="sticky top-0 flex w-full bg-white border-gray-200 z-99999  lg:border-b">
+                <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
+                    <div className="flex items-center justify-between w-full gap-2 px-3 py-3 border-b border-gray-200 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4">
+                        <SidebarToggle />
 
-                    <Link
-                        className="rounded-md sm:block hidden bg-slate-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700"
-                        href="#"
+                        <Link to="/" className="lg:hidden">
+                            <img
+                                className="dark:hidden"
+                                src="./images/logo/logo.svg"
+                                alt="Logo"
+                            />
+                            <img
+                                className="hidden dark:block"
+                                src="./images/logo/logo-dark.svg"
+                                alt="Logo"
+                            />
+                        </Link>
+
+
+                    </div>
+                    {/* <div
+                        className={`${isApplicationMenuOpen ? "flex" : "hidden"
+                            } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
                     >
-                        Profile
-                    </Link>
+                        <div className="flex items-center gap-2 2xsm:gap-3">
+                        
+                            <ThemeToggleButton />
+                        
+                            <NotificationDropdown />
+                          
+                        </div>
+                      
+                        <UserDropdown />
+                    </div> */}
                 </div>
             </header>
 

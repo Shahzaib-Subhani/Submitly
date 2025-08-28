@@ -13,8 +13,12 @@ export const SidebarProvider = ({ children }) => {
         else setExpanded(true);
     }, [isMobile]);
 
+    const toggleSidebar = () => {
+        return setExpanded((expanded) => !expanded);
+    }
+
     return (
-        <SidebarContext.Provider value={{ expanded, setExpanded }}>
+        <SidebarContext.Provider value={{ expanded, toggleSidebar }}>
             {children}
         </SidebarContext.Provider>
     );

@@ -4,39 +4,71 @@ import { LogOut } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarContext } from "../../context/SidebarContext";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 const SidebarNav = ({ children }) => {
-  const {expanded} = useContext(SidebarContext);
+  const { expanded } = useContext(SidebarContext);
   return (
     <>
       <aside
-        className={`bg-zinc-50 shadow-md border-r h-full border-gray-300 transition-all duration-300 overflow-hidden
-          ${expanded ? "w-64" : "w-0"}
-        `}
+        className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-1 border-gray-200 
+        ${expanded
+            ? "w-[290px]"
+            : "w-[0px]"
+          }
+        ${expanded ? "translate-x-0" : "-translate-x-full"}
+    `}
       >
-        <nav className="h-full flex flex-col">
-          <div className="p-4 pb-2 flex justify-between items-center">
-            <img
-              src={logo}
-              className={`transition-all duration-300 ${expanded ? "w-32" : "w-0"}`}
-              alt="Logo"
-            />
-          </div>
 
-          <ul className="flex-1 px-3">{children}</ul>
+        <div
+          className={`py-8 flex ${!expanded ? "lg:justify-center" : "justify-start"
+            }`}
+        >
+          <Link to="/admin">
+            {expanded ? (
+              <>
+                <img
+                  className=""
+                  src={logo}
+                  alt="Logo"
+                  width={150}
+                  height={40}
+                />
 
-          <div className="border-t border-gray-300 py-3">
-            <SidebarItem
-              
-              Icon={LogOut}
-              text="Logout"
-              path={"logout"}
-              currentPath={"logout"}
-              active={false}
-              expanded={true}
-            />
-          </div>
-        </nav>
+              </>
+            ) : (
+              <img
+                src={logo}
+                alt="Logo"
+                width={32}
+                height={32}
+              />
+            )}
+          </Link>
+        </div>
+        <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
+          <nav className="mb-6">
+            <div className="flex flex-col gap-4">
+              <div>
+                <h2
+                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!expanded
+                    ? "lg:justify-center"
+                    : "justify-start"
+                    }`}
+                >
+                  Menu
+                </h2>
+                <ul className="flex flex-col gap-4">
+
+                  {children}
+
+                </ul>
+              </div>
+
+            </div>
+          </nav>
+        </div>
+
       </aside>
     </>
   );
