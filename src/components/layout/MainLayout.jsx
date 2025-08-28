@@ -7,7 +7,6 @@ import { useContext } from 'react';
 import { SidebarContext, SidebarProvider } from '../../context/SidebarContext';
 
 const MainLayout = () => {
-console.log("main Rendered");
 
     return (
         <>
