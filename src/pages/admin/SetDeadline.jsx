@@ -1,11 +1,14 @@
-import React from 'react';
+import React from 'react'
+import ComponentCard from '../../components/layout/ComponentCard';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const SetDeadline = () => {
+    const pageTitle = usePageTitle();
     return (
         <>
-            <div className="text-center w-full h-full bg-amber-300">
-                <h1 className="text-2xl font-bold">Set Deadline Page</h1>
-            </div>
+            <ComponentCard title={pageTitle}>
+
+            </ComponentCard>
         </>
     );
 }
