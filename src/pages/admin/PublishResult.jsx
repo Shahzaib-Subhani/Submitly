@@ -1,10 +1,13 @@
+import ComponentCard from "../../components/layout/ComponentCard";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const PublishResult = () => {
+    const pageTitle = usePageTitle();
     return (
         <>
-            <div className="text-center w-full h-full bg-amber-300">
-                <h1 className="text-2xl font-bold">Publish Result Page</h1>
-            </div>
+            <ComponentCard title={pageTitle}>
+
+            </ComponentCard>
         </>
     );
 }

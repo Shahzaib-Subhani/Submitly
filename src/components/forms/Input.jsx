@@ -20,9 +20,8 @@ export default function Input(
           type={showPassword ? "text" : type}
           value={value}
           {...props}
-          className={`w-full border px-3 py-2 text-sm shadow-sm rounded-sm transition duration-300 ease  focus:border-slate-400 hover:border-slate-300   text-slate-700 p-2 focus:outline-none focus:ring-2 focus:ring-slate-300 ${
-            error ? "border-red-500" : "border-slate-200"
-          }`}
+          className={`w-full border px-3 py-2 text-sm shadow-sm rounded-sm transition duration-300 ease  focus:border-slate-400 hover:border-slate-300   text-slate-700 p-2 focus:outline-none focus:ring-2 focus:ring-slate-300 ${error ? "border-red-500" : "border-slate-200"
+            }`}
         />
 
         {error && <p className="text-red-500 text-xs">{error}</p>}
@@ -32,9 +31,10 @@ export default function Input(
             <input
               id={`default-checkbox${name}`}
               type="checkbox"
-              onChange={ handlePasswordVisibility}
-              className="w-4 h-4 text-gray-600 bg-gray-100 rounded-md accent-gray-800"
+              onChange={handlePasswordVisibility}
+              className="w-5 h-5  cursor-pointer  border border-gray-300 rounded-md checked:border-transparent "
             />
+           
             <label htmlFor={`default-checkbox${name}`} className="ms-2 text-sm  text-gray-400">
               Show Password
             </label>
