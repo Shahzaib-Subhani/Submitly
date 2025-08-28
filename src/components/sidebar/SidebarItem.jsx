@@ -5,8 +5,6 @@ import { memo } from "react";
 
 export const SidebarItem = memo(
   function SidebarItem({ Icon, text, path, active, expanded }) {
-console.log(text + " Rendered");
-
     return (
       <>
         <li>

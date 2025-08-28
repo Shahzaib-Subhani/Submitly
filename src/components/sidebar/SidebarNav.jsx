@@ -1,7 +1,5 @@
 
 import logo from "/submitly.png";
-import { LogOut } from "lucide-react";
-import { SidebarItem } from "./SidebarItem";
 import { SidebarContext } from "../../context/SidebarContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
