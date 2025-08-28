@@ -1,6 +1,10 @@
 import React from 'react';
 
 
+// TableBody Component
+const TableBody = ({ children, className }) => {
+    return <tbody className={className}>{children}</tbody>;
+};
 // TableRow Component
 const TableRow = ({ children, className }) => {
     return <tr className={className}>{children}</tr>;
@@ -16,4 +20,4 @@ const TableCell = ({ children, className, isHeader = false }) => {
 }
 
 
-export { TableRow, TableCell };
+export { TableRow, TableCell, TableBody };

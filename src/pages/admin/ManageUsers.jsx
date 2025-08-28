@@ -2,6 +2,7 @@ import React from 'react';
 import BaseTable from '../../components/table/BaseTable';
 import ComponentCard from '../../components/layout/ComponentCard';
 import usePageTitle from '../../hooks/usePageTitle';
+import { TableCell, TableRow } from '../../components/table/TableComponents';
 
 const headers = ["User", "Project Name", "Team", "Status", "Budget"];
 const tableData = [
@@ -93,8 +94,21 @@ const ManageUsers = () => {
     return (
         <>
             <ComponentCard title={pageTitle}>
+                <BaseTable headers={headers}  >
+                    <tbody>
+                        {tableData.map((row, indx) => (
+                            <TableRow key={indx}>
 
-                <BaseTable headers={headers} tableData={tableData} />
+                                <TableCell  > {row.user.name}</TableCell>
+                                <TableCell > {row.projectName}</TableCell>
+                                <TableCell > {row.team.images[0]}</TableCell>
+                                <TableCell > {row.status}</TableCell>
+                                <TableCell > {row.budget}</TableCell>
+
+                            </TableRow>
+                        ))}
+                    </tbody>
+                </BaseTable>
             </ComponentCard>
         </>
     );
