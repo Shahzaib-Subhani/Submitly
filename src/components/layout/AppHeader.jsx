@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import SidebarToggle from "../sidebar/SidebarToggle";
 
 const AppHeader = ({ title }) => {
-console.log("Header Rendered");
-
     return (
         <>
 
