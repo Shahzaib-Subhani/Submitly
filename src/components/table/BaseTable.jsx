@@ -84,7 +84,6 @@ const BaseTable = ({ tableHeaders, tableData }) => {
             table.setPageIndex(i)
         }
     }
-console.log("Table Rendered");
 
 
     return (

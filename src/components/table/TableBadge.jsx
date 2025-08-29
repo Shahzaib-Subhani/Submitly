@@ -8,14 +8,14 @@ const baseStyles =
 const variants = {
     light: {
         indigo:
-            "bg-indigo-50 text-indigo-500",
+            "bg-indigo-100 text-indigo-500",
         emerald:
-            "bg-emerald-50 text-emerald-600",
+            "bg-emerald-100 text-emerald-600",
         red:
-            "bg-red-50 text-red-600",
+            "bg-red-100 text-red-600",
         amber:
-            "bg-amber-50 text-amber-600",
-        blue: "bg-blue-light-50 text-blue-light-500",
+            "bg-amber-100 text-amber-600",
+        blue: "bg-blue-light-100 text-blue-light-500",
         light: "bg-gray-100 text-gray-700",
         dark: "bg-gray-500 text-white",
     },
