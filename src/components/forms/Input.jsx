@@ -28,16 +28,16 @@ export default function Input(
 
         {type === "password" ? (
           <div className="flex items-center mb-2">
-              <input
-                id={`default-checkbox${name}`}
-                type="checkbox"
-                onChange={handlePasswordVisibility}
-                className="w-4 h-4  cursor-pointer outline-0 rounded-md checked:border-transparent accent-gray-900"
-              />
+            <input
+              id={`default-checkbox${name}`}
+              type="checkbox"
+              onChange={handlePasswordVisibility}
+              className="w-4 h-4  cursor-pointer outline-0 rounded-md checked:border-transparent accent-gray-900"
+            />
 
-              <label htmlFor={`default-checkbox${name}`} className="ms-2 text-sm cursor-pointer text-gray-400">
-                Show Password
-              </label>
+            <label htmlFor={`default-checkbox${name}`} className="ms-2 text-sm cursor-pointer text-gray-400">
+              Show Password
+            </label>
           </div>
         ) : null}
       </div>

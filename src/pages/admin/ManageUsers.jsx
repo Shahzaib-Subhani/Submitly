@@ -1,114 +1,39 @@
-import React from 'react';
+
 import BaseTable from '../../components/table/BaseTable';
 import ComponentCard from '../../components/layout/ComponentCard';
 import usePageTitle from '../../hooks/usePageTitle';
 import { TableCell, TableRow } from '../../components/table/TableComponents';
+import ActionColumn from '../../components/table/ActionColumn';
 
-const headers = ["User", "Project Name", "Team", "Status", "Budget"];
-const tableData = [
+const tableData = [...Array(40)].map((_, i) => ({
+    id: i + 1,
+    teamName: `Team ${i + 1}`,
+    leaderName: `Leader ${i + 1}`,
+    email: `leader${i + 1}@example.com`,
+    members: Math.floor(Math.random() * 5) + 1,
+}));
+
+const columns = [
+    { accessorKey: "id", header: "ID" },
+    { accessorKey: "teamName", header: "Team Name" },
+    { accessorKey: "leaderName", header: "Leader Name" },
+    { accessorKey: "email", header: "Email" },
+    { accessorKey: "members", header: "Members" },
     {
-        id: 1,
-        user: {
-            image: "/images/user/user-17.jpg",
-            name: "Lindsey Curtis",
-            role: "Web Designer",
-        },
-        projectName: "Agency Website",
-        team: {
-            images: [
-                "/images/user/user-22.jpg",
-                "/images/user/user-23.jpg",
-                "/images/user/user-24.jpg",
-            ],
-        },
-        budget: "3.9K",
-        status: "Active",
-    },
-    {
-        id: 2,
-        user: {
-            image: "/images/user/user-18.jpg",
-            name: "Kaiya George",
-            role: "Project Manager",
-        },
-        projectName: "Technology",
-        team: {
-            images: ["/images/user/user-25.jpg", "/images/user/user-26.jpg"],
-        },
-        budget: "24.9K",
-        status: "Pending",
-    },
-    {
-        id: 3,
-        user: {
-            image: "/images/user/user-17.jpg",
-            name: "Zain Geidt",
-            role: "Content Writing",
-        },
-        projectName: "Blog Writing",
-        team: {
-            images: ["/images/user/user-27.jpg"],
-        },
-        budget: "12.7K",
-        status: "Active",
-    },
-    {
-        id: 4,
-        user: {
-            image: "/images/user/user-20.jpg",
-            name: "Abram Schleifer",
-            role: "Digital Marketer",
-        },
-        projectName: "Social Media",
-        team: {
-            images: [
-                "/images/user/user-28.jpg",
-                "/images/user/user-29.jpg",
-                "/images/user/user-30.jpg",
-            ],
-        },
-        budget: "2.8K",
-        status: "Cancel",
-    },
-    {
-        id: 5,
-        user: {
-            image: "/images/user/user-21.jpg",
-            name: "Carla George",
-            role: "Front-end Developer",
-        },
-        projectName: "Website",
-        team: {
-            images: [
-                "/images/user/user-31.jpg",
-                "/images/user/user-32.jpg",
-                "/images/user/user-33.jpg",
-            ],
-        },
-        budget: "4.5K",
-        status: "Active",
+        id: "actions",
+        accessorKey: "members",
+        header: "Actions",
+        cell: () => <ActionColumn />,
     },
 ];
 const ManageUsers = () => {
+    
+
     const pageTitle = usePageTitle();
     return (
         <>
             <ComponentCard title={pageTitle}>
-                <BaseTable headers={headers}  >
-                    <tbody>
-                        {tableData.map((row, indx) => (
-                            <TableRow key={indx}>
-
-                                <TableCell  > {row.user.name}</TableCell>
-                                <TableCell > {row.projectName}</TableCell>
-                                <TableCell > {row.team.images[0]}</TableCell>
-                                <TableCell > {row.status}</TableCell>
-                                <TableCell > {row.budget}</TableCell>
-
-                            </TableRow>
-                        ))}
-                    </tbody>
-                </BaseTable>
+                <BaseTable tableHeaders={columns} tableData={tableData}  ></BaseTable>
             </ComponentCard>
         </>
     );

@@ -1,19 +1,21 @@
 import React from 'react';
 import { TableCell, TableRow } from './TableComponents';
+import { flexRender } from '@tanstack/react-table';
 
-const TableHeader = ({ headers }) => {
+const TableHeader = ({ columns }) => {
+
     return (
         <>
             <thead className="border-b border-gray-100 ">
                 <TableRow>
-                    {headers.map((title, idx) => (
-                        <TableCell
-                            key={idx}
+                    {columns.headers.map((header) => {
+                        return <TableCell
+                            key={header.id}
                             isHeader
                         >
-                            {title}
+                            {flexRender(header.column.columnDef?.header, header.getContext())}
                         </TableCell>
-                    ))}
+                    })}
 
                 </TableRow>
             </thead>
