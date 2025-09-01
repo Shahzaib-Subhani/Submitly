@@ -29,7 +29,7 @@ const columns = [
     id: "actions",
     accessorKey: "actions",
     header: "Actions",
-    cell: () => <ActionColumn />,
+    cell: () => <ActionColumn isDelete={true} isView={true} isEdit={true} />,
   },
 ];
 const EvaluatorsList = () => {

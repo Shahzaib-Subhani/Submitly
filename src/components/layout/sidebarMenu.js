@@ -16,7 +16,7 @@ const sidebarMenu = {
         { icon: LayoutDashboard, text: "Dashboard", path: "dashboard" },
         { icon: User, text: "Users", path: "manage-users" },
         { icon: UserStar, text: "Evaluators", path: "evaluators-list" },
-        { icon: ClipboardPlus, text: "Assign Evaluators", path: "assign-evaluator" },
+        { icon: ClipboardPlus, text: "Submissions", path: "submissions-list" },
         { icon: ClipboardList, text: "Publish Result", path: "publish-result" },
         { icon: CalendarX2, text: "Set Deadline", path: "set-deadline" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },

@@ -58,7 +58,8 @@ const BaseTable = ({ tableHeaders, tableData }) => {
         handleSetPageSize: (size) => {
             setPagination((prev) => ({
                 ...prev,
-                pageSize: size
+                pageSize: size,
+                pageIndex: 0,
             }))
         }
     }

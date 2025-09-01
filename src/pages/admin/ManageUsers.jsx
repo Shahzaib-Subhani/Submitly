@@ -23,7 +23,7 @@ const columns = [
         id: "actions",
         accessorKey: "members",
         header: "Actions",
-        cell: () => <ActionColumn />,
+        cell: () => <ActionColumn isDelete={true} isView={true} isEdit={true} />,
     },
 ];
 const ManageUsers = () => {
