@@ -3,7 +3,7 @@ import logo from "/submitly.png";
 const FormTemplate = ({ title, description, children = "" }) => {
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-center font-rubik bg-gray-100 relative overflow-hidden px-4">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 relative overflow-hidden px-4">
         <div className="flex flex-col items-start">
           <img
             src={logo}
@@ -12,7 +12,7 @@ const FormTemplate = ({ title, description, children = "" }) => {
           />
         </div>
 
-        <div className="w-full max-w-md bg-white p-3 rounded-2xl shadow-lg z-10">
+        <div className="w-full max-w-lg bg-white p-3 rounded-2xl shadow-lg z-10">
           <div className="text-start px-6 pt-5">
             <h2 className="text-[24px] font-bold  text-gray-800">{title}</h2>
             {description ? (

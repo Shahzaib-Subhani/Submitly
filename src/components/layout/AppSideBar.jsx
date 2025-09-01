@@ -22,11 +22,9 @@ export default function AppSideBar() {
     <>
       <SidebarNav >
         {menuItems.map(({ icon: Icon, text, path }, index) => {
-
-          const fullPath = path.startsWith("/")
-            ? path
-            : `/${pathRoleSegment}/${path}`;
-          const isActive = pathname === fullPath;
+          const segments = pathname.split("/").filter(Boolean);
+          const secondSegment = segments[1] || "";
+          const isActive = path === secondSegment;
           return <SidebarItem key={index} Icon={Icon} text={text} path={path} active={isActive} expanded={expanded} />
         }
         )}

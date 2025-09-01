@@ -1,11 +1,11 @@
 // import React, { useState } from "react";
 
-import Form from "../components/forms/form";
 import Input from "../components/forms/Input";
 
 import Button from "../components/forms/Button";
 import FormTemplate from "../components/auth/FormTemplate";
 import Footer from "../components/auth/Footer";
+import AuthForm from "../components/forms/AuthForm";
 export default function EvaluatorRegister() {
 
   return (
@@ -14,7 +14,7 @@ export default function EvaluatorRegister() {
         title={"Account Registration"}
         description={"Enter your details to create Evaluator account"}
       >
-        <Form>
+        <AuthForm>
           <Input label="Name" name="name" type="text" />
           <Input label="Email" name="email" type="email" />
           <Input label="Password" name="password" type="password" />
@@ -29,7 +29,7 @@ export default function EvaluatorRegister() {
             <Input label="Experience" name="experience" type="text" />
           </div>
 
-          <Button type={"button"} className={"mt-8"}>
+          <Button type={"button"} className={"mt-8 w-full"}>
             Submit
           </Button>
 
@@ -38,7 +38,7 @@ export default function EvaluatorRegister() {
             path={"/evaluator-login"}
             spanText={" Already have an evaluator account?"}
           />
-        </Form>
+        </AuthForm>
       </FormTemplate>
     </>
   );

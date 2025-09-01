@@ -1,7 +1,7 @@
 import Footer from "../components/auth/Footer";
 import FormTemplate from "../components/auth/FormTemplate";
+import AuthForm from "../components/forms/AuthForm";
 import Button from "../components/forms/Button";
-import Form from "../components/forms/form";
 import Input from "../components/forms/Input";
 
 const TeamRegister = () => {
@@ -11,7 +11,7 @@ const TeamRegister = () => {
         title={"Account Registration"}
         description={"Enter your details to create team account"}
       >
-        <Form>
+        <AuthForm>
           <Input label="Team Name" name="teamName" type="text" />
           <Input label="Leader Name" name="leaderName" type="text" />
           <Input label="Email" name="email" type="email" />
@@ -22,7 +22,7 @@ const TeamRegister = () => {
             type="password"
           />
 
-          <Button type={"button"} className={"mt-8"}>
+          <Button type={"button"} className={"mt-8 w-full"}>
             Submit
           </Button>
 
@@ -31,7 +31,7 @@ const TeamRegister = () => {
             path={"/team-login"}
             spanText={" Already have an account?"}
           />
-        </Form>
+        </AuthForm>
       </FormTemplate>
     </>
   );

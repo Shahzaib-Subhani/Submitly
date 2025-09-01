@@ -20,6 +20,9 @@ import EvaluatorDashboard from "../pages/evaluator/EvaluatorDashboard";
 import EvaluateSubmission from "../pages/evaluator/EvaluateSubmission";
 import SubmissionList from "../pages/evaluator/SubmissionList";
 import Chat from "../pages/Chat";
+import EditUser from "../pages/admin/EditUser";
+import EditMembers from "../pages/admin/EditMembers";
+import EditEvaluator from "../pages/admin/EditEvaluator";
 
 export default function AppRoutes() {
   return (
@@ -35,7 +38,10 @@ export default function AppRoutes() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="submissions-list" element={<Submissions />} />
         <Route path="evaluators-list" element={<EvaluatorList />} />
+        <Route path="evaluators-list/edit-evaluator" element={<EditEvaluator />} />
         <Route path="manage-users" element={<ManageUsers />} />
+        <Route path="manage-users/edit-user" element={<EditUser />} />
+        <Route path="manage-users/edit-members" element={<EditMembers />} />
         <Route path="publish-result" element={<PublishResult />} />
         <Route path="set-deadline" element={<SetDeadline />} />
         <Route path="chat-support" element={<Chat />} />

@@ -42,7 +42,7 @@ const columns = [
     id: "actions",
     accessorKey: "actions",
     header: "Actions",
-    cell: () => <ActionColumn isDelete={true} isView={true} isEdit={true} isTextBtn={true} textBtnLabel="Assign Evaluator" />,
+    cell: () => <ActionColumn isDelete={true} isView={true} isTextBtn={true} textBtnLabel="Assign Evaluator" />,
   },
 ];
 

@@ -23,11 +23,11 @@ const columns = [
         id: "actions",
         accessorKey: "members",
         header: "Actions",
-        cell: () => <ActionColumn isDelete={true} isView={true} isEdit={true} />,
+        cell: () => <ActionColumn isDelete={true} isView={true} isEdit={true} editPath={'edit-user'} isTextBtn={true} textBtnLabel={'Edit Members'} textBtnPath={"edit-members"} />,
     },
 ];
 const ManageUsers = () => {
-    
+
 
     const pageTitle = usePageTitle();
     return (

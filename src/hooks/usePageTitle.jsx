@@ -2,24 +2,28 @@ import React, { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import sidebarMenu from '../components/layout/SidebarMenu';
 
+const extraMenu = {
+    "edit-user": "Edit User",
+    "edit-members": "Edit Team Members",
+    "edit-evaluator": "Edit Evaluator",
+}
+
 const usePageTitle = () => {
     const { pathname } = useLocation();
 
-    const pathRoleSegment = pathname.split("/")[1];
+    const segments = pathname.split("/").filter(Boolean);
+        
+    const roleSegment = segments[0];
+    const lastSegment = segments[segments.length - 1];
 
     const title = useMemo(() => {
-        const menuItems = sidebarMenu[pathRoleSegment];
+        const menuItems = sidebarMenu[roleSegment];
         if (!menuItems) return "Submittly";
 
-        const match = menuItems.find((item) => {
-            const fullPath = item.path.startsWith("/")
-                ? item.path
-                : `/${pathRoleSegment}/${item.path}`;
-            return fullPath === pathname;
-        });
+        const match = menuItems.find((item) => item.path === lastSegment);
 
-        return match?.text || "Submittly";
-    }, [pathname, pathRoleSegment]);
+        return match?.text || extraMenu[lastSegment] || "Submittly";
+    }, [pathname, roleSegment]);
 
     useEffect(() => {
         document.title = title ? `${title} | Submittly` : "Submittly";

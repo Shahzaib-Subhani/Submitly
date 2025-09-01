@@ -1,7 +1,7 @@
 import Footer from "../components/auth/Footer";
 import FormTemplate from "../components/auth/FormTemplate";
+import AuthForm from "../components/forms/AuthForm";
 import Button from "../components/forms/Button";
-import Form from "../components/forms/form";
 import Input from "../components/forms/Input";
 
 const TeamLogin = () => {
@@ -11,11 +11,11 @@ const TeamLogin = () => {
         title={"Sign In"}
         description={"Enter your details to sign in as team"}
       >
-        <Form>
+        <AuthForm>
           <Input label="Email" name="email" type="email" />
           <Input label="Password" name="password" type="password" />
 
-          <Button type={"button"} className={"mt-8"}>
+          <Button type={"button"} className={"mt-8 w-full"}>
             Log In
           </Button>
           <Footer
@@ -23,7 +23,7 @@ const TeamLogin = () => {
             path={"/team-register"}
             spanText={"Don't have an account?"}
           />
-        </Form>
+        </AuthForm>
       </FormTemplate>
     </>
   );
