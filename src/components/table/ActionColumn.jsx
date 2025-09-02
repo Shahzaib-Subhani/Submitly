@@ -13,14 +13,15 @@ const ActionColumn = ({
     textBtnPath = "",
     textBtnLabel = ""
 }) => {
-
+    
     const actions = [
-        { enabled: isTextBtn, label: textBtnLabel, path: textBtnPath, hover: "hover:text-indigo-500  hover:bg-indigo-50", path: null },
+        { enabled: isTextBtn, label: textBtnLabel, path: textBtnPath, hover: "hover:text-indigo-500  hover:bg-indigo-50",},
         { enabled: isView, label: "View", path: viewPath, icon: <Eye size={20} />, hover: "hover:text-emerald-500  hover:bg-emerald-50" },
         { enabled: isEdit, label: "Edit", path: editPath, icon: <Pencil size={20} />, hover: "hover:text-sky-500  hover:bg-sky-100" },
         { enabled: isDelete, label: "Delete", path: deletePath, icon: <Trash2 size={20} />, hover: "hover:text-rose-500  hover:bg-rose-100" },
-
+        
     ];
+
     return (
 
         <div className="flex items-center w-full gap-2">
