@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const useForm = (schema, initialValues) => {
     const [formData, setFormData] = useState(initialValues);
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -11,6 +12,7 @@ const useForm = (schema, initialValues) => {
     };
 
     const handleSubmit = () => {
+        setLoading(true);
         const result = schema.safeParse(formData);
 
         if (!result.success) {
@@ -21,13 +23,17 @@ const useForm = (schema, initialValues) => {
                     fieldErrors[err.path[0]] = err.message;
                 }
             });
+            setLoading(false);
             setErrors(fieldErrors);
         } else {
-            console.log("Form submitted:", result.data);
-            setErrors({});
+            setTimeout(() => {
+                console.log("Form submitted:", result.data);
+                setErrors({});
+                setLoading(false);
+            }, 1500);
         }
     };
-    return { formData, setFormData, errors, handleChange, handleSubmit }
+    return { formData, setFormData, errors, handleChange, handleSubmit, loading }
 }
 
 export default useForm;
