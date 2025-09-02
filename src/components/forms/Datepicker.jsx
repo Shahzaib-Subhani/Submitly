@@ -7,9 +7,11 @@ const Datepicker = ({ id,
     mode,
     name,
     onChange,
+    value,
     label,
     defaultDate,
     placeholder,
+    error,
     ...props
 }) => {
     useEffect(() => {
@@ -38,9 +40,12 @@ const Datepicker = ({ id,
                     id={id}
                     name={name}
                     {...props}
-                    className={`h-11 w-75 rounded-lg border appearance-none px-4 py-2.5 text-md shadow-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 bg-transparent text-gray-800 border-gray-300 focus:border-indigo-300 focus:ring-indigo-500/20 `}
+                    className={`h-11 w-75 rounded-lg border appearance-none px-4 py-2.5 text-md shadow-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3 bg-transparent text-gray-800 focus:border-indigo-300 focus:ring-indigo-500/20 ${error ? "border-rose-600" : "border-gray-300"
+                        } `}
+                    value={value}
+                    onChange={onChange}
                 />
-
+                {error && <p className="text-rose-600 text-sm">{error}</p>}
             </div>
         </div>
     );

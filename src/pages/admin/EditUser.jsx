@@ -4,47 +4,24 @@ import ComponentCard from '../../components/layout/ComponentCard';
 import Form from '../../components/forms/Form';
 import Input from '../../components/forms/Input';
 import Button from '../../components/forms/Button';
-import { useState } from 'react';
 import InputPassword from '../../components/forms/InputPassword';
-import { EditUserSchema } from '../../validations/schemas';
+import { EditUserSchema } from '../../validations/adminSchemas';
+import useForm from '../../hooks/useForm';
 
 
 
 const EditUser = () => {
     const pageTitle = usePageTitle();
-    const [formData, setFormData] = useState({
-        "teamName": "",
-        "leaderName": "",
-        "email": "",
-        "password": "",
-        "confirmPassword": "",
-    });
-
-    const [errors, setErrors] = useState({});
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-        setErrors((prev) => ({ ...prev, [name]: "" })); 
-    };
-
-    const handleSubmit = () => {
-        const result = EditUserSchema.safeParse(formData);
-
-        if (!result.success) {
-
-            const fieldErrors = {};
-            result.error.issues.forEach((err) => {
-                if (err.path[0]) {
-                    fieldErrors[err.path[0]] = err.message;
-                }
-            });
-            setErrors(fieldErrors);
-        } else {
-            console.log("Form submitted:", result.data);
-            setErrors({});
+    const { formData, errors, handleChange, handleSubmit } = useForm(
+        EditUserSchema,
+        {
+            teamName: "",
+            leaderName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
         }
-    };
+    );
 
     const textFields = [
         { label: "Team Name", name: "teamName", type: "text" },
