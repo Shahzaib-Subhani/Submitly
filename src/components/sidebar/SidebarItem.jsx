@@ -13,7 +13,7 @@ export const SidebarItem = memo(
           <Link
             to={path}
             className={`relative flex items-center w-full gap-3 px-3 py-2 font-medium rounded-lg text-theme-sm group ${active
-              ? "bg-blue-50 text-indigo-600 "
+              ? "bg-indigo-50 text-indigo-600 "
               : "text-gray-700 hover:bg-gray-100 "}`}
           >
             <span >

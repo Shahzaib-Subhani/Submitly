@@ -5,11 +5,13 @@ import AppSideBar from './AppSideBar';
 import Backdrop from './Backdrop';
 import { useContext } from 'react';
 import { SidebarContext, SidebarProvider } from '../../context/SidebarContext';
+import TopLoader from './TopLoader';
 
 const MainLayout = () => {
 
     return (
         <>
+            <TopLoader />
             <SidebarProvider>
 
                 <div className="min-h-screen xl:flex">
