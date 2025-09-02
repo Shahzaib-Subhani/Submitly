@@ -9,7 +9,9 @@ const Datepicker = ({ id,
     onChange,
     label,
     defaultDate,
-    placeholder, }, props) => {
+    placeholder,
+    ...props
+}) => {
     useEffect(() => {
         const flatPickr = flatpickr(`#${id}`, {
             mode: mode || "single",

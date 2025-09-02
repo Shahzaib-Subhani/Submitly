@@ -31,7 +31,7 @@ const variants = {
         dark: "bg-gray-700 text-white",
     },
 };
-const LinkButton = ({ children, type, className, path, variant = "light", color = "indigo", }, props) => {
+const LinkButton = ({ children, type, className, path, variant = "light", color = "indigo", ...props}) => {
      const colorStyles = variants[variant][color];
     return (
         <Link to={path}>
