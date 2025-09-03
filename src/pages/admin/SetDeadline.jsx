@@ -9,7 +9,7 @@ import { setDeadlineSchema } from '../../validations/adminSchemas';
 
 const SetDeadline = () => {
     const pageTitle = usePageTitle();
-    const { formData, errors, handleChange, handleSubmit } = useForm(
+    const { formData, errors, handleChange, handleSubmit, loading } = useForm(
         setDeadlineSchema,
         {
             date: "",
@@ -30,9 +30,9 @@ const SetDeadline = () => {
                             error={errors.date}
                         />
                     </div>
-                    <div className='flex justify-end'>
+                    <div className='flex justify-center'>
                         <div className='ms-4'>
-                            <Button type={"button"} className={"mt-8"} onClick={handleSubmit}>
+                            <Button type={"button"} className={"mt-8"} onClick={handleSubmit} isLoading={loading}>
                                 Submit
                             </Button>
                         </div>

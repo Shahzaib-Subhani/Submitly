@@ -7,7 +7,7 @@ import Dashboard from "../pages/Dashboard";
 import SubmissionsList from "../pages/admin/submission/SubmissionsList";
 import AssignEvaluator from "../pages/admin/submission/AssignEvaluator";
 import EvaluatorList from "../pages/admin/EvaluatorsList";
-import ManageUsers from "../pages/admin/ManageUsers";
+import ManageTeams from "../pages/admin/team/ManageTeams";
 import MainLayout from "../components/layout/MainLayout";
 import NotFound from "../pages/NotFound";
 import PublishResult from "../pages/admin/PublishResult";
@@ -21,10 +21,12 @@ import EvaluatorDashboard from "../pages/evaluator/EvaluatorDashboard";
 import EvaluateSubmission from "../pages/evaluator/EvaluateSubmission";
 import SubmissionList from "../pages/evaluator/SubmissionList";
 import Chat from "../pages/Chat";
-import EditUser from "../pages/admin/EditUser";
-import EditMembers from "../pages/admin/EditMembers";
+
 import EditEvaluator from "../pages/admin/EditEvaluator";
 import ViewSubmission from "../pages/admin/submission/ViewSubmission";
+import ViewTeam from "../pages/admin/team/ViewTeam";
+import EditTeam from "../pages/admin/team/EditTeam";
+import EditTeamMember from "../pages/admin/team/EditTeamMember";
 
 export default function AppRoutes() {
   return (
@@ -43,9 +45,10 @@ export default function AppRoutes() {
         <Route path="submissions-list/assign-evaluator" element={<AssignEvaluator />} />
         <Route path="evaluators-list" element={<EvaluatorList />} />
         <Route path="evaluators-list/edit-evaluator" element={<EditEvaluator />} />
-        <Route path="manage-users" element={<ManageUsers />} />
-        <Route path="manage-users/edit-user" element={<EditUser />} />
-        <Route path="manage-users/edit-members" element={<EditMembers />} />
+        <Route path="manage-teams" element={<ManageTeams />} />
+        <Route path="manage-teams/view-team" element={<ViewTeam />} />
+        <Route path="manage-teams/edit-team" element={<EditTeam />} />
+        <Route path="manage-teams/edit-members" element={<EditTeamMember />} />
         <Route path="publish-result" element={<PublishResult />} />
         <Route path="set-deadline" element={<SetDeadline />} />
         <Route path="chat-support" element={<Chat />} />

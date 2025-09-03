@@ -1,13 +1,13 @@
 
-import BaseTable from '../../components/table/BaseTable';
-import ComponentCard from '../../components/layout/ComponentCard';
-import usePageTitle from '../../hooks/usePageTitle';
-import { TableCell, TableRow } from '../../components/table/TableComponents';
-import ActionColumn from '../../components/table/ActionColumn';
-import Modal from '../../components/layout/Modal';
+import BaseTable from '../../../components/table/BaseTable';
+import ComponentCard from '../../../components/layout/ComponentCard';
+import usePageTitle from '../../../hooks/usePageTitle';
+import { TableCell, TableRow } from '../../../components/table/TableComponents';
+import ActionColumn from '../../../components/table/ActionColumn';
+import Modal from '../../../components/layout/Modal';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import UseDeleteModal from '../../hooks/useDeleteModal';
+import UseDeleteModal from '../../../hooks/useDeleteModal';
 
 const tableData = [...Array(40)].map((_, i) => ({
     id: i + 1,
@@ -19,7 +19,7 @@ const tableData = [...Array(40)].map((_, i) => ({
 
 
 
-const ManageUsers = () => {
+const ManageTeams = () => {
 
     const pageTitle = usePageTitle();
     const {
@@ -42,8 +42,9 @@ const ManageUsers = () => {
             cell: () => <ActionColumn
                 isDelete={true}
                 isView={true}
+                viewPath={"view-team"}
                 isEdit={true}
-                editPath={'edit-user'}
+                editPath={'edit-team'}
                 isTextBtn={true}
                 textBtnLabel={'Edit Members'}
                 textBtnPath={"edit-members"}
@@ -61,4 +62,4 @@ const ManageUsers = () => {
     );
 }
 
-export default ManageUsers;
+export default ManageTeams;

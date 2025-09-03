@@ -1,9 +1,9 @@
 
-import usePageTitle from '../../hooks/usePageTitle';
-import ComponentCard from '../../components/layout/ComponentCard';
-import { EditUserSchema } from '../../validations/adminSchemas';
-import useForm from '../../hooks/useForm';
-import FormRenderer from '../../components/forms/FormRenderer';
+import usePageTitle from '../../../hooks/usePageTitle';
+import ComponentCard from '../../../components/layout/ComponentCard';
+import { EditUserSchema } from '../../../validations/adminSchemas';
+import useForm from '../../../hooks/useForm';
+import FormRenderer from '../../../components/forms/FormRenderer';
 
 const formFields = [
     { label: "Team Name", name: "teamName", type: "text" },
@@ -13,7 +13,7 @@ const formFields = [
     { label: "Confirm Password", name: "confirmPassword", type: "password" },
 ];
 
-const EditUser = () => {
+const EditTeam = () => {
     const pageTitle = usePageTitle();
     const { formData, errors, handleChange, handleSubmit, loading } = useForm(
         EditUserSchema,
@@ -40,4 +40,4 @@ const EditUser = () => {
     );
 }
 
-export default EditUser;
+export default EditTeam;

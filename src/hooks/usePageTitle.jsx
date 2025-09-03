@@ -3,7 +3,8 @@ import { useLocation } from 'react-router-dom';
 import sidebarMenu from '../components/layout/SidebarMenu';
 
 const extraMenu = {
-    "edit-user": "Edit User",
+    "view-team": "View Team",
+    "edit-team": "Edit Team",
     "edit-members": "Edit Team Members",
     "edit-evaluator": "Edit Evaluator",
     "assign-evaluator": "Assign Evaluator",
