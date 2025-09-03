@@ -9,7 +9,7 @@ const TableFilter = ({ filterData }) => {
                     <span className="text-gray-500 "> Show </span>
                     <div className="relative z-20 bg-transparent">
                         <select className="w-full py-2 pl-3 pr-8 text-sm text-gray-800 bg-transparent border border-gray-300 rounded-lg appearance-none  h-9 bg-none shadow-theme-xs placeholder:text-gray-400 focus:border-indigo-300 focus:outline-hidden focus:ring-3 focus:ring-indigo-500/10 " onChange={(e) => filterData.handleSetPageSize(e.target.value)}>
-                            <option value="10" className="text-gray-500 ">15</option>
+                            <option value="10" className="text-gray-500 ">10</option>
                             <option value="25" className="text-gray-500 ">25</option>
                             <option value="50" className="text-gray-500 ">50</option>
                         </select>

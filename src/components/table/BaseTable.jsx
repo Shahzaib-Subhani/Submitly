@@ -14,7 +14,7 @@ const BaseTable = ({ tableHeaders, tableData }) => {
     const [globalFilter, setGlobalFilter] = useState("");
     const [pagination, setPagination] = useState({
         pageIndex: 0,
-        pageSize: 15,
+        pageSize: 10,
     });
 
     // server-side logic
