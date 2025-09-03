@@ -22,7 +22,7 @@ const formFields = [
 
 const EditEvaluator = () => {
     const pageTitle = usePageTitle();
-    const { formData, errors, handleChange, handleSubmit } = useForm(
+    const { formData, errors, handleChange, handleSubmit, loading } = useForm(
         EditEvaluatorSchema,
         {
             name: "",
@@ -45,6 +45,8 @@ const EditEvaluator = () => {
                 handleSubmit={handleSubmit}
                 formData={formData}
                 errors={errors}
+                loading={loading}
+
             />
         </ComponentCard>
     );

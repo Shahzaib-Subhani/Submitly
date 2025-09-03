@@ -2,6 +2,7 @@ import Form from '../../components/forms/Form';
 import Input from '../../components/forms/Input';
 import Button from '../../components/forms/Button';
 import InputPassword from '../../components/forms/InputPassword';
+import Notification from '../layout/Notification';
 
 const FormRenderer = ({ formFields, handleSubmit, handleChange, formData, errors, loading }) => {
 

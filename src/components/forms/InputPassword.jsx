@@ -26,7 +26,7 @@ const InputPassword = ({ label, name, divClassName = "", inputClassName = "", va
                     <button
                         type="button"
                         onClick={handlePasswordVisibility}
-                        className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-10/15 text-gray-700"
+                        className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-10/15 text-gray-500"
                     >
                         {showPassword ? (
                             <EyeIcon size={20} />

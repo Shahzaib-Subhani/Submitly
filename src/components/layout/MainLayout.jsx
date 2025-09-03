@@ -6,6 +6,8 @@ import Backdrop from './Backdrop';
 import { useContext } from 'react';
 import { SidebarContext, SidebarProvider } from '../../context/SidebarContext';
 import TopLoader from './TopLoader';
+import { Toaster } from 'react-hot-toast';
+import Notification from './Notification';
 
 const MainLayout = () => {
 
@@ -30,6 +32,15 @@ const LayoutContent = () => {
     const { expanded, isMobile } = useContext(SidebarContext);
     return (
         <>
+            <Toaster position="top-center" reverseOrder={false} >
+                {(t) => (
+                    <Notification
+                        t={t}
+                        message={t.message}
+                        type={t.type || "info"}
+                    />
+                )}
+            </Toaster>
             <div
                 className={`flex-1 transition-all duration-300 ease-in-out ${expanded ? "lg:ml-[290px]" : "lg:ml-[0px]"
                     } `}

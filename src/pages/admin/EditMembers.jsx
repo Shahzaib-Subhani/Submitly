@@ -12,7 +12,7 @@ const formFields = [
 ];
 const EditMembers = () => {
     const pageTitle = usePageTitle();
-    const { formData, errors, handleChange, handleSubmit } = useForm(
+    const { formData, errors, handleChange, handleSubmit, loading } = useForm(
         EditMemberSchema,
         {
             memberName: "",
@@ -28,6 +28,8 @@ const EditMembers = () => {
                 handleSubmit={handleSubmit}
                 formData={formData}
                 errors={errors}
+                loading={loading}
+
             />
         </ComponentCard>
     );

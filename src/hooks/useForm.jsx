@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const useForm = (schema, initialValues) => {
     const [formData, setFormData] = useState(initialValues);
@@ -27,9 +28,10 @@ const useForm = (schema, initialValues) => {
             setErrors(fieldErrors);
         } else {
             setTimeout(() => {
-                console.log("Form submitted:", result.data);
                 setErrors({});
+                setFormData(initialValues);
                 setLoading(false);
+                toast.success("Form submitted successfully.");
             }, 1500);
         }
     };

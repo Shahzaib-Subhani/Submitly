@@ -4,7 +4,7 @@ const ComponentCard = ({ title, children, className = "" }) => {
         <>
             <div className={`rounded-2xl border border-gray-200 bg-white  ${className}`}>
                 <div className="px-6 py-5">
-                    <h3 className="text-lg font-medium text-gray-800 ">
+                    <h3 className="text-lg font-medium text-gray-800">
                         {title}
                     </h3>
                 </div>
