@@ -4,13 +4,13 @@ import Button from '../../components/forms/Button';
 import InputPassword from '../../components/forms/InputPassword';
 
 
-const FormRenderer = ({ formFields, handleSubmit, handleChange, formData, errors, loading }) => {
+const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData, errors, loading }) => {
 
     return (
         <>
-            <Form>
+            <Form title={title}>
                 <div className=' rounded-xl p-6 space-y-6 border border-gray-200'>
-
+                    {title && <h4 className="text-lg font-semibold text-gray-800 lg:mb-6">{title}</h4>}
 
                     <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
                         {formFields.map(({ label, name, type }) => (

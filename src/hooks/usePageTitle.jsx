@@ -6,6 +6,8 @@ const extraMenu = {
     "edit-user": "Edit User",
     "edit-members": "Edit Team Members",
     "edit-evaluator": "Edit Evaluator",
+    "assign-evaluator": "Assign Evaluator",
+    "view-submission": "Submission Details",
     "evaluator-signin": "Evaluator Sign In",
     "evaluator-register": "Evaluator Registration",
     "team-signin": "Team Sign In",

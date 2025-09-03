@@ -4,7 +4,8 @@ import EvaluatorSignIn from "../pages/EvaluatorSignIn";
 import TeamLogin from "../pages/TeamLogin";
 import TeamRegister from "../pages/TeamRegister";
 import Dashboard from "../pages/Dashboard";
-import Submissions from "../pages/admin/Submissions";
+import SubmissionsList from "../pages/admin/submission/SubmissionsList";
+import AssignEvaluator from "../pages/admin/submission/AssignEvaluator";
 import EvaluatorList from "../pages/admin/EvaluatorsList";
 import ManageUsers from "../pages/admin/ManageUsers";
 import MainLayout from "../components/layout/MainLayout";
@@ -23,6 +24,7 @@ import Chat from "../pages/Chat";
 import EditUser from "../pages/admin/EditUser";
 import EditMembers from "../pages/admin/EditMembers";
 import EditEvaluator from "../pages/admin/EditEvaluator";
+import ViewSubmission from "../pages/admin/submission/ViewSubmission";
 
 export default function AppRoutes() {
   return (
@@ -36,7 +38,9 @@ export default function AppRoutes() {
       <Route path="admin" element={<MainLayout />}>
         <Route index element={<Navigate to={"dashboard"} replace />} />
         <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="submissions-list" element={<Submissions />} />
+        <Route path="submissions-list" element={<SubmissionsList />} />
+        <Route path="submissions-list/view-submission" element={<ViewSubmission />} />
+        <Route path="submissions-list/assign-evaluator" element={<AssignEvaluator />} />
         <Route path="evaluators-list" element={<EvaluatorList />} />
         <Route path="evaluators-list/edit-evaluator" element={<EditEvaluator />} />
         <Route path="manage-users" element={<ManageUsers />} />

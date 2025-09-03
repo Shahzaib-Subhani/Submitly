@@ -1,9 +1,8 @@
 import React from 'react';
 
-const Form = ({title, children}) => {
+const Form = ({children}) => {
     return (
-        <form className=" mx-auto p-6 bg-white">
-          {title && <h2 className="text-xl mb-4">{title}</h2>}
+        <form className="mx-auto bg-white">
             {children}
         </form>
     );

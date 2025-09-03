@@ -41,3 +41,11 @@ export const EditMemberSchema = z.object({
     memberEmail: z.string().min(1, "Invalid email address"),
     memberRole: z.string().min(1, "Role is required"),
 });
+
+// Assign Evaluator Validation Schema
+
+export const AssignEvaluatorSchema = z.object({
+    evaluator1: z.string().min(1, "Evaluator no. 1 is required"),
+    evaluator2: z.string().min(1, "Evaluator no. 2 is required"),
+    evaluator3: z.string().min(1, "Evaluator no. 3 is required"),
+});
