@@ -3,32 +3,69 @@ import FormTemplate from "../components/auth/FormTemplate";
 import AuthForm from "../components/forms/AuthForm";
 import Button from "../components/forms/Button";
 import Input from "../components/forms/Input";
+import InputPassword from "../components/forms/InputPassword";
+import useForm from "../hooks/useForm";
+import usePageTitle from "../hooks/usePageTitle";
+import { TeamRegistrationSchema } from "../validations/authScehma";
 
 const TeamRegister = () => {
+  const pageTitle = usePageTitle();
+  const { formData, errors, handleChange, handleSubmit, loading } = useForm(
+    TeamRegistrationSchema,
+    {
+      teamName: "",
+      leaderName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    }
+  );
+
+  const formFields = [
+    { label: "Team Name", name: "teamName", type: "text" },
+    { label: "Leader Name", name: "leaderName", type: "text" },
+    { label: "Email", name: "email", type: "email" },
+    { label: "Password", name: "password", type: "password" },
+    { label: "Confirm Password", name: "confirmPassword", type: "password" },
+
+  ];
   return (
     <>
       <FormTemplate
-        title={"Account Registration"}
+        title={pageTitle}
         description={"Enter your details to create team account"}
+        toastMessage={"Registration Successful"}
       >
         <AuthForm>
-          <Input label="Team Name" name="teamName" type="text" />
-          <Input label="Leader Name" name="leaderName" type="text" />
-          <Input label="Email" name="email" type="email" />
-          <Input label="Password" name="password" type="password" />
-          <Input
-            label="Confirm Password"
-            name="confirmPassword"
-            type="password"
-          />
+          {formFields.map(({ label, name, type }) => (
+            type === "password"
+              ? <InputPassword
+                key={name}
+                label={label}
+                name={name}
+                value={formData[name]}
+                onChange={handleChange}
+                error={errors[name]}
+              />
+              : <Input
+                key={name}
+                label={label}
+                name={name}
+                type={type}
+                value={formData[name]}
+                onChange={handleChange}
+                error={errors[name]}
+              />
 
-          <Button type={"button"} className={"mt-8 w-full"}>
+          ))}
+
+          <Button type={"button"} className={"mt-8 w-full"} onClick={handleSubmit} isLoading={loading} loadingMessage="Registration in progress">
             Submit
           </Button>
 
           <Footer
             linkTitle={"Login"}
-            path={"/team-login"}
+            path={"/team-signin"}
             spanText={" Already have an account?"}
           />
         </AuthForm>

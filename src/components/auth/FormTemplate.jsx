@@ -1,8 +1,18 @@
+import Notification from "../layout/Notification";
 import logo from "/submitly.png";
-
-const FormTemplate = ({ title, description, children = "" }) => {
+import { Toaster } from 'react-hot-toast';
+const FormTemplate = ({ title, description, children = "", toastMessage}) => {
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} >
+        {(t) => (
+          <Notification
+            t={t}
+            message={toastMessage}
+            type={t.type || "info"}
+          />
+        )}
+      </Toaster>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 relative overflow-hidden px-4">
         <div className="flex flex-col items-start">
           <img

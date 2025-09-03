@@ -28,10 +28,10 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to={"admin"} />} />
-      <Route path="/evaluator-login" element={<EvaluatorSignIn />} />
+      <Route path="/evaluator-signin" element={<EvaluatorSignIn />} />
       <Route path="/evaluator-register" element={<EvaluatorRegister />} />
       <Route path="/team-register" element={<TeamRegister />} />
-      <Route path="/team-login" element={<TeamLogin />} />
+      <Route path="/team-signin" element={<TeamLogin />} />
 
       <Route path="admin" element={<MainLayout />}>
         <Route index element={<Navigate to={"dashboard"} replace />} />
