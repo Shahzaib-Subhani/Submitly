@@ -1,11 +1,18 @@
 import React from 'react';
+import ComponentCard from '../components/layout/ComponentCard';
+import ChatScreen from '../components/chat/ChatScreen';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Chat = () => {
+    const pageTitle = usePageTitle();
     return (
         <>
-            <div className="text-center w-full h-full bg-amber-300">
-                <h1 className="text-2xl font-bold">Chat Page</h1>
-            </div>
+            <ComponentCard title={pageTitle}>
+
+                <ChatScreen name={"Submittly Agent"}  />
+
+
+            </ComponentCard>
         </>
     );
 }

@@ -32,6 +32,7 @@ import EvaluationsList from "../pages/admin/evaluation/EvaluationsList";
 import ViewEvaluation from "../pages/admin/evaluation/ViewEvaluation";
 import ViewEvaluationDetails from "../pages/team/ViewEvaluationDetails";
 import ViewResult from "../pages/team/ViewResult";
+import ChatSupport from "../pages/admin/ChatSupport";
 
 export default function AppRoutes() {
   return (
@@ -58,7 +59,7 @@ export default function AppRoutes() {
         <Route path="manage-teams/edit-members" element={<EditTeamMember />} />
         <Route path="publish-result" element={<PublishResult />} />
         <Route path="set-deadline" element={<SetDeadline />} />
-        <Route path="chat-support" element={<Chat />} />
+        <Route path="chat-support" element={<ChatSupport />} />
 
       </Route>
       <Route path="/team" element={<MainLayout />}>
