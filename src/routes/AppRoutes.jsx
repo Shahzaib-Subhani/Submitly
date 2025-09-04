@@ -34,6 +34,10 @@ import ViewEvaluation from "../pages/admin/evaluation/ViewEvaluation";
 import ViewEvaluationDetails from "../pages/team/ViewEvaluationDetails";
 import ViewResult from "../pages/team/ViewResult";
 import ChatSupport from "../pages/admin/ChatSupport";
+import ForgotPassword from "../pages/ForgotPassword";
+import AdminProfile from "../pages/admin/AdminProfile";
+import TeamProfile from "../pages/team/TeamProfile";
+import EvaluatorProfile from "../pages/evaluator/EvaluatorProfile";
 
 export default function AppRoutes() {
   return (
@@ -44,6 +48,7 @@ export default function AppRoutes() {
       <Route path="/team-register" element={<TeamRegister />} />
       <Route path="/team-signin" element={<TeamLogin />} />
       <Route path="/admin-signin" element={<AdminLogin />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
 
       <Route path="admin" element={<MainLayout />}>
         <Route index element={<Navigate to={"dashboard"} replace />} />
@@ -62,6 +67,7 @@ export default function AppRoutes() {
         <Route path="publish-result" element={<PublishResult />} />
         <Route path="set-deadline" element={<SetDeadline />} />
         <Route path="chat-support" element={<ChatSupport />} />
+        <Route path="profile" element={<AdminProfile />} />
 
       </Route>
       <Route path="/team" element={<MainLayout />}>
@@ -72,6 +78,7 @@ export default function AppRoutes() {
         <Route path="view-evaluation" element={<ViewEvaluationDetails />} />
         <Route path="result" element={<ViewResult />} />
         <Route path="chat-support" element={<Chat />} />
+        <Route path="profile" element={<TeamProfile />} />
 
       </Route>
       <Route path="/evaluator" element={<MainLayout />}>
@@ -83,6 +90,7 @@ export default function AppRoutes() {
         <Route path="evaluations" element={<Evaluations />} />
         <Route path="evaluations/view-evaluation" element={<ViewEvaluation />} />
         <Route path="chat-support" element={<Chat />} />
+        <Route path="profile" element={<EvaluatorProfile />} />
 
       </Route>
 

@@ -31,3 +31,8 @@ export const TeamRegistrationSchema = z.object({
     message: "Passwords do not match",
     path: ["confirmPassword"],
 });
+
+// Forgot Password Validation Schema
+export const ForgotPasswordSchema = z.object({
+    email: z.string().email("Invalid email address"),
+});
