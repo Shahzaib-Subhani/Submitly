@@ -35,7 +35,7 @@ const useForm = (schema, initialValues) => {
             }, 1500);
         }
     };
-    return { formData, setFormData, errors, handleChange, handleSubmit, loading }
+    return { formData, setFormData, errors, handleChange, handleSubmit, loading, setErrors }
 }
 
 export default useForm;

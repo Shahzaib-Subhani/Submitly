@@ -67,7 +67,7 @@ export default function AppRoutes() {
         <Route index element={<Navigate to={"dashboard"} replace />} />
 
         <Route path="dashboard" element={<EvaluatorDashboard />} />
-        <Route path="evaluate-submission" element={<EvaluateSubmission />} />
+        <Route path="submission-list/evaluate-submission" element={<EvaluateSubmission />} />
         <Route path="submission-list" element={<SubmissionList />} />
         <Route path="chat-support" element={<Chat />} />
 

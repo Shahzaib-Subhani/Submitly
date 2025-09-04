@@ -42,7 +42,7 @@ const columns = [
         id: "actions",
         accessorKey: "actions",
         header: "Actions",
-        cell: () => <ActionColumn />,
+        cell: () => <ActionColumn isTextBtn={true} textBtnLabel="Evaluate" textBtnPath="evaluate-submission" />,
     },
 ];
 const SubmissionList = () => {

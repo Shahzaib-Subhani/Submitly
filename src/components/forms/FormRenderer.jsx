@@ -8,7 +8,7 @@ const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData,
 
     return (
         <>
-            <Form title={title}>
+            <Form>
                 <div className=' rounded-xl p-6 space-y-6 border border-gray-200'>
                     {title && <h4 className="text-lg font-semibold text-gray-800 lg:mb-6">{title}</h4>}
 

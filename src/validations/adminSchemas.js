@@ -49,3 +49,32 @@ export const AssignEvaluatorSchema = z.object({
     evaluator2: z.string().min(1, "Evaluator no. 2 is required"),
     evaluator3: z.string().min(1, "Evaluator no. 3 is required"),
 });
+
+//  Evaluate Submission Validation Schema
+
+const numberField = (max) =>
+    z.preprocess((val) => {
+        if (val === "") return -1;
+        const num = Number(val);
+        return isNaN(num) ? val : num;
+    },
+        z.number({
+            invalid_type_error: `must be a number`,
+            required_error: `is required`,
+        })
+            .int({ message: `must be an integer` })
+            .min(0, { message: `this field cannot be less than 0` })
+            .max(max, { message: `this field cannot exceed ${max}` })
+    );
+export const EvaluateSubmissionSchema = z.object({
+    relevanceToObjectives: numberField(5),
+    innovationCreativity: numberField(15),
+    clarityAccessibility: numberField(10),
+    depth: numberField(5),
+    interactivityEngagement: numberField(25),
+    useOfTechnology: numberField(5),
+    scalabilityAdaptability: numberField(10),
+    ethicalStandards: numberField(5),
+    practicalApplication: numberField(10),
+    videoQuality: numberField(10),
+});
