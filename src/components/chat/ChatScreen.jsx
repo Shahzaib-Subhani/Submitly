@@ -41,7 +41,7 @@ const ChatScreen = ({name, type = "user"}) => {
         user: ""
     }
     return (
-        <div className={`flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white ${width.type}`}>
+        <div className={`flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white ${width[type]}`}>
             <div className="sticky flex items-center justify-between px-5 py-4 border-b border-gray-200 xl:px-6">
                 <div className="flex items-center gap-3">
                     <h5 className="text-md font-medium text-gray-800">{name}</h5>
