@@ -16,10 +16,10 @@ const EditSubmission = () => {
     const { formData, errors, handleChange, handleSubmit, loading } = useForm(
         ContentSubmissionSchema,
         {
-            topic: "",
-            videoURL: "",
-            description: "",
-            learningOutcomes: "",
+            topic: "Topic 1",
+            videoURL: "https://example.com/video.mp4",
+            description: "Improved adaptability, automated grading, personalized content delivery.",
+            learningOutcomes: "A project exploring how AI can improve personalized learning.",
         }
     );
 

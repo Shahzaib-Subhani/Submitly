@@ -2,7 +2,6 @@ import React from 'react';
 import usePageTitle from '../../../hooks/usePageTitle';
 import ComponentCard from '../../../components/layout/ComponentCard';
 import DetailsCard from '../../../components/dashboard/DetailsCard';
-import EvaluationDetails from '../../../components/dashboard/EvaluationDetails';
 import EvaluationForm from '../../../components/dashboard/EvaluationForm';
 
 const labels = {

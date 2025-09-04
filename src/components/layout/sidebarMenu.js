@@ -9,6 +9,7 @@ import {
     MessageSquareText,
     MessageCircleQuestionMark,
     LayoutDashboard,
+    ScrollText,
 } from "lucide-react";
 
 const sidebarMenu = {
@@ -29,7 +30,7 @@ const sidebarMenu = {
         { icon: LayoutDashboard, text: "Dashboard", path: "dashboard" },
         { icon: TvMinimalPlay, text: "Content Submission", path: "content-submission" },
         { icon: FilePenLine, text: "Edit Submission", path: "edit-submission" },
-        { icon: MessageSquareText, text: "View Feedback", path: "view-feedback" },
+        { icon: ScrollText, text: "Evaluation Details", path: "view-evaluation" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
         { icon: LayoutDashboard, text: "Admin Dashboard", path: "/admin/dashboard" },
 
