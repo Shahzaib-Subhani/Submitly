@@ -37,7 +37,6 @@ const TeamLogin = () => {
           <InputPassword
             label={"Password"}
             name={"password"}
-            type={"password"}
             value={formData.password}
             onChange={handleChange}
             error={errors.password}

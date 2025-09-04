@@ -25,7 +25,6 @@ const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData,
                                     key={name}
                                     label={label}
                                     name={name}
-                                    type="password"
                                     value={formData[name]}
                                     onChange={handleChange}
                                     error={errors[name]}

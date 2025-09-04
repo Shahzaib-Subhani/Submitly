@@ -10,6 +10,8 @@ import useForm from "../hooks/useForm";
 import { LoginSchema } from "../validations/authScehma";
 
 export default function EvaluatorSignIn() {
+  console.log("page");
+  
   const pageTitle = usePageTitle();
   const { formData, errors, handleChange, handleSubmit, loading } = useForm(
     LoginSchema,
@@ -38,7 +40,6 @@ export default function EvaluatorSignIn() {
           <InputPassword
             label={"Password"}
             name={"password"}
-            type={"password"}
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
