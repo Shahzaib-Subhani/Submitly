@@ -10,6 +10,7 @@ import {
     MessageCircleQuestionMark,
     LayoutDashboard,
     ScrollText,
+    Megaphone,
 } from "lucide-react";
 
 const sidebarMenu = {
@@ -31,6 +32,7 @@ const sidebarMenu = {
         { icon: TvMinimalPlay, text: "Content Submission", path: "content-submission" },
         { icon: FilePenLine, text: "Edit Submission", path: "edit-submission" },
         { icon: ScrollText, text: "Evaluation Details", path: "view-evaluation" },
+        { icon: Megaphone, text: "Result", path: "result" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
         { icon: LayoutDashboard, text: "Admin Dashboard", path: "/admin/dashboard" },
 

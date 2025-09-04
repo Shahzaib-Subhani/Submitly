@@ -6,7 +6,7 @@ const TableHeader = ({ columns }) => {
 
     return (
         <>
-            <thead className="border-b border-gray-100 ">
+            <thead className="border-b border-gray-100 bg-gray-100">
                 <TableRow>
                     {columns.headers.map((header) => {
                         return <TableCell
