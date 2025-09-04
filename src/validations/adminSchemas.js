@@ -42,6 +42,17 @@ export const EditMemberSchema = z.object({
     memberRole: z.string().min(1, "Role is required"),
 });
 
+
+// Content Submission Validation Schema
+
+export const ContentSubmissionSchema = z.object({
+    topic: z.string().nonempty({ message: "Topic is required" }),
+    videoURL: z.string().nonempty({ message: "Video URL is required" }).url({ message: "Invalid URL" }),
+    description: z.string().nonempty({ message: "Description is required" }),
+    learningOutcomes: z.string().nonempty({ message: "Learning Outcomes are required" }),
+});
+
+
 // Assign Evaluator Validation Schema
 
 export const AssignEvaluatorSchema = z.object({

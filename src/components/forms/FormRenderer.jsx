@@ -2,9 +2,10 @@ import Form from '../../components/forms/Form';
 import Input from '../../components/forms/Input';
 import Button from '../../components/forms/Button';
 import InputPassword from '../../components/forms/InputPassword';
+import TextArea from './TextArea';
 
 
-const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData, errors, loading }) => {
+const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData, errors, loading, col = 3 }) => {
 
     return (
         <>
@@ -12,7 +13,7 @@ const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData,
                 <div className=' rounded-xl p-6 space-y-6 border border-gray-200'>
                     {title && <h4 className="text-lg font-semibold text-gray-800 lg:mb-6">{title}</h4>}
 
-                    <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+                    <div className={`grid grid-cols-1 gap-4 md:grid-cols-${col}`}>
                         {formFields.map(({ label, name, type }) => (
                             type === "password"
                                 ? <InputPassword
@@ -24,15 +25,26 @@ const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData,
                                     onChange={handleChange}
                                     error={errors[name]}
                                 />
-                                : <Input
-                                    key={name}
-                                    label={label}
-                                    name={name}
-                                    type={type}
-                                    value={formData[name]}
-                                    onChange={handleChange}
-                                    error={errors[name]}
-                                />
+                                :
+                                type === "textarea" ?
+                                    <TextArea
+                                        key={name}
+                                        label={label}
+                                        name={name}
+                                        value={formData[name]}
+                                        onChange={handleChange}
+                                        error={errors[name]}
+                                        rows={5}
+                                    />
+                                    : <Input
+                                        key={name}
+                                        label={label}
+                                        name={name}
+                                        type={type}
+                                        value={formData[name]}
+                                        onChange={handleChange}
+                                        error={errors[name]}
+                                    />
 
                         ))}
 
