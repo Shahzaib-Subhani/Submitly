@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import EvaluatorRegister from "../pages/EvaluatorRegister";
 import EvaluatorSignIn from "../pages/EvaluatorSignIn";
 import TeamLogin from "../pages/TeamLogin";
+import AdminLogin from "../pages/AdminLogin";
 import TeamRegister from "../pages/TeamRegister";
 import Dashboard from "../pages/Dashboard";
 import SubmissionsList from "../pages/admin/submission/SubmissionsList";
@@ -42,6 +43,7 @@ export default function AppRoutes() {
       <Route path="/evaluator-register" element={<EvaluatorRegister />} />
       <Route path="/team-register" element={<TeamRegister />} />
       <Route path="/team-signin" element={<TeamLogin />} />
+      <Route path="/admin-signin" element={<AdminLogin />} />
 
       <Route path="admin" element={<MainLayout />}>
         <Route index element={<Navigate to={"dashboard"} replace />} />
