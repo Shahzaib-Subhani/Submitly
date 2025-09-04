@@ -77,4 +77,5 @@ export const EvaluateSubmissionSchema = z.object({
     ethicalStandards: numberField(5),
     practicalApplication: numberField(10),
     videoQuality: numberField(10),
+    feedback: z.string().min(1, "feedback is required"),
 });

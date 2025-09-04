@@ -27,6 +27,9 @@ import ViewSubmission from "../pages/admin/submission/ViewSubmission";
 import ViewTeam from "../pages/admin/team/ViewTeam";
 import EditTeam from "../pages/admin/team/EditTeam";
 import EditTeamMember from "../pages/admin/team/EditTeamMember";
+import Evaluations from "../pages/evaluator/Evaluations";
+import EvaluationsList from "../pages/admin/evaluation/EvaluationsList";
+import ViewEvaluation from "../pages/admin/evaluation/ViewEvaluation";
 
 export default function AppRoutes() {
   return (
@@ -45,6 +48,8 @@ export default function AppRoutes() {
         <Route path="submissions-list/assign-evaluator" element={<AssignEvaluator />} />
         <Route path="evaluators-list" element={<EvaluatorList />} />
         <Route path="evaluators-list/edit-evaluator" element={<EditEvaluator />} />
+        <Route path="evaluations" element={<EvaluationsList />} />
+        <Route path="evaluations/view-evaluation" element={<ViewEvaluation />} />
         <Route path="manage-teams" element={<ManageTeams />} />
         <Route path="manage-teams/view-team" element={<ViewTeam />} />
         <Route path="manage-teams/edit-team" element={<EditTeam />} />
@@ -69,6 +74,7 @@ export default function AppRoutes() {
         <Route path="dashboard" element={<EvaluatorDashboard />} />
         <Route path="submission-list/evaluate-submission" element={<EvaluateSubmission />} />
         <Route path="submission-list" element={<SubmissionList />} />
+        <Route path="evaluations" element={<Evaluations />} />
         <Route path="chat-support" element={<Chat />} />
 
       </Route>

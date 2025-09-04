@@ -61,7 +61,8 @@ const EvaluateSubmission = () => {
             ethicalStandards: 0,
             practicalApplication: 0,
             videoQuality: 0,
-            total: 0
+            total: 0,
+            feedback: ""
         }
     );
 

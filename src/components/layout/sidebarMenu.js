@@ -17,6 +17,7 @@ const sidebarMenu = {
         { icon: User, text: "Teams", path: "manage-teams" },
         { icon: UserStar, text: "Evaluators", path: "evaluators-list" },
         { icon: ClipboardPlus, text: "Submissions", path: "submissions-list" },
+        { icon: FilePenLine, text: "Evaluations", path: "evaluations" },
         { icon: ClipboardList, text: "Publish Result", path: "publish-result" },
         { icon: CalendarX2, text: "Set Deadline", path: "set-deadline" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
@@ -36,8 +37,8 @@ const sidebarMenu = {
     ],
     evaluator: [
         { icon: LayoutDashboard, text: "Dashboard", path: "dashboard" },
-        { icon: TvMinimalPlay, text: "Submission List", path: "submission-list" },
-        { icon: FilePenLine, text: "Evaluate Submission", path: "evaluate-submission" },
+        { icon: TvMinimalPlay, text: "Submissions", path: "submission-list" },
+        { icon: FilePenLine, text: "Evaluations", path: "evaluations" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
         { icon: LayoutDashboard, text: "Admin Dashboard", path: "/admin/dashboard" },
 
