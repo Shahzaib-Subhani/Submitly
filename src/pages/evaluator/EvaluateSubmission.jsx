@@ -90,7 +90,10 @@ const EvaluateSubmission = () => {
                     handleSubmit={handleSubmit}
                     formData={formData}
                     errors={errors}
-                    loading={loading} />
+                    loading={loading}
+                    editable={true}
+
+                />
 
             </ComponentCard>
         </>

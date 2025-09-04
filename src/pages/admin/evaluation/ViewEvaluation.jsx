@@ -3,6 +3,7 @@ import usePageTitle from '../../../hooks/usePageTitle';
 import ComponentCard from '../../../components/layout/ComponentCard';
 import DetailsCard from '../../../components/dashboard/DetailsCard';
 import EvaluationDetails from '../../../components/dashboard/EvaluationDetails';
+import EvaluationForm from '../../../components/dashboard/EvaluationForm';
 
 const labels = {
     evaluationID: "ID",
@@ -41,7 +42,7 @@ const ViewEvaluation = () => {
         <>
             <ComponentCard title={pageTitle}>
                 <DetailsCard labels={labels} data={evaluation} />
-                <EvaluationDetails title={"Criteria Scores"} criteria={evaluation.criteriaScore} total={evaluation.totalScore} />
+                <EvaluationForm title={"Criteria Scores"} criteria={evaluation.criteriaScore} total={evaluation.totalScore} />
             </ComponentCard>
         </>
     );

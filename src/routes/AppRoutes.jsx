@@ -75,6 +75,7 @@ export default function AppRoutes() {
         <Route path="submission-list/evaluate-submission" element={<EvaluateSubmission />} />
         <Route path="submission-list" element={<SubmissionList />} />
         <Route path="evaluations" element={<Evaluations />} />
+        <Route path="evaluations/view-evaluation" element={<ViewEvaluation />} />
         <Route path="chat-support" element={<Chat />} />
 
       </Route>
