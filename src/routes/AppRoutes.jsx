@@ -5,6 +5,7 @@ import adminRoutes from "./adminRoutes";
 import teamRoutes from "./teamRoutes";
 import evaluatorRoutes from "./evaluatorRoutes";
 import authRoutes from "./authRoutes";
+import LandingPage from "../pages/LandingPage";
 
 
 
@@ -15,7 +16,7 @@ const renderNestedRoutes = (routes) =>
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to={"admin"} />} />
+      <Route path="/" element={<LandingPage />} />
       {authRoutes.map(({ path, component: Component }) => (
         <Route key={path} path={path} element={<Component />} />
       ))}
