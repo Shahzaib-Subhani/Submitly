@@ -16,9 +16,11 @@ import ChatSupport from "../pages/admin/ChatSupport";
 import AdminProfile from "../pages/admin/AdminProfile";
 import ViewEvaluation from "../pages/admin/evaluation/ViewEvaluation";
 import UpdatePassword from "../pages/UpdatePassword";
+import LinkPage from "../pages/auth/LinkPage";
 
 const adminRoutes = [
     { path: "dashboard", component: AdminDashboard },
+    { path: "auth-links", component: LinkPage },
     { path: "submissions-list", component: SubmissionsList },
     { path: "submissions-list/view-submission", component: ViewSubmission },
     { path: "submissions-list/assign-evaluator", component: AssignEvaluator },

@@ -11,11 +11,13 @@ import {
     LayoutDashboard,
     ScrollText,
     Megaphone,
+    ShieldUser,
 } from "lucide-react";
 
 const sidebarMenu = {
     admin: [
         { icon: LayoutDashboard, text: "Dashboard", path: "dashboard" },
+        { icon: ShieldUser, text: "Auth Links", path: "auth-links" },
         { icon: User, text: "Teams", path: "manage-teams" },
         { icon: UserStar, text: "Evaluators", path: "evaluators-list" },
         { icon: ClipboardPlus, text: "Submissions", path: "submissions-list" },
@@ -23,16 +25,15 @@ const sidebarMenu = {
         { icon: ClipboardList, text: "Publish Result", path: "publish-result" },
         { icon: CalendarX2, text: "Set Deadline", path: "set-deadline" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
-        { icon: LayoutDashboard, text: "Team Dashboard", path: "/team/dashboard" },
+        { icon: LayoutDashboard, text: "Team Dashboard", path: "/team/result" },
         { icon: LayoutDashboard, text: "Evaluator Dashboard", path: "/evaluator/dashboard" },
 
     ],
     team: [
-        { icon: LayoutDashboard, text: "Dashboard", path: "dashboard" },
+        { icon: Megaphone, text: "Result", path: "result" },
         { icon: TvMinimalPlay, text: "Content Submission", path: "content-submission" },
         { icon: FilePenLine, text: "Edit Submission", path: "edit-submission" },
         { icon: ScrollText, text: "Evaluation Details", path: "view-evaluation" },
-        { icon: Megaphone, text: "Result", path: "result" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
         { icon: LayoutDashboard, text: "Admin Dashboard", path: "/admin/dashboard" },
 

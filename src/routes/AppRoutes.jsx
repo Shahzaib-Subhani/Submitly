@@ -16,8 +16,8 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to={"admin"} />} />
-      {authRoutes.map(({ path, element }) => (
-        <Route key={path} path={path} element={element} />
+      {authRoutes.map(({ path, component: Component }) => (
+        <Route key={path} path={path} element={<Component />} />
       ))}
 
       <Route path="admin" element={<MainLayout />}>
@@ -27,7 +27,7 @@ export default function AppRoutes() {
 
       </Route>
       <Route path="/team" element={<MainLayout />}>
-        <Route index element={<Navigate to={"dashboard"} replace />} />
+        <Route index element={<Navigate to={"result"} replace />} />
         {renderNestedRoutes(teamRoutes)}
 
       </Route>

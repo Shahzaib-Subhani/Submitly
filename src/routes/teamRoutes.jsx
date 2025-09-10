@@ -10,7 +10,6 @@ import UpdatePassword from "../pages/UpdatePassword";
 
 
 const teamRoutes = [
-  { path: "dashboard", component: TeamDashboard },
   { path: "content-submission", component: ContentSubmission },
   { path: "edit-submission", component: EditSubmission },
   { path: "view-evaluation", component: ViewEvaluationDetails },
