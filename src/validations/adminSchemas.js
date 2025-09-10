@@ -121,3 +121,8 @@ export const UpdateEvaluatorProfileSchema = z.object({
     qualification: z.string().min(1, "Qualification is required"),
     experience: z.string().min(1, "Experience is required"),
 });
+
+// OTP Verification Validation Schema
+export const OTPVerificationSchema = z.object({
+    otp: z.string().min(6, "Enter 6-digit OTP"),
+});

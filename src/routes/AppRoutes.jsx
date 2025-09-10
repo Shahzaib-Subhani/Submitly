@@ -39,6 +39,7 @@ import AdminProfile from "../pages/admin/AdminProfile";
 import TeamProfile from "../pages/team/TeamProfile";
 import EvaluatorProfile from "../pages/evaluator/EvaluatorProfile";
 import UpdatePassword from "../pages/UpdatePassword";
+import OTPVerification from "../components/forms/OTPVerification";
 
 export default function AppRoutes() {
   return (
@@ -50,6 +51,7 @@ export default function AppRoutes() {
       <Route path="/team-signin" element={<TeamLogin />} />
       <Route path="/admin-signin" element={<AdminLogin />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/otp-verification" element={<OTPVerification />} />
 
       <Route path="admin" element={<MainLayout />}>
         <Route index element={<Navigate to={"dashboard"} replace />} />
