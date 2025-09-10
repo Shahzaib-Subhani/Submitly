@@ -17,6 +17,7 @@ const extraMenu = {
     "view-evaluation": "Evaluation Details",
     "admin-signin": "Admin Sign In",
     "profile": "Update Profile",
+    "update-password": "Update Password",
 }
 
 const usePageTitle = () => {

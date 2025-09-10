@@ -38,6 +38,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import AdminProfile from "../pages/admin/AdminProfile";
 import TeamProfile from "../pages/team/TeamProfile";
 import EvaluatorProfile from "../pages/evaluator/EvaluatorProfile";
+import UpdatePassword from "../pages/UpdatePassword";
 
 export default function AppRoutes() {
   return (
@@ -68,6 +69,7 @@ export default function AppRoutes() {
         <Route path="set-deadline" element={<SetDeadline />} />
         <Route path="chat-support" element={<ChatSupport />} />
         <Route path="profile" element={<AdminProfile />} />
+        <Route path="update-password" element={<UpdatePassword />} />
 
       </Route>
       <Route path="/team" element={<MainLayout />}>
@@ -79,6 +81,7 @@ export default function AppRoutes() {
         <Route path="result" element={<ViewResult />} />
         <Route path="chat-support" element={<Chat />} />
         <Route path="profile" element={<TeamProfile />} />
+        <Route path="update-password" element={<UpdatePassword />} />
 
       </Route>
       <Route path="/evaluator" element={<MainLayout />}>
@@ -91,6 +94,7 @@ export default function AppRoutes() {
         <Route path="evaluations/view-evaluation" element={<ViewEvaluation />} />
         <Route path="chat-support" element={<Chat />} />
         <Route path="profile" element={<EvaluatorProfile />} />
+        <Route path="update-password" element={<UpdatePassword />} />
 
       </Route>
 

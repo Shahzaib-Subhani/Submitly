@@ -95,9 +95,29 @@ export const EvaluateSubmissionSchema = z.object({
 // Edit Profile Validation Schema
 export const UpdateProfileSchema = z.object({
     email: z.string().email("Invalid email address"),
+});
+
+// Update Password Validation Schema
+export const UpdatePasswordSchema = z.object({
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(6, "Confirm Password is required"),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
+});
+
+
+// Update Team Profile Validation Schema
+export const UpdateTeamProfileSchema = z.object({
+    teamName: z.string().min(1, "Team Name is required"),
+    leaderName: z.string().min(1, "Leader Name is required"),
+    email: z.string().email("Invalid email address"),
+});
+
+// Update Evaluator Profile Validation Schema
+export const UpdateEvaluatorProfileSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email address"),
+    qualification: z.string().min(1, "Qualification is required"),
+    experience: z.string().min(1, "Experience is required"),
 });

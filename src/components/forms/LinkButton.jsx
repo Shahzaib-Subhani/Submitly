@@ -1,24 +1,23 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 
 const baseStyles =
-    "inline-flex items-center px-2.5 py-1 justify-center gap-1 rounded-lg font-medium cursor-pointer";
+    "inline-flex items-center px-3 py-2 justify-center gap-1 rounded-full font-medium cursor-pointer border";
 
 
 // color styles for variants
 const variants = {
     light: {
         indigo:
-            "bg-indigo-100 text-indigo-500",
+            "bg-indigo-50 text-indigo-500 border-indigo-300 hover:bg-indigo-100",
         emerald:
-            "bg-emerald-100 text-emerald-600",
+            "bg-emerald-50 text-emerald-600 border-emerald-300 hover:bg-emerald-100",
         red:
-            "bg-red-100 text-red-600",
+            "bg-red-50 text-red-600 border-red-300 hover:bg-red-100",
         amber:
-            "bg-amber-100 text-amber-600",
-        blue: "bg-blue-light-100 text-blue-light-500",
-        light: "bg-gray-100 text-gray-700",
+            "bg-amber-50 text-amber-600 border-amber-300 hover:bg-amber-100",
+        blue: "bg-blue-50 text-blue-500 border-blue-300 hover:bg-blue-100",
+        light: "bg-gray-50 text-gray-600 border-gray-300 hover:bg-gray-100",
         dark: "bg-gray-500 text-white",
     },
     solid: {
@@ -31,8 +30,8 @@ const variants = {
         dark: "bg-gray-700 text-white",
     },
 };
-const LinkButton = ({ children, type, className, path, variant = "light", color = "indigo", ...props}) => {
-     const colorStyles = variants[variant][color];
+const LinkButton = ({ children, type, className, path, variant = "light", color = "indigo", ...props }) => {
+    const colorStyles = variants[variant][color];
     return (
         <Link to={path}>
             <button
