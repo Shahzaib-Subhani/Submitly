@@ -1,30 +1,24 @@
-import Footer from "../components/auth/Footer";
-import FormTemplate from "../components/auth/FormTemplate";
-import AuthForm from "../components/forms/AuthForm";
-import Button from "../components/forms/Button";
-import Input from "../components/forms/Input";
-import InputPassword from "../components/forms/InputPassword";
-import useForm from "../hooks/useForm";
-import usePageTitle from "../hooks/usePageTitle";
-import { TeamRegistrationSchema } from "../validations/authScehma";
 
-const TeamRegister = () => {
+import usePageTitle from '../../hooks/usePageTitle';
+import useForm from '../../hooks/useForm';
+import FormTemplate from '../../components/auth/FormTemplate';
+import InputPassword from '../../components/forms/InputPassword';
+import Input from '../../components/forms/Input';
+import AuthForm from '../../components/forms/AuthForm';
+import Button from '../../components/forms/Button';
+import { UpdatePasswordSchema } from '../../validations/adminSchemas';
+
+const ResetPassword = () => {
   const pageTitle = usePageTitle();
   const { formData, errors, handleChange, handleSubmit, loading } = useForm(
-    TeamRegistrationSchema,
+    UpdatePasswordSchema,
     {
-      teamName: "",
-      leaderName: "",
-      email: "",
       password: "",
       confirmPassword: "",
     }
   );
 
   const formFields = [
-    { label: "Team Name", name: "teamName", type: "text" },
-    { label: "Leader Name", name: "leaderName", type: "text" },
-    { label: "Email", name: "email", type: "email" },
     { label: "Password", name: "password", type: "password" },
     { label: "Confirm Password", name: "confirmPassword", type: "password" },
 
@@ -33,8 +27,8 @@ const TeamRegister = () => {
     <>
       <FormTemplate
         title={pageTitle}
-        description={"Enter your details to create team account"}
-        toastMessage={"Registration Successful"}
+        description={"Reset Your Password"}
+        toastMessage={"Password changed Successful"}
       >
         <AuthForm>
           {formFields.map(({ label, name, type }) => (
@@ -63,15 +57,10 @@ const TeamRegister = () => {
             Submit
           </Button>
 
-          <Footer
-            linkTitle={"Login"}
-            path={"/team-signin"}
-            spanText={" Already have an account?"}
-          />
         </AuthForm>
       </FormTemplate>
     </>
   );
 };
 
-export default TeamRegister;
+export default ResetPassword;

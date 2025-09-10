@@ -1,11 +1,10 @@
 import usePageTitle from "../../hooks/usePageTitle";
-import FormTemplate from "../auth/FormTemplate";
-import AuthForm from "./AuthForm";
+import FormTemplate from "../../components/auth/FormTemplate";
+import AuthForm from "../../components/forms/AuthForm";
 import useForm from "../../hooks/useForm";
 import { OTPVerificationSchema } from "../../validations/adminSchemas";
-import Button from "./Button";
-import OTPInput from "./OTPInput";
-import { ota } from "zod/locales";
+import Button from "../../components/forms/Button";
+import OTPInput from "../../components/forms/OTPInput";
 
 const OTPVerification = () => {
     const pageTitle = usePageTitle();

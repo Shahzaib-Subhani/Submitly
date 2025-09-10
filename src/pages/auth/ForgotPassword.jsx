@@ -1,12 +1,12 @@
 import React from 'react';
-import FormTemplate from '../components/auth/FormTemplate';
-import AuthForm from '../components/forms/AuthForm';
-import Input from '../components/forms/Input';
-import InputPassword from '../components/forms/InputPassword';
-import Button from '../components/forms/Button';
-import usePageTitle from '../hooks/usePageTitle';
-import useForm from '../hooks/useForm';
-import { ForgotPasswordSchema } from '../validations/authScehma';
+import FormTemplate from '../../components/auth/FormTemplate';
+import AuthForm from '../../components/forms/AuthForm';
+import Input from '../../components/forms/Input';
+import InputPassword from '../../components/forms/InputPassword';
+import Button from '../../components/forms/Button';
+import usePageTitle from '../../hooks/usePageTitle';
+import useForm from '../../hooks/useForm';
+import { ForgotPasswordSchema } from '../../validations/authScehma';
 
 const ForgotPassword = () => {
     const pageTitle = usePageTitle();

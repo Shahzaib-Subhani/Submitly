@@ -1,12 +1,12 @@
-import Footer from "../components/auth/Footer";
-import FormTemplate from "../components/auth/FormTemplate";
-import AuthForm from "../components/forms/AuthForm";
-import Button from "../components/forms/Button";
-import Input from "../components/forms/Input";
-import InputPassword from "../components/forms/InputPassword";
-import useForm from "../hooks/useForm";
-import usePageTitle from "../hooks/usePageTitle";
-import { LoginSchema } from "../validations/authScehma";
+import Footer from "../../components/auth/Footer";
+import FormTemplate from "../../components/auth/FormTemplate";
+import AuthForm from "../../components/forms/AuthForm";
+import Button from "../../components/forms/Button";
+import Input from "../../components/forms/Input";
+import InputPassword from "../../components/forms/InputPassword";
+import useForm from "../../hooks/useForm";
+import usePageTitle from "../../hooks/usePageTitle";
+import { LoginSchema } from "../../validations/authScehma";
 
 const TeamLogin = () => {
   const pageTitle = usePageTitle();

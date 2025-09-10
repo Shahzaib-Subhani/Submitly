@@ -1,14 +1,15 @@
-import Footer from "../components/auth/Footer";
-import FormTemplate from "../components/auth/FormTemplate";
-import AuthForm from "../components/forms/AuthForm";
-import Button from "../components/forms/Button";
-import Input from "../components/forms/Input";
-import InputPassword from "../components/forms/InputPassword";
-import useForm from "../hooks/useForm";
-import usePageTitle from "../hooks/usePageTitle";
-import { LoginSchema } from "../validations/authScehma";
 
-const TeamLogin = () => {
+import Input from "../../components/forms/Input";
+import InputPassword from "../../components/forms/InputPassword";
+import Button from "../../components/forms/Button";
+import FormTemplate from "../../components/auth/FormTemplate";
+import Footer from "../../components/auth/Footer";
+import AuthForm from "../../components/forms/AuthForm";
+import usePageTitle from "../../hooks/usePageTitle";
+import useForm from "../../hooks/useForm";
+import { LoginSchema } from "../../validations/authScehma";
+
+export default function EvaluatorSignIn() {
   const pageTitle = usePageTitle();
   const { formData, errors, handleChange, handleSubmit, loading } = useForm(
     LoginSchema,
@@ -20,8 +21,8 @@ const TeamLogin = () => {
   return (
     <>
       <FormTemplate
-        title={"Sign In"}
-        description={"Enter your details to sign in as team"}
+        title={pageTitle}
+        description={"Enter your details to sign in as Evaluator"}
         toastMessage={"Sign In Successful"}
       >
         <AuthForm>
@@ -47,13 +48,11 @@ const TeamLogin = () => {
           </Button>
           <Footer
             linkTitle={"Register"}
-            path={"/team-register"}
-            spanText={"Don't have an account?"}
+            path={"/evaluator-register"}
+            spanText={"Don't have an evaluator account?"}
           />
         </AuthForm>
       </FormTemplate>
     </>
   );
-};
-
-export default TeamLogin;
+}
