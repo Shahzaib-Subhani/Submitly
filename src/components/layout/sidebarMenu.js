@@ -25,8 +25,6 @@ const sidebarMenu = {
         { icon: ClipboardList, text: "Publish Result", path: "publish-result" },
         { icon: CalendarX2, text: "Set Deadline", path: "set-deadline" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
-        { icon: LayoutDashboard, text: "Team Dashboard", path: "/team/result" },
-        { icon: LayoutDashboard, text: "Evaluator Dashboard", path: "/evaluator/dashboard" },
 
     ],
     team: [
@@ -35,7 +33,6 @@ const sidebarMenu = {
         { icon: FilePenLine, text: "Edit Submission", path: "edit-submission" },
         { icon: ScrollText, text: "Evaluation Details", path: "view-evaluation" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
-        { icon: LayoutDashboard, text: "Admin Dashboard", path: "/admin/dashboard" },
 
 
     ],
@@ -44,7 +41,6 @@ const sidebarMenu = {
         { icon: TvMinimalPlay, text: "Submissions", path: "submission-list" },
         { icon: FilePenLine, text: "Evaluations", path: "evaluations" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
-        { icon: LayoutDashboard, text: "Admin Dashboard", path: "/admin/dashboard" },
 
 
     ],

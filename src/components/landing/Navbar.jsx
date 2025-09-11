@@ -10,9 +10,9 @@ const Navbar = () => {
                 </div>
                 <div className="hidden md:flex space-x-8">
                     <Link to="#how-it-works" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium animate-slide-up animation-delay-300">How It Works</Link>
-                    <Link to="/team-signin" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium animate-slide-up animation-delay-400">For Teams</Link>
-                    <Link to="/evaluator-signin" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium animate-slide-up animation-delay-500">For Evaluators</Link>
-                    <Link to="/admin-signin" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium animate-slide-up animation-delay-600">Admin</Link>
+                    <Link to="/team" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium animate-slide-up animation-delay-400">For Teams</Link>
+                    <Link to="/evaluator" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium animate-slide-up animation-delay-500">For Evaluators</Link>
+                    <Link to="/admin" className="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium animate-slide-up animation-delay-600">Admin</Link>
                 </div>
                 <Link to="/team-signin" className="px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors duration-300 animate-fade-in animation-delay-700">
                     Get Started
