@@ -1,11 +1,9 @@
 import express from "express";
+import { teamRegister } from "../controllers/authController.js";
 
 const router = express.Router();
 
-router.post("/register-team", (req, res) => {
-    console.log("route reached");
-    res.status(200).json({ message: "reached route" })
-});
+router.post("/register-team", teamRegister);
 
 
 export default router;
