@@ -8,8 +8,19 @@ export const teamRegisterSchema = Joi.object({
     password: Joi.string().min(6).required().label("Password")
 });
 
-// team login validation schema
-export const teamLoginSchema = Joi.object({
+// login validation schema
+export const loginSchema = Joi.object({
     email: Joi.string().email().required().label("Email"),
     password: Joi.string().min(6).required().label("Password")
 });
+
+
+// evaluator registration validation schema
+export const evaluatorRegisterSchema = Joi.object({
+    name: Joi.string().min(3).required().label("Name"),
+    email: Joi.string().email().required().label("Email"),
+    password: Joi.string().min(6).required().label("Password"),
+    qualification: Joi.string().min(3).label("Qualification"),
+    experience: Joi.string().min(3).label("Experience"),
+});
+

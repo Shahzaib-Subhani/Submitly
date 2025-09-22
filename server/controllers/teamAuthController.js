@@ -1,7 +1,7 @@
 import argon2 from "argon2";
 import Team from "../models/team.js";
 import { errorResponse, fetchNextId, incrementCounter, successResponse, validate } from "../utils/baseHelper.js";
-import { teamLoginSchema, teamRegisterSchema } from "../utils/validations.js";
+import { loginSchema, teamRegisterSchema } from "../utils/validations.js";
 import { generateToken, hashPassword, verifyPassword } from "../utils/authHelper.js";
 
 // Team Registration function
@@ -31,7 +31,7 @@ export const teamRegister = async (req, res) => {
 // Team Login function
 export const teamLogin = async (req, res) => {
     try {
-        const { success, errors, validatedData } = validate(teamLoginSchema, req.body);
+        const { success, errors, validatedData } = validate(loginSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
         const { email, password } = validatedData;
 
