@@ -1,7 +1,7 @@
 
 import { errorResponse, fetchNextId, incrementCounter, successResponse, validate } from "../utils/baseHelper.js";
 import { evaluatorRegisterSchema, loginSchema } from "../utils/validations.js";
-import { generateToken, hashPassword, verifyPassword } from "../utils/authHelper.js";
+import { generateJwtToken, hashPassword, verifyPassword } from "../utils/authHelper.js";
 import Evaluator from "../models/evaluator.js";
 
 // Evaluator Registration function
@@ -41,7 +41,7 @@ export const evaluatorLogin = async (req, res) => {
         if (!match) {
             return errorResponse(res, "Password Error", "Incorrect Password");
         }
-        const token = generateToken({ id: evaluator._id, role: "evaluator" });
+        const token = generateJwtToken({ id: evaluator._id, role: "evaluator" });
         console.log(token);
 
         return successResponse(res, "Evaluator Logged in successfully", { jwtToken: token });

@@ -2,7 +2,7 @@ import argon2 from "argon2";
 import Team from "../models/team.js";
 import { errorResponse, fetchNextId, incrementCounter, successResponse, validate } from "../utils/baseHelper.js";
 import { loginSchema, teamRegisterSchema } from "../utils/validations.js";
-import { generateToken, hashPassword, verifyPassword } from "../utils/authHelper.js";
+import { generateJwtToken, hashPassword, verifyPassword } from "../utils/authHelper.js";
 
 // Team Registration function
 export const teamRegister = async (req, res) => {
@@ -42,7 +42,7 @@ export const teamLogin = async (req, res) => {
         if (!match) {
             return errorResponse(res, "Password Error", "Incorrect Password");
         }
-        const token = generateToken({ id: team._id, role: "team" });
+        const token = generateJwtToken({ id: team._id, role: "team" });
         return successResponse(res, "Team Logged in successfully", { jwtToken: token });
     } catch (error) {
         return errorResponse(res, "Server error", { error: error.message }, 500);

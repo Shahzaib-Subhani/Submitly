@@ -1,6 +1,7 @@
 import argon2 from "argon2";
 import jwt from "jsonwebtoken"
 import Admin from "../models/admin.js";
+import crypto from "crypto";
 
 const DEFAULT_ADMIN = {
     name: "Super Admin",
@@ -9,13 +10,16 @@ const DEFAULT_ADMIN = {
 };
 
 // function to generate JWT token
-export const generateToken = (user) =>
+export const generateJwtToken = (user) =>
     jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
         expiresIn: "1d",
     });
 
 // function to generate random OTP
 export const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+// function to generate random token
+export const generateRandomToken = () => crypto.randomBytes(32).toString("hex");
 
 // function to create hashed password
 export const hashPassword = async (password) => {
