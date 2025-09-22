@@ -38,11 +38,8 @@ export const authenticateUser = async (req, res, next) => {
 
 export const authorizeRole = allowedRole => {
     return (req, res, next) => {
-        console.log(req.user);
-
         if (!req.user || req.user.role !== allowedRole) {
             return errorResponse(res, "Forbidden: Access denied", null, 403)
-
         };
         next();
     };
