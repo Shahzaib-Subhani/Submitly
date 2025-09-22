@@ -7,21 +7,21 @@ import { forgotPasswordOTP, passwordReset, verifyOTP } from "../controllers/gene
 const router = express.Router();
 
 // Admin Auth routes
-router.post("/admin-register", adminRegister);
-router.post("/admin-signin", adminLogin);
+router.post("/admin/register", adminRegister);
+router.post("/admin/signin", adminLogin);
 
 // Team Auth routes
-router.post("/team-register", teamRegister);
-router.post("/team-signin", teamLogin);
+router.post("/team/register", teamRegister);
+router.post("/team/signin", teamLogin);
 
 // Evaluator Auth routes
-router.post("/evaluator-register", evaluatorRegister);
-router.post("/evaluator-signin", evaluatorLogin);
+router.post("/evaluator/register", evaluatorRegister);
+router.post("/evaluator/signin", evaluatorLogin);
 
 // General Auth routes
 router.post("/forgot-password", forgotPasswordOTP);
 router.post("/verify-otp", verifyOTP);
-router.post("/password-update", passwordReset);
+router.post("/reset-password", passwordReset);
 
 
 export default router;
