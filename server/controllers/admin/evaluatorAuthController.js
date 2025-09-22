@@ -1,8 +1,8 @@
 
-import { errorResponse, fetchNextId, incrementCounter, successResponse, validate } from "../utils/baseHelper.js";
-import { evaluatorRegisterSchema, loginSchema } from "../utils/validations.js";
-import { generateJwtToken, hashPassword, verifyPassword } from "../utils/authHelper.js";
-import Evaluator from "../models/evaluator.js";
+import { errorResponse, fetchNextId, incrementCounter, successResponse, validate } from "../../utils/baseHelper.js";
+import { evaluatorRegisterSchema, loginSchema } from "../../utils/validations.js";
+import { generateJwtToken, hashPassword, verifyPassword } from "../../utils/authHelper.js";
+import Evaluator from "../../models/evaluator.js";
 
 // Evaluator Registration function
 export const evaluatorRegister = async (req, res) => {

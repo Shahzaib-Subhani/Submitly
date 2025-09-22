@@ -1,10 +1,10 @@
-import Admin from "../models/admin.js";
-import Evaluator from "../models/evaluator.js";
-import OTP from "../models/otp.js";
-import Team from "../models/team.js";
-import { generateOTP, generateRandomToken, hashPassword } from "../utils/authHelper.js";
-import { errorResponse, successResponse, validate } from "../utils/baseHelper.js";
-import { forgotPasswordSchema, otpVerifySchema, updatePasswordSchema } from "../utils/validations.js";
+import Admin from "../../models/admin.js";
+import Evaluator from "../../models/evaluator.js";
+import OTP from "../../models/otp.js";
+import Team from "../../models/team.js";
+import { generateOTP, generateRandomToken, hashPassword } from "../../utils/authHelper.js";
+import { errorResponse, successResponse, validate } from "../../utils/baseHelper.js";
+import { forgotPasswordSchema, otpVerifySchema, updatePasswordSchema } from "../../utils/validations.js";
 
 export const forgotPasswordOTP = async (req, res) => {
     try {

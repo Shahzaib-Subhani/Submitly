@@ -1,8 +1,9 @@
 import express from "express";
-import { teamLogin, teamRegister } from "../controllers/teamAuthController.js";
-import { evaluatorLogin, evaluatorRegister } from "../controllers/evaluatorAuthController.js";
-import { adminLogin, adminRegister } from "../controllers/adminAuthController.js";
-import { forgotPasswordOTP, passwordReset, verifyOTP } from "../controllers/generalAuthController.js";
+import { adminLogin, adminRegister } from "../controllers/admin/adminAuthController.js";
+import { teamLogin, teamRegister } from "../controllers/admin/teamAuthController.js";
+import { evaluatorLogin, evaluatorRegister } from "../controllers/admin/evaluatorAuthController.js";
+import { forgotPasswordOTP, passwordReset, verifyOTP } from "../controllers/admin/generalAuthController.js";
+
 
 const router = express.Router();
 
