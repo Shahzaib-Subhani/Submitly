@@ -42,7 +42,6 @@ export const adminLogin = async (req, res) => {
             return errorResponse(res, "Password Error", "Incorrect Password");
         }
         const token = generateJwtToken({ id: admin._id, role: "admin" });
-        console.log(token);
 
         return successResponse(res, "Admin Logged in successfully", { jwtToken: token });
     } catch (error) {

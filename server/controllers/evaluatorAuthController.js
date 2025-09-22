@@ -42,7 +42,7 @@ export const evaluatorLogin = async (req, res) => {
             return errorResponse(res, "Password Error", "Incorrect Password");
         }
         const token = generateJwtToken({ id: evaluator._id, role: "evaluator" });
-        console.log(token);
+
 
         return successResponse(res, "Evaluator Logged in successfully", { jwtToken: token });
     } catch (error) {

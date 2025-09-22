@@ -54,8 +54,6 @@ export const verifyOTP = async (req, res) => {
             { new: true }
         );
 
-        console.log(updatedEntry, resetToken);
-
         return successResponse(res, "OTP verified successfully", { resetToken });
     } catch (error) {
         return errorResponse(res, "Server error", { error: error.message }, 500);
