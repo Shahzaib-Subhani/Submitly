@@ -17,7 +17,7 @@ export const authenticateUser = async (req, res, next) => {
 
         const UserModels = { admin: Admin, team: Team, evaluator: Evaluator };
         const User = UserModels[role];
-        
+
         if (!User) {
             return errorResponse(res, "Unauthorized: Invalid user type", null, 401);
         }
@@ -39,8 +39,11 @@ export const authenticateUser = async (req, res, next) => {
 export const authorizeRole = allowedRole => {
     return (req, res, next) => {
         console.log(req.user);
-        
-        if (!req.user || req.user.role !== allowedRole) errorResponse(res, "Forbidden: Access denied", null, 403);
+
+        if (!req.user || req.user.role !== allowedRole) {
+            return errorResponse(res, "Forbidden: Access denied", null, 403)
+
+        };
         next();
     };
 };
