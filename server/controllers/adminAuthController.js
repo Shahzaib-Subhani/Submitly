@@ -41,7 +41,7 @@ export const adminLogin = async (req, res) => {
         if (!match) {
             return errorResponse(res, "Password Error", "Incorrect Password");
         }
-        const token = generateJwtToken({ id: admin._id, role: "admin" });
+        const token = generateJwtToken({ userId: admin.id, role: "admin" });
 
         return successResponse(res, "Admin Logged in successfully", { jwtToken: token });
     } catch (error) {

@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import express from "express"
 import cors from "cors"
 import authRoutes from "./routes/auth.js"
+import adminRoutes from "./routes/admin.js"
 import { errorResponse } from "./utils/baseHelper.js"
 import { createDefaultAdmin } from "./utils/authHelper.js"
 
@@ -25,6 +26,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/admin", adminRoutes);
 
 app.use((err, req, res, next) => {
     const errMessage = err.message || "Internal server Error";

@@ -11,9 +11,13 @@ const DEFAULT_ADMIN = {
 
 // function to generate JWT token
 export const generateJwtToken = (user) =>
-    jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
+    jwt.sign({ userId: user.userId, role: user.role }, process.env.JWT_SECRET, {
         expiresIn: "1d",
     });
+
+// function to verify JWT token
+export const verifyJwtToken = (token) =>
+    jwt.verify(token, process.env.JWT_SECRET);
 
 // function to generate random OTP
 export const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();

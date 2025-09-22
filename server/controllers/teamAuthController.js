@@ -42,7 +42,7 @@ export const teamLogin = async (req, res) => {
         if (!match) {
             return errorResponse(res, "Password Error", "Incorrect Password");
         }
-        const token = generateJwtToken({ id: team._id, role: "team" });
+        const token = generateJwtToken({ userId: team.id, role: "team" });
         return successResponse(res, "Team Logged in successfully", { jwtToken: token });
     } catch (error) {
         return errorResponse(res, "Server error", { error: error.message }, 500);
