@@ -1,7 +1,7 @@
 import Counter from "../models/counter.js";
 
 // function to return success response
-export const successResponse = (res, message, data = {}, statusCode = 200) => {
+export const successResponse = (res, message, data = null, statusCode = 200) => {
     return res.status(statusCode).json({
         status: true,
         message,
@@ -10,11 +10,11 @@ export const successResponse = (res, message, data = {}, statusCode = 200) => {
 };
 
 // function to return error response
-export const errorResponse = (res, message, errors = [], statusCode = 400) => {
+export const errorResponse = (res, message, errors = null, statusCode = 400) => {
     return res.status(statusCode).json({
         status: false,
         message,
-        errors
+        errors: errors
     });
 };
 
@@ -28,7 +28,7 @@ export const validate = (schema, data) => {
             errors: error.details.map((err) => ({ [err.context.key]: err.message.replace(/["\\]/g, "") }))
         };
     }
-    return { success: true, value };
+    return { success: true, validatedData: value };
 };
 
 // function to get module ID from DB
@@ -39,10 +39,10 @@ export const fetchNextId = async (idName) => {
 
 // function to increment Module ID
 export const incrementCounter = async (idName) => {
-  const counter = await Counter.findOneAndUpdate(
-    { idName },
-    { $inc: { seq: 1 } },
-    { new: true, upsert: true }
-  );
-  return counter.seq;
+    const counter = await Counter.findOneAndUpdate(
+        { idName },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true }
+    );
+    return counter.seq;
 };
