@@ -4,9 +4,11 @@ import express from "express"
 import cors from "cors"
 import authRoutes from "./routes/auth.js"
 import { errorResponse } from "./utils/baseHelper.js"
+import { createDefaultAdmin } from "./utils/authHelper.js"
 
 dotenv.config();
 connectDB();
+await createDefaultAdmin();
 
 const app = express();
 

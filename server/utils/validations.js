@@ -23,4 +23,10 @@ export const evaluatorRegisterSchema = Joi.object({
     qualification: Joi.string().min(3).label("Qualification"),
     experience: Joi.string().min(3).label("Experience"),
 });
+// admin registration validation schema
+export const adminRegisterSchema = Joi.object({
+    name: Joi.string().min(3).required().label("Name"),
+    email: Joi.string().email().required().label("Email"),
+    password: Joi.string().min(6).required().label("Password"),
+});
 

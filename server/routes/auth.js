@@ -1,8 +1,13 @@
 import express from "express";
 import { teamLogin, teamRegister } from "../controllers/teamAuthController.js";
 import { evaluatorLogin, evaluatorRegister } from "../controllers/evaluatorAuthController.js";
+import { adminLogin, adminRegister } from "../controllers/generalAuthController.js";
 
 const router = express.Router();
+
+// Admin Auth routes
+router.post("/admin-register", adminRegister);
+router.post("/admin-signin", adminLogin);
 
 // Team Auth routes
 router.post("/team-register", teamRegister);
