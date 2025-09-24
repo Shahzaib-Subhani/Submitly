@@ -8,13 +8,13 @@ import TeamMember from "../../models/teamMember.js";
 // Team Registration function
 export const teamRegister = async (req, res) => {
     try {
+        // validate request body
         const { success, errors, validatedData } = validate(teamRegisterSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
         const { email, leaderName, teamName, password } = validatedData;
 
-
+        // fetch team and check if exists already
         const existingTeam = await Team.findOne({ email });
-
         if (existingTeam) return errorResponse(res, "Email already exists.");
 
         // Register Team
@@ -48,10 +48,12 @@ export const teamRegister = async (req, res) => {
 // Team Login function
 export const teamLogin = async (req, res) => {
     try {
+        // validate request body
         const { success, errors, validatedData } = validate(loginSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
         const { email, password } = validatedData;
 
+        // fetch and check team credentials
         const team = await Team.findOne({ email });
         if (!team) return errorResponse(res, "no team found for this email");
 

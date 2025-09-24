@@ -7,14 +7,16 @@ import Admin from "../../models/admin.js";
 // Evaluator Registration function
 export const adminRegister = async (req, res) => {
     try {
+        // validate request body
         const { success, errors, validatedData } = validate(adminRegisterSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
         const { email, password, name } = validatedData;
 
+        // Fetch Admin and check if exists already
         const existingAdmin = await Admin.findOne({ email });
-
         if (existingAdmin) return errorResponse(res, "Email already exists.");
 
+        // Create Admin
         const adminID = await fetchNextId("adminID");
         const hashedPassword = await hashPassword(password);
 
@@ -30,10 +32,12 @@ export const adminRegister = async (req, res) => {
 // Admin Login function
 export const adminLogin = async (req, res) => {
     try {
+        // validate request body
         const { success, errors, validatedData } = validate(loginSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
         const { email, password } = validatedData;
 
+        // fetch and check for admin credentials
         const admin = await Admin.findOne({ email });
         if (!admin) return errorResponse(res, "no admin found for this email");
 

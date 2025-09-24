@@ -7,20 +7,22 @@ import Evaluator from "../../models/evaluator.js";
 // Evaluator Registration function
 export const evaluatorRegister = async (req, res) => {
     try {
+        // validate request body
         const { success, errors, validatedData } = validate(evaluatorRegisterSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
         const { email, name, qualification, experience, password } = validatedData;
 
+        // fetch evaluator and check if exists already
         const existingEvaluator = await Evaluator.findOne({ email });
-
         if (existingEvaluator) return errorResponse(res, "Email already exists.");
 
+        // Create Evaluator
         const evaluatorID = await fetchNextId("evaluatorID");
         const hashedPassword = await hashPassword(password);
-
         const newEvaluator = new Evaluator({ evaluatorID, email, name, qualification, experience, password: hashedPassword });
         await newEvaluator.save();
         await incrementCounter("evaluatorID");
+
         return successResponse(res, "Evaluator registered successfully");
     } catch (error) {
         return errorResponse(res, "Server error", { error: error.message });
@@ -30,10 +32,12 @@ export const evaluatorRegister = async (req, res) => {
 // Evaluator Login function
 export const evaluatorLogin = async (req, res) => {
     try {
+        // validate request body
         const { success, errors, validatedData } = validate(loginSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
         const { email, password } = validatedData;
 
+        // Fetch and check for Evaluator credentials
         const evaluator = await Evaluator.findOne({ email });
         if (!evaluator) return errorResponse(res, "no evaluator found for this email");
 

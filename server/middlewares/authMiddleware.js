@@ -4,8 +4,10 @@ import Team from "../models/team.js";
 import { verifyJwtToken } from "../utils/authHelper.js";
 import { errorResponse } from "../utils/baseHelper.js";
 
+// function to authenticate user
 export const authenticateUser = async (req, res, next) => {
     try {
+        // Check for Authorization header
         const authHeader = req.headers.authorization;
         if (!authHeader || !authHeader.startsWith("Bearer "))
             return errorResponse(res, "Unauthorized: Token missing", null, 401);
@@ -36,6 +38,7 @@ export const authenticateUser = async (req, res, next) => {
     }
 };
 
+// function to authorize user for current route
 export const authorizeRole = allowedRole => {
     return (req, res, next) => {
         if (!req.user || req.user.role !== allowedRole) {
