@@ -3,6 +3,7 @@ import Team from "../../models/team.js";
 import { errorResponse, fetchNextId, incrementCounter, successResponse, validate } from "../../utils/baseHelper.js";
 import { loginSchema, teamRegisterSchema } from "../../utils/validations.js";
 import { generateJwtToken, hashPassword, verifyPassword } from "../../utils/authHelper.js";
+import TeamMember from "../../models/teamMember.js";
 
 // Team Registration function
 export const teamRegister = async (req, res) => {
@@ -16,12 +17,28 @@ export const teamRegister = async (req, res) => {
 
         if (existingTeam) return errorResponse(res, "Email already exists.");
 
+        // Register Team
         const teamID = await fetchNextId("teamID");
         const hashedPassword = await hashPassword(password);
 
         const newTeam = new Team({ teamID, email, leaderName, teamName, password: hashedPassword });
         await newTeam.save();
         await incrementCounter("teamID");
+
+        // Register Team Member
+        const memberID = await fetchNextId("teamMemberID");
+        const leaderMember = new TeamMember({
+            teamMemberID: memberID,
+            name: leaderName,
+            email: email,
+            role: "Leader"
+        });
+        await leaderMember.save();
+        newTeam.members.push(leaderMember._id);
+        await newTeam.save();
+
+        await incrementCounter("teamMemberID");
+
         return successResponse(res, "Team registered successfully");
     } catch (error) {
         return errorResponse(res, "Server error", { error: error.message });

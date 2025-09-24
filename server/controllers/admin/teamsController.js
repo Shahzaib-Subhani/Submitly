@@ -1,16 +1,87 @@
+import mongoose from "mongoose";
 import Team from "../../models/team.js";
-import { errorResponse, successResponse } from "../../utils/baseHelper.js";
+import { errorResponse, successResponse, validate } from "../../utils/baseHelper.js";
+import TeamMember from "../../models/teamMember.js";
+import { teamUpdateSchema } from "../../utils/validations.js";
+import { hashPassword } from "../../utils/authHelper.js";
 
 // function to get all teams records
 export const getAllTeams = async (req, res) => {
     try {
-        const teams = await Team.find() .select("-password -__v -updatedAt").sort({ createdAt: -1 });
-
+        // fetch all teams
+        const teams = await Team.find().select("-password -__v -updatedAt -members").sort({ createdAt: -1 });
         if (!teams || teams.length === 0) {
-            return successResponse(res, "No teams found", 200, []);
+            return successResponse(res, "No teams found", []);
         }
 
-        return successResponse(res, "Teams fetched successfully", teams, 200);
+        return successResponse(res, "Teams fetched successfully", teams);
+    } catch (err) {
+        return errorResponse(res, "Server error", { error: err.message }, 500);
+    }
+};
+
+// function to get single team record
+export const getTeamById = async (req, res) => {
+    try {
+        const { teamID } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(teamID)) {
+            return errorResponse(res, "Invalid ID format", null, 400);
+        }
+        // fetch team by id
+        const team = await Team.findById(teamID).select("-password -__v -updatedAt").populate("members", "-__v -createdAt -updatedAt");
+
+        if (!team) {
+            return errorResponse(res, "Team not found", null, 404);
+        }
+        return successResponse(res, "Team fetched successfully", team);
+    } catch (err) {
+        return errorResponse(res, "Server error", { error: err.message }, 500);
+    }
+};
+
+// function to delete single team record
+export const deleteTeam = async (req, res) => {
+    try {
+        const { teamID } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(teamID)) return errorResponse(res, "Invalid ID format", null, 400);
+        // fetch team
+        const team = await Team.findById(teamID);
+        if (!team) return errorResponse(res, "Team not found", null, 404);
+        // delete all team members 
+        await TeamMember.deleteMany({ _id: { $in: team.members } });
+        // delete team
+        await Team.findByIdAndDelete(teamID);
+
+        return successResponse(res, "Team deleted successfully");
+    } catch (err) {
+        return errorResponse(res, "Server error", { error: err.message }, 500);
+    }
+};
+
+// function to update team record
+export const updateTeam = async (req, res) => {
+    try {
+        const { teamID } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(teamID)) return errorResponse(res, "Invalid ID format", null, 400);
+        // validate request body
+        const { success, errors, validatedData } = validate(teamUpdateSchema, req.body);
+        if (!success) return errorResponse(res, "Validation error", errors);
+        const { email, leaderName, teamName, password } = validatedData;
+        // prepare update data
+        const updateData = { teamName, leaderName, email };
+        if (password) {
+            const hashedPassword = await hashPassword(password); 
+            updateData.password = hashedPassword;
+        }
+        // update team record
+        const updatedTeam = await Team.findOneAndUpdate(
+            { _id: teamID },
+            updateData,
+            { new: true }
+        ).select("-__v -updatedAt -members -password");
+        if (!updatedTeam) return errorResponse(res, "Team not found", null, 404);
+
+        return successResponse(res, "Team updated successfully", updatedTeam);
     } catch (err) {
         return errorResponse(res, "Server error", { error: err.message }, 500);
     }

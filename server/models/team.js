@@ -6,6 +6,7 @@ const teamSchema = new mongoose.Schema({
     leaderName: { type: String, required: true },
     teamName: { type: String, required: true },
     password: { type: String, required: true },
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: "TeamMember" }]
 }, { timestamps: true });
 
 const Team = mongoose.model("Team", teamSchema);
