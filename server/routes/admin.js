@@ -3,6 +3,7 @@ import { authenticateUser, authorizeRole } from "../middlewares/authMiddleware.j
 import { deleteTeam, getAllTeams, getTeamById, updateTeam } from "../controllers/admin/teamsController.js";
 import { addTeamMember, deleteTeamMember, getAllTeamMembers, updateTeamMember } from "../controllers/admin/teamMemberController.js";
 import { deleteEvaluator, getAllEvaluators, getEvaluatorById, updateEvaluator, verifyEvaluator } from "../controllers/admin/evaluatorController.js";
+import { deleteSubmission, getAllSubmissions, getSubmissionById } from "../controllers/admin/submissionController.js";
 
 const router = express.Router();
 
@@ -24,5 +25,11 @@ router.get("/evaluators/:evaluatorID", authenticateUser, authorizeRole("admin"),
 router.patch("/evaluators/:evaluatorID", authenticateUser, authorizeRole("admin"), updateEvaluator);
 router.patch("/evaluators/:evaluatorID/verify", authenticateUser, authorizeRole("admin"), verifyEvaluator);
 router.delete("/evaluators/:evaluatorID", authenticateUser, authorizeRole("admin"), deleteEvaluator);
+
+// Evaluator Routes
+router.get("/submissions", authenticateUser, authorizeRole("admin"), getAllSubmissions);
+router.get("/submissions/:submissionID", authenticateUser, authorizeRole("admin"), getSubmissionById);
+// router.patch("/submissions/:submissionID", authenticateUser, authorizeRole("admin"), updateEvaluator);
+router.delete("/submissions/:submissionID", authenticateUser, authorizeRole("admin"), deleteSubmission);
 
 export default router;

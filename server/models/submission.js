@@ -8,7 +8,9 @@ const submissionSchema = new mongoose.Schema({
     description: { type: String },
     learningOutcomes: { type: String },
     status: { type: String, default: "pending" },
-    lastUpdated: { type: Date, default: Date.now },
+    evaluators: [
+        { type: mongoose.Schema.Types.ObjectId, ref: "Evaluator" }
+    ]
 }, { timestamps: true });
 
 const Submission = mongoose.model("Submission", submissionSchema);

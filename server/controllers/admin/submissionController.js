@@ -1,0 +1,68 @@
+import Submission from "../../models/submission.js";
+import { buildSearchQuery, errorResponse, getPaginationInfo, getSkipAndLimit, successResponse, validateObjectID } from "../../utils/baseHelper.js";
+
+const SUBMISSION_NOT_FOUND_ERR = "Submission not found";
+const SUBMISSION_NOT_FOUND_MESSAGE = "No submission exists in the database for given submissionID";
+
+// function to get all submission records
+export const getAllSubmissions = async (req, res) => {
+    try {
+        const { page = 1, pageSize = 10, search = "", searchType = "email" } = req.query;
+        const columns = ["topic", "status"];
+        const query = buildSearchQuery(search, searchType, columns, "submissionID");
+
+        const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
+
+        //   fetch and count submissions
+        const submissions = await Submission.find(query)
+            .select("-__v -updatedAt")
+            .populate("teamID", "teamName")
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .lean();
+
+        // fetch total count of model
+        const totalRecords = await Submission.countDocuments(query);
+        const paginationRecord = getPaginationInfo(totalRecords, pageInt, pageSizeInt, skip, limit);
+
+        return successResponse(res, "Submissions fetched successfully", {
+            submissions,
+            pagination: paginationRecord
+        });
+    } catch (err) {
+        return errorResponse(res, "Server error", err.message, 500);
+    }
+};
+
+
+// function to get single submission record
+export const getSubmissionById = async (req, res) => {
+    try {
+        const { submissionID } = req.params;
+        if (!validateObjectID(res, submissionID, "submissionID")) return;
+        // fetch submission by id
+        const submission = await Submission.findById(submissionID).select(" -__v -updatedAt").populate("teamID", "teamID teamName leaderName");
+
+        if (!submission) {
+            return errorResponse(res, SUBMISSION_NOT_FOUND_ERR, SUBMISSION_NOT_FOUND_MESSAGE, 404);
+        }
+        return successResponse(res, "Submission fetched successfully", submission);
+    } catch (err) {
+        return errorResponse(res, "Server error", err.message, 500);
+    }
+};
+
+// function to delete single submission record
+export const deleteSubmission = async (req, res) => {
+    try {
+        const { submissionID } = req.params;
+        if (!validateObjectID(res, submissionID, "submissionID")) return;
+        // fetch evaluator
+        const submission = await Submission.findByIdAndDelete(submissionID);
+        if (!submission) return errorResponse(res, SUBMISSION_NOT_FOUND_ERR, SUBMISSION_NOT_FOUND_MESSAGE, 404);
+        return successResponse(res, "Submission deleted successfully");
+    } catch (err) {
+        return errorResponse(res, "Server error", err.message, 500);
+    }
+};
