@@ -4,6 +4,9 @@ import TeamMember from "../../models/teamMember.js";
 import { teamUpdateSchema } from "../../utils/validations.js";
 import { hashPassword } from "../../utils/authHelper.js";
 
+const TEAM_NOT_FOUND_ERR = "Team not found";
+const TEAM_NOT_FOUND_MESSAGE = "No team exists in the database for given teamID";
+
 // function to get all teams records
 export const getAllTeams = async (req, res) => {
     try {
@@ -43,7 +46,7 @@ export const getTeamById = async (req, res) => {
         const team = await Team.findById(teamID).select("-password -__v -updatedAt").populate("members", "-__v -createdAt -updatedAt");
 
         if (!team) {
-            return errorResponse(res, "Team not found", "No team exists in the database with given teamID", 404);
+            return errorResponse(res, TEAM_NOT_FOUND_ERR, TEAM_NOT_FOUND_MESSAGE, 404);
         }
         return successResponse(res, "Team fetched successfully", team);
     } catch (err) {
@@ -58,7 +61,7 @@ export const deleteTeam = async (req, res) => {
         if (!validateObjectID(res, teamID, "teamID")) return;
         // fetch team
         const team = await Team.findById(teamID);
-        if (!team) return errorResponse(res, "Team not found", "No team exists in the database for given teamID", 404);
+        if (!team) return errorResponse(res, TEAM_NOT_FOUND_ERR, TEAM_NOT_FOUND_MESSAGE, 404);
         // delete all team members 
         await TeamMember.deleteMany({ _id: { $in: team.members } });
         // delete team
@@ -91,7 +94,7 @@ export const updateTeam = async (req, res) => {
             updateData,
             { new: true }
         ).select("-__v -updatedAt -members -password");
-        if (!updatedTeam) return errorResponse(res, "Team not found", "No team exists in the database for given teamID", 404);
+        if (!updatedTeam) return errorResponse(res, TEAM_NOT_FOUND_ERR, TEAM_NOT_FOUND_MESSAGE, 404);
 
         return successResponse(res, "Team updated successfully", updatedTeam);
     } catch (err) {
