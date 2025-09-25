@@ -1,10 +1,8 @@
-import mongoose from "mongoose";
 import Team from "../../models/team.js";
-import { buildSearchQuery, errorResponse, escapeRegex, getPaginationInfo, getSkipAndLimit, successResponse, validate } from "../../utils/baseHelper.js";
+import { buildSearchQuery, errorResponse, getPaginationInfo, getSkipAndLimit, successResponse, validate, validateObjectID } from "../../utils/baseHelper.js";
 import TeamMember from "../../models/teamMember.js";
 import { teamUpdateSchema } from "../../utils/validations.js";
 import { hashPassword } from "../../utils/authHelper.js";
-import { log } from "console";
 
 // function to get all teams records
 export const getAllTeams = async (req, res) => {
@@ -32,8 +30,7 @@ export const getAllTeams = async (req, res) => {
             pagination: paginationRecord
         });
     } catch (err) {
-
-        return errorResponse(res, err.message || "Server error", null, 500);
+        return errorResponse(res, "Server error", err.message, 500);
     }
 };
 
@@ -41,18 +38,16 @@ export const getAllTeams = async (req, res) => {
 export const getTeamById = async (req, res) => {
     try {
         const { teamID } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(teamID)) {
-            return errorResponse(res, "Invalid ID format", null, 400);
-        }
+        if (!validateObjectID(res, teamID, "teamID")) return;
         // fetch team by id
         const team = await Team.findById(teamID).select("-password -__v -updatedAt").populate("members", "-__v -createdAt -updatedAt");
 
         if (!team) {
-            return errorResponse(res, "Team not found", null, 404);
+            return errorResponse(res, "Team not found", "No team exists in the database with given teamID", 404);
         }
         return successResponse(res, "Team fetched successfully", team);
     } catch (err) {
-        return errorResponse(res, "Server error", { error: err.message }, 500);
+        return errorResponse(res, "Server error", err.message, 500);
     }
 };
 
@@ -60,10 +55,10 @@ export const getTeamById = async (req, res) => {
 export const deleteTeam = async (req, res) => {
     try {
         const { teamID } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(teamID)) return errorResponse(res, "Invalid ID format", null, 400);
+        if (!validateObjectID(res, teamID, "teamID")) return;
         // fetch team
         const team = await Team.findById(teamID);
-        if (!team) return errorResponse(res, "Team not found", null, 404);
+        if (!team) return errorResponse(res, "Team not found", "No team exists in the database for given teamID", 404);
         // delete all team members 
         await TeamMember.deleteMany({ _id: { $in: team.members } });
         // delete team
@@ -71,7 +66,7 @@ export const deleteTeam = async (req, res) => {
 
         return successResponse(res, "Team deleted successfully");
     } catch (err) {
-        return errorResponse(res, "Server error", { error: err.message }, 500);
+        return errorResponse(res, "Server error", err.message, 500);
     }
 };
 
@@ -79,7 +74,7 @@ export const deleteTeam = async (req, res) => {
 export const updateTeam = async (req, res) => {
     try {
         const { teamID } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(teamID)) return errorResponse(res, "Invalid ID format", null, 400);
+        if (!validateObjectID(res, teamID, "teamID")) return;
         // validate request body
         const { success, errors, validatedData } = validate(teamUpdateSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
@@ -96,10 +91,10 @@ export const updateTeam = async (req, res) => {
             updateData,
             { new: true }
         ).select("-__v -updatedAt -members -password");
-        if (!updatedTeam) return errorResponse(res, "Team not found", null, 404);
+        if (!updatedTeam) return errorResponse(res, "Team not found", "No team exists in the database for given teamID", 404);
 
         return successResponse(res, "Team updated successfully", updatedTeam);
     } catch (err) {
-        return errorResponse(res, "Server error", { error: err.message }, 500);
+        return errorResponse(res, "Server error", err.message, 500);
     }
 };
