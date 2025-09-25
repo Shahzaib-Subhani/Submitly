@@ -1,26 +1,29 @@
 import mongoose from "mongoose";
 import Team from "../../models/team.js";
-import { errorResponse, fetchNextId, incrementCounter, successResponse, validate } from "../../utils/baseHelper.js";
+import { errorResponse, fetchNextId, incrementCounter, successResponse, validate, validateObjectID } from "../../utils/baseHelper.js";
 import TeamMember from "../../models/teamMember.js";
 import { teamMemberUpdateSchema } from "../../utils/validations.js";
+
+
+const TEAM_NOT_FOUND_ERR = "Team not found";
+const TEAM_NOT_FOUND_MESSAGE = "No team exists in the database for given teamID";
 
 // function to get all team Members 
 export const getAllTeamMembers = async (req, res) => {
     try {
         const { teamID } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(teamID)) return errorResponse(res, "Invalid ID format", null, 400);
-
+        if (!validateObjectID(res, teamID, "teamID")) return;
         // fetch team by id
         const team = await Team.findById(teamID).select("-__v -createdAt -updatedAt -password")
             .populate(
                 "members",
                 "-__v -createdAt -updatedAt"
             );
-        if (!team) return successResponse(res, "No teams found", []);
+        if (!team) return errorResponse(res, TEAM_NOT_FOUND_ERR, TEAM_NOT_FOUND_MESSAGE, 404);
 
         return successResponse(res, "Teams fetched successfully", team);
     } catch (err) {
-        return errorResponse(res, "Server error", { error: err.message }, 500);
+        return errorResponse(res, "Server error", err.message, 500);
     }
 };
 
@@ -28,9 +31,7 @@ export const getAllTeamMembers = async (req, res) => {
 export const addTeamMember = async (req, res) => {
     try {
         const { teamID } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(teamID)) {
-            return errorResponse(res, "Invalid ID format", null, 400)
-        };
+        if (!validateObjectID(res, teamID, "teamID")) return;
 
         // validate request body
         const { success, errors, validatedData } = validate(teamMemberUpdateSchema, req.body);
@@ -39,11 +40,11 @@ export const addTeamMember = async (req, res) => {
 
         // Fetch Team by teamID
         const team = await Team.findById(teamID);
-        if (!team) return errorResponse(res, "Team not found", null, 404);
+        if (!team) return errorResponse(res, TEAM_NOT_FOUND_ERR, TEAM_NOT_FOUND_MESSAGE, 404);
 
         // Check team members max size
         if (team.members.length >= 5) {
-            return errorResponse(res, "A team cannot have more than 5 members", null, 400);
+            return errorResponse(res, "Team Member limit exceed", "A team cannot have more than 5 members", 400);
         }
         // Create new team member
         const teamMemberID = await fetchNextId("teamMemberID");
@@ -54,7 +55,7 @@ export const addTeamMember = async (req, res) => {
 
         return successResponse(res, "Team Member created successfully");
     } catch (err) {
-        return errorResponse(res, "Server error", { error: err.message }, 500);
+        return errorResponse(res, "Server error", err.message, 500);
     }
 };
 
@@ -62,9 +63,8 @@ export const addTeamMember = async (req, res) => {
 export const updateTeamMember = async (req, res) => {
     try {
         const { teamID, memberID } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(teamID) || !mongoose.Types.ObjectId.isValid(memberID)) {
-            return errorResponse(res, "Invalid ID format", null, 400)
-        };
+        if (!validateObjectID(res, teamID, "teamID")) return;
+        if (!validateObjectID(res, memberID, "memberID")) return;
         // validate request body
         const { success, errors, validatedData } = validate(teamMemberUpdateSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
@@ -72,7 +72,7 @@ export const updateTeamMember = async (req, res) => {
 
         // Fetch Team by teamID
         const team = await Team.findById(teamID);
-        if (!team) return errorResponse(res, "Team not found", null, 404);
+        if (!team) return errorResponse(res, TEAM_NOT_FOUND_ERR, TEAM_NOT_FOUND_MESSAGE, 404);
 
         // Check if memberID relates to team
         if (!team.members.includes(memberID)) {
@@ -85,7 +85,7 @@ export const updateTeamMember = async (req, res) => {
             { new: true }
         ).select("-__v -createdAt -updatedAt");
 
-        if (!teamMember) return errorResponse(res, "Team Member not found", null);
+        if (!teamMember) return errorResponse(res, "Team Member not found", "No member exists in the database for given memberID");
 
         return successResponse(res, "Team Member updated successfully", teamMember);
     } catch (err) {
@@ -97,17 +97,16 @@ export const updateTeamMember = async (req, res) => {
 export const deleteTeamMember = async (req, res) => {
     try {
         const { teamID, memberID } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(teamID) || !mongoose.Types.ObjectId.isValid(memberID)) {
-            return errorResponse(res, "Invalid ID format", null, 400)
-        };
+        if (!validateObjectID(res, teamID, "teamID")) return;
+        if (!validateObjectID(res, memberID, "memberID")) return;
 
         // Fetch Team by teamID
         const team = await Team.findById(teamID);
-        if (!team) return errorResponse(res, "Team not found", null, 404);
+        if (!team) return errorResponse(res, TEAM_NOT_FOUND_ERR, TEAM_NOT_FOUND_MESSAGE, 404);
 
         // Check if memberID relates to team
         if (!team.members.includes(memberID)) {
-            return errorResponse(res, "Member does not belong to this team", null, 400);
+            return errorResponse(res, "Verification Error", "Team Member does not belong to this team", 400);
         }
         // Delete Team Member
         const teamMember = await TeamMember.findByIdAndDelete(memberID);
@@ -119,6 +118,6 @@ export const deleteTeamMember = async (req, res) => {
 
         return successResponse(res, "Team Member deleted successfully", null);
     } catch (err) {
-        return errorResponse(res, "Server error", { error: err.message }, 500);
+        return errorResponse(res, "Server error", err.message, 500);
     }
 };
