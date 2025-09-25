@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Counter from "../models/counter.js";
 
 // function to return success response
@@ -10,11 +11,11 @@ export const successResponse = (res, message, data = null, statusCode = 200) => 
 };
 
 // function to return error response
-export const errorResponse = (res, message, errors = null, statusCode = 400) => {
+export const errorResponse = (res, message, error = null, statusCode = 400) => {
     return res.status(statusCode).json({
         status: false,
         message,
-        errors: errors
+        error: error || message
     });
 };
 
@@ -94,3 +95,16 @@ export const getPaginationInfo = (totalRecords, currentPage, pageSize, skip, lim
         toRecord,
     };
 }
+
+// check valid MongoDB ObjectId
+export const validateObjectID = (res, id, name) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return errorResponse(
+            res,
+            `Invalid ${name} Format`,
+            `The provided ${name} is not a valid MongoDB ObjectId`,
+            400
+        );
+    }
+    return true;
+};
