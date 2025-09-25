@@ -1,22 +1,39 @@
 import mongoose from "mongoose";
 import Team from "../../models/team.js";
-import { errorResponse, successResponse, validate } from "../../utils/baseHelper.js";
+import { buildSearchQuery, errorResponse, escapeRegex, getPaginationInfo, getSkipAndLimit, successResponse, validate } from "../../utils/baseHelper.js";
 import TeamMember from "../../models/teamMember.js";
 import { teamUpdateSchema } from "../../utils/validations.js";
 import { hashPassword } from "../../utils/authHelper.js";
+import { log } from "console";
 
 // function to get all teams records
 export const getAllTeams = async (req, res) => {
     try {
-        // fetch all teams
-        const teams = await Team.find().select("-password -__v -updatedAt -members").sort({ createdAt: -1 });
-        if (!teams || teams.length === 0) {
-            return successResponse(res, "No teams found", []);
-        }
 
-        return successResponse(res, "Teams fetched successfully", teams);
+        const { page = 1, pageSize = 10, search = "", searchType = "email" } = req.query;
+        const columns = ["email", "leaderName", "teamName"];
+        const query = buildSearchQuery(search, searchType, columns, "teamID");
+
+        const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
+
+        //   fetch and count teams
+        const teams = await Team.find(query)
+            .select("-password -__v -updatedAt -members")
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        // fetch total count of model
+        const totalRecords = await Team.countDocuments(query);
+        const paginationRecord = getPaginationInfo(totalRecords, pageInt, pageSizeInt, skip, limit);
+
+        return successResponse(res, "Teams fetched successfully", {
+            teams,
+            pagination: paginationRecord
+        });
     } catch (err) {
-        return errorResponse(res, "Server error", { error: err.message }, 500);
+
+        return errorResponse(res, err.message || "Server error", null, 500);
     }
 };
 
@@ -70,7 +87,7 @@ export const updateTeam = async (req, res) => {
         // prepare update data
         const updateData = { teamName, leaderName, email };
         if (password) {
-            const hashedPassword = await hashPassword(password); 
+            const hashedPassword = await hashPassword(password);
             updateData.password = hashedPassword;
         }
         // update team record

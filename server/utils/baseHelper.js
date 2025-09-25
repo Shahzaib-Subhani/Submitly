@@ -46,3 +46,51 @@ export const incrementCounter = async (idName) => {
     );
     return counter.seq;
 };
+
+// function to get page, pageSize, skip and limit in int
+export const getSkipAndLimit = (page, pageSize) => {
+    const pageInt = parseInt(page);
+    const pageSizeInt = parseInt(pageSize);
+    const skip = (page - 1) * pageSize;
+
+    return { skip, limit: pageSizeInt, pageInt, pageSizeInt };
+}
+
+// function to escape user input for search
+export const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+
+// function to build query for DB search 
+export const buildSearchQuery = (search, searchType, columns, columnID) => {
+    const query = {};
+    if (!search) return query;
+    // condition to exact match columnID
+    if (columnID === searchType) {
+        const num = Number(search);
+        if (isNaN(num)) throw new Error("Invalid Search: teamID must be a number");
+        query[columnID] = num;
+    }
+    else {
+        // condition to regex partial match for string columns
+        if (!columns.includes(searchType)) throw new Error("Invalid Search Type");
+        const safeSearch = escapeRegex(search);
+        query[searchType] = { $regex: safeSearch, $options: "i" };
+    }
+    return query;
+}
+
+// function to get pagination detail for model
+export const getPaginationInfo = (totalRecords, currentPage, pageSize, skip, limit) => {
+    const totalPages = Math.ceil(totalRecords / pageSize);
+    const fromRecord = totalRecords === 0 ? 0 : skip + 1;
+    const toRecord = Math.min(skip + limit, totalRecords);
+
+    return {
+        totalRecords,
+        totalPages,
+        currentPage: currentPage,
+        pageSize: pageSize,
+        fromRecord,
+        toRecord,
+    };
+}
