@@ -14,7 +14,7 @@ export const evaluatorRegister = async (req, res) => {
 
         // fetch evaluator and check if exists already
         const existingEvaluator = await Evaluator.findOne({ email });
-        if (existingEvaluator) return errorResponse(res, "Email already exists.");
+        if (existingEvaluator) return errorResponse(res, "Duplicate Email Error", "Email already exists.");
 
         // Create Evaluator
         const evaluatorID = await fetchNextId("evaluatorID");
@@ -25,7 +25,7 @@ export const evaluatorRegister = async (req, res) => {
 
         return successResponse(res, "Evaluator registered successfully");
     } catch (error) {
-        return errorResponse(res, "Server error", { error: error.message });
+        return errorResponse(res, "Server error", error.message, 500);
     }
 };
 
@@ -39,7 +39,7 @@ export const evaluatorLogin = async (req, res) => {
 
         // Fetch and check for Evaluator credentials
         const evaluator = await Evaluator.findOne({ email });
-        if (!evaluator) return errorResponse(res, "no evaluator found for this email");
+        if (!evaluator) return errorResponse(res, "evaluator not found", "no evaluator found for this email");
 
         const match = await verifyPassword(evaluator.password, password);
         if (!match) {
@@ -50,6 +50,6 @@ export const evaluatorLogin = async (req, res) => {
 
         return successResponse(res, "Evaluator Logged in successfully", { jwtToken: token });
     } catch (error) {
-        return errorResponse(res, "Server error", { error: error.message }, 500);
+        return errorResponse(res, "Server error", error.message, 500);
     }
 };

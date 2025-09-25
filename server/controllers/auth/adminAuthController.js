@@ -25,7 +25,7 @@ export const adminRegister = async (req, res) => {
         await incrementCounter("adminID");
         return successResponse(res, "Admin registered successfully");
     } catch (error) {
-        return errorResponse(res, "Server error", { error: error.message });
+        return errorResponse(res, "Server error", error.message, 500);
     }
 };
 
@@ -39,16 +39,16 @@ export const adminLogin = async (req, res) => {
 
         // fetch and check for admin credentials
         const admin = await Admin.findOne({ email });
-        if (!admin) return errorResponse(res, "no admin found for this email");
+        if (!admin) return errorResponse(res, "admin not found", "no admin found for this email");
 
         const match = await verifyPassword(admin.password, password);
         if (!match) {
-            return errorResponse(res, "Password Error", "Incorrect Password");
+            return errorResponse(res, "Password Error", "Incorrect Password for email");
         }
         const token = generateJwtToken({ userId: admin.id, role: "admin" });
 
         return successResponse(res, "Admin Logged in successfully", { jwtToken: token });
     } catch (error) {
-        return errorResponse(res, "Server error", { error: error.message }, 500);
+        return errorResponse(res, "Server error", error.message, 500);
     }
 };

@@ -15,7 +15,7 @@ export const teamRegister = async (req, res) => {
 
         // fetch team and check if exists already
         const existingTeam = await Team.findOne({ email });
-        if (existingTeam) return errorResponse(res, "Email already exists.");
+        if (existingTeam) return errorResponse(res, "Duplicate Email Error", "Email already exists.");
 
         // Register Team
         const teamID = await fetchNextId("teamID");
@@ -41,7 +41,7 @@ export const teamRegister = async (req, res) => {
 
         return successResponse(res, "Team registered successfully");
     } catch (error) {
-        return errorResponse(res, "Server error", { error: error.message });
+        return errorResponse(res, "Server error", error.message, 500);
     }
 };
 
@@ -55,15 +55,15 @@ export const teamLogin = async (req, res) => {
 
         // fetch and check team credentials
         const team = await Team.findOne({ email });
-        if (!team) return errorResponse(res, "no team found for this email");
+        if (!team) return errorResponse(res, "team not found", "no team found for this email");
 
         const match = await verifyPassword(team.password, password);
         if (!match) {
-            return errorResponse(res, "Password Error", "Incorrect Password");
+            return errorResponse(res, "Password Error", "Incorrect Password for email");
         }
         const token = generateJwtToken({ userId: team.id, role: "team" });
         return successResponse(res, "Team Logged in successfully", { jwtToken: token });
     } catch (error) {
-        return errorResponse(res, "Server error", { error: error.message }, 500);
+        return errorResponse(res, "Server error", error.message, 500);
     }
 };

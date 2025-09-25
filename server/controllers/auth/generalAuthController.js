@@ -6,6 +6,11 @@ import { generateOTP, generateRandomToken, hashPassword } from "../../utils/auth
 import { errorResponse, successResponse, validate } from "../../utils/baseHelper.js";
 import { forgotPasswordSchema, otpVerifySchema, updatePasswordSchema } from "../../utils/validations.js";
 
+const OTP_ERR = "OTP Expired";
+const OTP_MESSAGE = "The OTP has expired. Please request a new one to continue";
+const TOKEN_ERR = "Invalid Reset Token";
+const TOKEN_MESSAGE = "The provided password reset token is invalid or has already been used";
+
 // Forgot Password OTP function 
 export const forgotPasswordOTP = async (req, res) => {
     try {
@@ -21,7 +26,7 @@ export const forgotPasswordOTP = async (req, res) => {
 
         // Fetch User for ID
         const user = await User.findOne({ email });
-        if (!user) return errorResponse(res, "no user found for this email");
+        if (!user) return errorResponse(res, "user not found", "no user found for this email");
 
         // Generate and store OTP in DB
         const otp = generateOTP();
@@ -35,7 +40,7 @@ export const forgotPasswordOTP = async (req, res) => {
 
         return successResponse(res, "OTP sent successfully to registered email", { otp });
     } catch (error) {
-        return errorResponse(res, "Server error", { error: error.message }, 500);
+        return errorResponse(res, "Server error", error.message, 500);
     }
 };
 
@@ -52,7 +57,7 @@ export const verifyOTP = async (req, res) => {
         // Fetch and match OTP
         const otpRecord = await OTP.findOne({ email, userType, otp });
         if (!otpRecord) return errorResponse(res, "Invalid OTP");
-        if (otpRecord.expiresAt < new Date()) return errorResponse(res, "OTP Expired");
+        if (otpRecord.expiresAt < new Date()) return errorResponse(res, OTP_ERR, OTP_MESSAGE);
 
         // Generate and send Reset Token for Password reset
         const resetToken = generateRandomToken();
@@ -64,7 +69,7 @@ export const verifyOTP = async (req, res) => {
 
         return successResponse(res, "OTP verified successfully", { resetToken });
     } catch (error) {
-        return errorResponse(res, "Server error", { error: error.message }, 500);
+        return errorResponse(res, "Server error", error.message, 500);
     }
 };
 
@@ -80,8 +85,8 @@ export const passwordReset = async (req, res) => {
 
         // Match Reset Token 
         const otpRecord = await OTP.findOne({ email, userType, resetToken });
-        if (!otpRecord) return errorResponse(res, "Invalid Reset Token");
-        if (otpRecord.expiresAt < new Date()) return errorResponse(res, "OTP Expired");
+        if (!otpRecord) return errorResponse(res, TOKEN_ERR, TOKEN_MESSAGE);
+        if (otpRecord.expiresAt < new Date()) return errorResponse(res, OTP_ERR, OTP_MESSAGE);
 
         const UserModels = { admin: Admin, team: Team, evaluator: Evaluator };
         const User = UserModels[userType];
@@ -96,6 +101,6 @@ export const passwordReset = async (req, res) => {
 
         return successResponse(res, "Password updated successfully");
     } catch (error) {
-        return errorResponse(res, "Server error", { error: error.message }, 500);
+        return errorResponse(res, "Server error", error.message, 500);
     }
 };
