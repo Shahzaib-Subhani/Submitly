@@ -2,6 +2,7 @@ import express from "express";
 import { authenticateUser, authorizeRole } from "../middlewares/authMiddleware.js";
 import { deleteTeam, getAllTeams, getTeamById, updateTeam } from "../controllers/admin/teamsController.js";
 import { addTeamMember, deleteTeamMember, getAllTeamMembers, updateTeamMember } from "../controllers/admin/teamMemberController.js";
+import { deleteEvaluator, getAllEvaluators, getEvaluatorById, updateEvaluator, verifyEvaluator } from "../controllers/admin/evaluatorController.js";
 
 const router = express.Router();
 
@@ -16,5 +17,12 @@ router.get("/teams/:teamID/members", authenticateUser, authorizeRole("admin"), g
 router.post("/teams/:teamID/members", authenticateUser, authorizeRole("admin"), addTeamMember);
 router.patch("/teams/:teamID/members/:memberID", authenticateUser, authorizeRole("admin"), updateTeamMember);
 router.delete("/teams/:teamID/members/:memberID", authenticateUser, authorizeRole("admin"), deleteTeamMember);
+
+// Evaluator Routes
+router.get("/evaluators", authenticateUser, authorizeRole("admin"), getAllEvaluators);
+router.get("/evaluators/:evaluatorID", authenticateUser, authorizeRole("admin"), getEvaluatorById);
+router.patch("/evaluators/:evaluatorID", authenticateUser, authorizeRole("admin"), updateEvaluator);
+router.patch("/evaluators/:evaluatorID/verify", authenticateUser, authorizeRole("admin"), verifyEvaluator);
+router.delete("/evaluators/:evaluatorID", authenticateUser, authorizeRole("admin"), deleteEvaluator);
 
 export default router;

@@ -78,3 +78,19 @@ export const teamMemberUpdateSchema = Joi.object({
     role: Joi.string().min(3).max(100).required(),
 });
 
+// evaluator update validation schema
+export const evaluatorUpdateSchema = Joi.object({
+    name: Joi.string().min(3).max(100).required().label("Name"),
+    email: Joi.string().email().required().label("Email"),
+    qualification: Joi.string().min(3).max(100).label("Qualification"),
+    experience: Joi.string().min(3).max(100).label("Experience"),
+    password: Joi.string().min(6).max(100).label("Password"),
+    confirmPassword: Joi.string().valid(Joi.ref("password"))
+        .label("Confirm Password").messages({ "any.only": "{{#label}} does not match Password" })
+});
+
+// evaluator verification validation schema
+export const evaluatorVerifySchema = Joi.object({
+    status: Joi.string().valid("approved", "rejected").required().label("status"),
+});
+
