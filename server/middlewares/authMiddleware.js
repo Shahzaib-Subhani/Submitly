@@ -47,3 +47,16 @@ export const authorizeRole = allowedRole => {
         next();
     };
 };
+
+export const authorizeSelf = role => {
+    return (req, res, next) => {
+        const resourceID = req.body[`${role}ID`];
+        if (!resourceID) {
+            return errorResponse(res, `Bad request: missing ${role}ID`, null, 400);
+        }
+        if (resourceID !== req.user.id) {
+            return errorResponse(res, "Forbidden: Access denied", null, 403);
+        }
+        next();
+    };
+};
