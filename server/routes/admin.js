@@ -4,6 +4,7 @@ import { deleteTeam, getAllTeams, getTeamById, updateTeam } from "../controllers
 import { addTeamMember, deleteTeamMember, getAllTeamMembers, updateTeamMember } from "../controllers/admin/teamMemberController.js";
 import { deleteEvaluator, getAllEvaluators, getEvaluatorById, updateEvaluator, verifyEvaluator } from "../controllers/admin/evaluatorController.js";
 import { deleteSubmission, getAllSubmissions, getSubmissionById } from "../controllers/admin/submissionController.js";
+import { setDeadline } from "../controllers/admin/deadlineController.js";
 
 const router = express.Router();
 
@@ -31,5 +32,8 @@ router.get("/submissions", authenticateUser, authorizeRole("admin"), getAllSubmi
 router.get("/submissions/:submissionID", authenticateUser, authorizeRole("admin"), getSubmissionById);
 // router.patch("/submissions/:submissionID", authenticateUser, authorizeRole("admin"), updateEvaluator);
 router.delete("/submissions/:submissionID", authenticateUser, authorizeRole("admin"), deleteSubmission);
+
+// deadline route
+router.post("/deadline", authenticateUser, authorizeRole("admin"), setDeadline);
 
 export default router;

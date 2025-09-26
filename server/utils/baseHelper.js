@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Counter from "../models/counter.js";
+import Deadline from "../models/deadline.js";
 
 // function to return success response
 export const successResponse = (res, message, data = null, statusCode = 200) => {
@@ -107,4 +108,17 @@ export const validateObjectID = (res, id, name) => {
         );
     }
     return true;
+};
+
+// check deadline 
+export const checkDeadline = async () => {
+    const now = new Date();
+
+    const deadline = await Deadline.findOne({ deadlineType: "submission" }).lean();
+    if (!deadline) return false; 
+
+    const deadlineDate = new Date(deadline.deadlineDate);
+    deadlineDate.setHours(23, 59, 59, 999); 
+
+    return now <= deadlineDate;
 };

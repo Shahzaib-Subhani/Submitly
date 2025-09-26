@@ -2,7 +2,7 @@ import Admin from "../models/admin.js";
 import Evaluator from "../models/evaluator.js";
 import Team from "../models/team.js";
 import { verifyJwtToken } from "../utils/authHelper.js";
-import { errorResponse } from "../utils/baseHelper.js";
+import { errorResponse, validateObjectID } from "../utils/baseHelper.js";
 
 // function to authenticate user
 export const authenticateUser = async (req, res, next) => {
@@ -50,10 +50,11 @@ export const authorizeRole = allowedRole => {
 
 export const authorizeSelf = role => {
     return (req, res, next) => {
-        const resourceID = req.body[`${role}ID`];
+        const resourceID = req.body[`${role}ID`] || req.params[`${role}ID`];
         if (!resourceID) {
             return errorResponse(res, `Bad request: missing ${role}ID`, null, 400);
         }
+        if (!validateObjectID(res, resourceID, `${role}ID`)) return;
         if (resourceID !== req.user.id) {
             return errorResponse(res, "Forbidden: Access denied", null, 403);
         }
