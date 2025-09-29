@@ -120,3 +120,14 @@ export const verifyEvaluator = async (req, res) => {
         return errorResponse(res, "Server error", err.message, 500);
     }
 };
+
+// function to get all evaluators for assignment
+export const fetchEvaluators = async (req, res) => {
+    try {
+        const evaluators = await Evaluator.find({}, "_id evaluatorID name");
+
+        return successResponse(res, "Evaluators fetched successfully", evaluators);
+    } catch (err) {
+        return errorResponse(res, "Server error", err.message, 500);
+    }
+};

@@ -50,7 +50,9 @@ export const authorizeRole = allowedRole => {
 
 export const authorizeSelf = role => {
     return (req, res, next) => {
-        const resourceID = req.body[`${role}ID`] || req.params[`${role}ID`];
+
+        const resourceID = (req.body && req.body[`${role}ID`])
+            || (req.params && req.params[`${role}ID`]);
         if (!resourceID) {
             return errorResponse(res, `Bad request: missing ${role}ID`, null, 400);
         }

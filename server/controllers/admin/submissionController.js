@@ -1,5 +1,7 @@
+import Evaluator from "../../models/evaluator.js";
 import Submission from "../../models/submission.js";
-import { buildSearchQuery, errorResponse, getPaginationInfo, getSkipAndLimit, successResponse, validateObjectID } from "../../utils/baseHelper.js";
+import { buildSearchQuery, errorResponse, getPaginationInfo, getSkipAndLimit, successResponse, validate, validateObjectID } from "../../utils/baseHelper.js";
+import { assignEvaluatorSchema } from "../../utils/validations.js";
 
 const SUBMISSION_NOT_FOUND_ERR = "Submission not found";
 const SUBMISSION_NOT_FOUND_MESSAGE = "No submission exists in the database for given submissionID";
@@ -62,6 +64,37 @@ export const deleteSubmission = async (req, res) => {
         const submission = await Submission.findByIdAndDelete(submissionID);
         if (!submission) return errorResponse(res, SUBMISSION_NOT_FOUND_ERR, SUBMISSION_NOT_FOUND_MESSAGE, 404);
         return successResponse(res, "Submission deleted successfully");
+    } catch (err) {
+        return errorResponse(res, "Server error", err.message, 500);
+    }
+};
+
+// function to assign evaluator to submission
+export const assignEvaluator = async (req, res) => {
+    try {
+        const { submissionID } = req.params;
+        if (!validateObjectID(res, submissionID, "submissionID")) return;
+        // validate request body
+        const { success, errors, validatedData } = validate(assignEvaluatorSchema, req.body);
+        if (!success) return errorResponse(res, "Validation error", errors);
+        const { evaluatorIDs } = validatedData;
+
+        const existingEvaluators = await Evaluator.find({
+            _id: { $in: evaluatorIDs }
+        }).select("_id");
+
+        if (existingEvaluators.length !== evaluatorIDs.length) {
+            return errorResponse(res, "Invalid Evaluator ID", "One or more evaluator IDs are invalid")
+        }
+        // update evaluator record
+        const updatedSubmission = await Submission.findByIdAndUpdate(
+            submissionID,
+            { evaluators: evaluatorIDs, status: "assigned" },
+            { new: true }
+        ).select(" -__v -updatedAt").populate("teamID", "teamID teamName leaderName");
+        if (!updatedSubmission) return errorResponse(res, "Submission not found", "Submission not found", 404);
+
+        return successResponse(res, "Evaluator(s) assigned successfully", updatedSubmission);
     } catch (err) {
         return errorResponse(res, "Server error", err.message, 500);
     }

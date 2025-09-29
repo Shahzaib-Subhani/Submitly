@@ -1,5 +1,4 @@
 import Joi from "joi";
-import mongoose from "mongoose";
 
 // team registration validation schema
 export const teamRegisterSchema = Joi.object({
@@ -108,5 +107,11 @@ export const createSubmissionSchema = Joi.object({
 export const setDeadlineSchema = Joi.object({
     deadlineType: Joi.string().valid("submission").required().label("Deadline Type"),
     deadlineDate: Joi.date().iso().required().label("Deadline Date")
+});
+
+// Assign Evaluator Validation Schema
+export const assignEvaluatorSchema = Joi.object({
+    evaluatorIDs: Joi.array()
+        .items(Joi.string().length(24).hex()).min(3).required().label("evaluatorIDs array"),
 });
 
