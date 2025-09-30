@@ -77,6 +77,12 @@ export const updateEvaluator = async (req, res) => {
         const { success, errors, validatedData } = validate(evaluatorUpdateSchema, req.body);
         if (!success) return errorResponse(res, "Validation error", errors);
         const { email, name, qualification, experience, password } = validatedData;
+
+        const existingEvaluator = await Evaluator.findOne({ email, _id: { $ne: evaluatorID } });
+        if (existingEvaluator) {
+            return errorResponse(res, "Email already exists", "This email is already used by another evaluator", 409);
+        }
+        
         // prepare update data
         const updateData = { email, name, qualification, experience };
         if (password) {

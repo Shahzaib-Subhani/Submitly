@@ -139,4 +139,12 @@ export const evaluateSubmissionSchema = Joi.object({
     evaluatorID: Joi.string().label("evaluatorID"),
     feedback: Joi.string().max(200).label("feedback"),
     scores: criteria
-})
+});
+
+
+// update password validation schema
+export const updateProfilePasswordSchema = Joi.object({
+    password: Joi.string().min(6).max(100).required().label("Password"),
+    confirmPassword: Joi.string().required().valid(Joi.ref("password"))
+        .label("Confirm Password").messages({ "any.only": "{{#label}} does not match Password" })
+});
