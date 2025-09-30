@@ -148,3 +148,9 @@ export const updateProfilePasswordSchema = Joi.object({
     confirmPassword: Joi.string().required().valid(Joi.ref("password"))
         .label("Confirm Password").messages({ "any.only": "{{#label}} does not match Password" })
 });
+
+// update admin validation schema
+export const adminUpdateSchema = Joi.object({
+    name: Joi.string().min(3).max(100).required().label("Name"),
+    email: Joi.string().email().required().label("Email")
+});

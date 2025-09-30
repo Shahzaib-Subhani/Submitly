@@ -5,6 +5,7 @@ import { addTeamMember, deleteTeamMember, getAllTeamMembers, updateTeamMember } 
 import { deleteEvaluator, fetchEvaluators, getAllEvaluators, getEvaluatorById, updateEvaluator, verifyEvaluator } from "../controllers/admin/evaluatorController.js";
 import { assignEvaluator, deleteSubmission, getAllSubmissions, getSubmissionById } from "../controllers/admin/submissionController.js";
 import { setDeadline } from "../controllers/admin/deadlineController.js";
+import { getAdminProfile, updateAdmin, updatePassword } from "../controllers/admin/profileController.js";
 
 const router = express.Router();
 
@@ -36,5 +37,10 @@ router.delete("/submissions/:submissionID", authenticateUser, authorizeRole("adm
 
 // deadline route
 router.post("/deadline", authenticateUser, authorizeRole("admin"), setDeadline);
+
+// Profile
+router.post("/profile/:adminID/update", authenticateUser, authorizeRole("evaluator"), updateAdmin);
+router.post("/profile/:adminID/password-update", authenticateUser, authorizeRole("evaluator"), updatePassword);
+router.get("/profile/:adminID", authenticateUser, authorizeRole("evaluator"), getAdminProfile);
 
 export default router;
