@@ -1,0 +1,18 @@
+import express from "express";
+import { authenticateUser, authorizeRole, authorizeSelf } from "../middlewares/authMiddleware.js";
+import { evaluateSubmission, getAllSubmissionsForEvaluator, getSubmissionById } from "../controllers/evaluator/submissionController.js";
+import { getAllEvaluationsForEvaluator, getEvaluationById } from "../controllers/evaluator/evaluationController.js";
+
+
+const router = express.Router();
+
+// Submissions
+router.get("/submissions/:submissionID/evaluate/:evaluatorID", authenticateUser, authorizeRole("evaluator"), authorizeSelf("evaluator"), getSubmissionById);
+router.get("/submissions/:evaluatorID", authenticateUser, authorizeRole("evaluator"), authorizeSelf("evaluator"), getAllSubmissionsForEvaluator);
+router.post("/submission/:submissionID/evaluate", authenticateUser, authorizeRole("evaluator"), authorizeSelf("evaluator"), evaluateSubmission);
+
+// Evaluations
+router.get("/evaluations/:evaluationID/evaluator/:evaluatorID", authenticateUser, authorizeRole("evaluator"), authorizeSelf("evaluator"), getEvaluationById);
+router.get("/evaluations/:evaluatorID", authenticateUser, authorizeRole("evaluator"), authorizeSelf("evaluator"), getAllEvaluationsForEvaluator);
+
+export default router;

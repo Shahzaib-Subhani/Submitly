@@ -5,6 +5,7 @@ import cors from "cors"
 import authRoutes from "./routes/auth.js"
 import adminRoutes from "./routes/admin.js"
 import teamRoutes from "./routes/team.js"
+import evaluatorRoutes from "./routes/evaluator.js"
 import { errorResponse } from "./utils/baseHelper.js"
 import { createDefaultAdmin } from "./utils/authHelper.js"
 
@@ -38,6 +39,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 // Team Routes
 app.use("/api/team", teamRoutes);
+// Evaluator Routes
+app.use("/api/evaluator", evaluatorRoutes);
 
 // Route for capturing errors
 app.use((err, req, res, next) => {

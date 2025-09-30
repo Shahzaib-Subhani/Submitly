@@ -115,3 +115,28 @@ export const assignEvaluatorSchema = Joi.object({
         .items(Joi.string().length(24).hex()).min(3).required().label("evaluatorIDs array"),
 });
 
+const evaluationCriteria = {
+    relevance: 5,
+    innovation: 15,
+    clarity: 10,
+    depth: 5,
+    engagement: 25,
+    technology: 5,
+    scalability: 10,
+    ethics: 5,
+    application: 10,
+    videoQuality: 10,
+};
+const criteria = Object.fromEntries(
+    Object.entries(evaluationCriteria).map(([key, max]) => [
+        key,
+        Joi.number().min(0).max(max).required(),
+    ])
+);
+
+// evaluate submission validation schema
+export const evaluateSubmissionSchema = Joi.object({
+    evaluatorID: Joi.string().label("evaluatorID"),
+    feedback: Joi.string().max(200).label("feedback"),
+    scores: criteria
+})
