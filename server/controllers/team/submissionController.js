@@ -36,7 +36,7 @@ export const getSubmissionById = async (req, res) => {
         const { teamID } = req.params;
         if (!validateObjectID(res, teamID, "teamID")) return;
 
-        // fetch team by id
+        // fetch submission by id
         const submission = await Submission.find({ teamID }).select("topic videoURL description learningOutcomes").lean();
 
         if (!submission) {
