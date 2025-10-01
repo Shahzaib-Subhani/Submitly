@@ -12,7 +12,7 @@ export const getAllSubmissionsForEvaluator = async (req, res) => {
         const { page = 1, pageSize = 10, search = "", searchType = "email" } = req.query;
         const columns = ["submissionID", "teamName", "topic", "totalScore", "lastUpdated"];
         const query = buildSearchQuery(search, searchType, columns, "submissionID");
-
+        query.evaluators = req.params.evaluatorID;
         const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
 
         //   fetch and count submissions
