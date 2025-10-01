@@ -11,6 +11,7 @@ export const getAllEvaluationsForEvaluator = async (req, res) => {
         const columns = ["topic", "Submission ID", "lastUpdated"];
         const query = buildSearchQuery(search, searchType, columns, "evaluationID");
 
+        query.evaluatorID = req.params.evaluatorID;
         const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
 
         //   fetch and count evaluations
@@ -77,7 +78,7 @@ export const getEvaluationById = async (req, res) => {
         if (!evaluation) {
             return errorResponse(res, EVALUATION_NOT_FOUND_ERR, EVALUATION_NOT_FOUND_MESSAGE, 404);
         }
-        
+
         if (evaluation.evaluatorID._id.toString() !== evaluatorID) {
             return errorResponse(res, "Evaluation not assigned", "This evaluation is not evaluated by given Evaluator", 403);
         }
