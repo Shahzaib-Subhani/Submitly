@@ -15,18 +15,37 @@ export const getAllEvaluations = async (req, res) => {
         const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
 
         //   fetch and count evaluations
-        const evaluation = await Evaluation.find(query)
-            .select("-password -__v -updatedAt")
+        const evaluations = await Evaluation.find(query)
+            .select("createdAt totalScore evaluationID")
+            .populate({
+                path: "submissionID",
+                select: "teamID submissionID topic",
+                populate: {
+                    path: "teamID",
+                    select: "teamName -_id",
+                },
+            })
+            .populate("evaluatorID", "name -_id")
             .sort({ createdAt: -1 })
             .skip(skip)
-            .limit(limit);
-
+            .limit(limit)
+            .lean();
+        const finalEvaluations = evaluations.map(({ _id, evaluatorID, submissionID, evaluationID, totalScore, ...rest }) => ({
+            id: _id,
+            evaluationID: evaluationID,
+            evaluatorName: evaluatorID?.name,
+            submissionID: submissionID?.submissionID,
+            teamName: submissionID?.teamID?.teamName,
+            topic: submissionID?.topic,
+            totalScore,
+            ...rest,
+        }));
         // fetch total count of model
         const totalRecords = await Evaluation.countDocuments(query);
         const paginationRecord = getPaginationInfo(totalRecords, pageInt, pageSizeInt, skip, limit);
 
         return successResponse(res, "Evaluations fetched successfully", {
-            evaluation,
+            evaluations: finalEvaluations,
             pagination: paginationRecord
         });
     } catch (err) {
@@ -41,12 +60,36 @@ export const getEvaluationById = async (req, res) => {
         const { evaluationID } = req.params;
         if (!validateObjectID(res, evaluationID, "evaluationID")) return;
         // fetch evaluation by id
-        const evaluator = await Evaluation.findById(evaluationID).select("-__v -updatedAt");
+        const evaluation = await Evaluation.findById(evaluationID)
+            .select(" -__v")
+            .populate({
+                path: "submissionID",
+                select: "teamID submissionID topic",
+                populate: {
+                    path: "teamID",
+                    select: "teamName -_id",
+                },
+            })
+            .populate("evaluatorID", "name _id")
+            .lean();
 
-        if (!evaluator) {
+        if (!evaluation) {
             return errorResponse(res, EVALUATION_NOT_FOUND_ERR, EVALUATION_NOT_FOUND_MESSAGE, 404);
         }
-        return successResponse(res, "Evaluation fetched successfully", evaluator);
+
+        const formattedEvaluation = {
+            evaluationID: evaluation.evaluationID,
+            evaluatorName: evaluation.evaluatorID?.name,
+            submissionId: evaluation.submissionID?.submissionID,
+            teamName: evaluation.submissionID?.teamID?.teamName,
+            topic: evaluation.submissionID?.topic,
+            scores: evaluation.scores,
+            totalScore: evaluation.totalScore,
+            feedback: evaluation.feedback,
+            createdAt: evaluation.createdAt,
+            updatedAt: evaluation.updatedAt,
+        };
+        return successResponse(res, "Evaluation fetched successfully", formattedEvaluation);
     } catch (err) {
         return errorResponse(res, "Server error", err.message, 500);
     }

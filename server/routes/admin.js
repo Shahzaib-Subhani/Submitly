@@ -6,6 +6,7 @@ import { deleteEvaluator, fetchEvaluators, getAllEvaluators, getEvaluatorById, u
 import { assignEvaluator, deleteSubmission, getAllSubmissions, getSubmissionById } from "../controllers/admin/submissionController.js";
 import { setDeadline } from "../controllers/admin/deadlineController.js";
 import { getAdminProfile, updateAdmin, updatePassword } from "../controllers/admin/profileController.js";
+import { getAllEvaluations, getEvaluationById } from "../controllers/admin/evaluationController.js";
 
 const router = express.Router();
 
@@ -34,6 +35,10 @@ router.get("/submissions", authenticateUser, authorizeRole("admin"), getAllSubmi
 router.get("/submissions/:submissionID", authenticateUser, authorizeRole("admin"), getSubmissionById);
 router.patch("/submissions/:submissionID/assign-evaluators", authenticateUser, authorizeRole("admin"), assignEvaluator);
 router.delete("/submissions/:submissionID", authenticateUser, authorizeRole("admin"), deleteSubmission);
+
+// Evaluations
+router.get("/evaluations/:evaluationID", authenticateUser, authorizeRole("admin"), getEvaluationById);
+router.get("/evaluations", authenticateUser, authorizeRole("admin"), getAllEvaluations);
 
 // deadline route
 router.post("/deadline", authenticateUser, authorizeRole("admin"), setDeadline);
