@@ -1,4 +1,3 @@
-import Evaluation from "../../models/evaluation.js";
 import Leaderboard from "../../models/leaderboard.js";
 import Submission from "../../models/submission.js";
 import { errorResponse, successResponse, validateObjectID } from "../../utils/baseHelper.js";

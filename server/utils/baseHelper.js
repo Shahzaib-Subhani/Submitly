@@ -63,22 +63,20 @@ export const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 
 // function to build query for DB search 
-export const buildSearchQuery = (search, searchType, columns, columnID) => {
-    const query = {};
-    if (!search) return query;
+export const buildSearchQuery = (search, searchType, columns, pipeline = false) => {
+
+    if (!search) return pipeline ? [] : {};
+
     // condition to exact match columnID
-    if (columnID === searchType) {
-        const num = Number(search);
-        if (isNaN(num)) throw new Error("Invalid Search: teamID must be a number");
-        query[columnID] = num;
+    if (!columns[searchType]) {
+        throw new Error(`Invalid Search Type: ${searchType}`);
     }
-    else {
-        // condition to regex partial match for string columns
-        if (!columns.includes(searchType)) throw new Error("Invalid Search Type");
-        const safeSearch = escapeRegex(search);
-        query[searchType] = { $regex: safeSearch, $options: "i" };
-    }
-    return query;
+    const fieldPath = columns[searchType];
+    const safeSearch = escapeRegex(search);
+    const condition = {
+        [fieldPath]: { $regex: safeSearch, $options: "i" }
+    };
+    return pipeline ? [{ $match: condition }] : condition;
 }
 
 // function to get pagination detail for model
@@ -115,10 +113,10 @@ export const checkDeadline = async () => {
     const now = new Date();
 
     const deadline = await Deadline.findOne({ deadlineType: "submission" }).lean();
-    if (!deadline) return false; 
+    if (!deadline) return false;
 
     const deadlineDate = new Date(deadline.deadlineDate);
-    deadlineDate.setHours(23, 59, 59, 999); 
+    deadlineDate.setHours(23, 59, 59, 999);
 
     return now <= deadlineDate;
 };

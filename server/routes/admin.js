@@ -7,6 +7,7 @@ import { assignEvaluator, deleteSubmission, getAllSubmissions, getSubmissionById
 import { setDeadline } from "../controllers/admin/deadlineController.js";
 import { getAdminProfile, updateAdmin, updatePassword } from "../controllers/admin/profileController.js";
 import { getAllEvaluations, getEvaluationById } from "../controllers/admin/evaluationController.js";
+import { getLeaderboard } from "../controllers/admin/leaderboardController.js";
 
 const router = express.Router();
 
@@ -47,5 +48,8 @@ router.post("/deadline", authenticateUser, authorizeRole("admin"), setDeadline);
 router.post("/profile/:adminID/update", authenticateUser, authorizeRole("evaluator"), updateAdmin);
 router.post("/profile/:adminID/password-update", authenticateUser, authorizeRole("evaluator"), updatePassword);
 router.get("/profile/:adminID", authenticateUser, authorizeRole("evaluator"), getAdminProfile);
+
+// Leaderboard 
+router.get("/leaderboard", authenticateUser, getLeaderboard);
 
 export default router;
