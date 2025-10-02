@@ -1,6 +1,7 @@
 import Evaluation from "../../models/evaluation.js";
 import Submission from "../../models/submission.js";
 import { buildSearchQuery, errorResponse, fetchNextId, getPaginationInfo, getSkipAndLimit, incrementCounter, successResponse, validate, validateObjectID } from "../../utils/baseHelper.js";
+import { updateLeaderboard, updateSubmissionStatus } from "../../utils/submissionHelper.js";
 import { evaluateSubmissionSchema } from "../../utils/validations.js";
 
 const SUBMISSION_NOT_FOUND_ERR = "Submission not found";
@@ -106,6 +107,8 @@ export const evaluateSubmission = async (req, res) => {
         });
         await evaluation.save();
         await incrementCounter("evaluationID");
+        await updateLeaderboard(submissionID);
+        
         return successResponse(res, "Evaluation saved successfully");
     } catch (err) {
         return errorResponse(res, "Server error", err.message, 500);
