@@ -1,8 +1,10 @@
+import mongoose from "mongoose";
 import Evaluation from "../../models/evaluation.js";
 import Submission from "../../models/submission.js";
 import { buildSearchQuery, errorResponse, fetchNextId, getPaginationInfo, getSkipAndLimit, incrementCounter, successResponse, validate, validateObjectID } from "../../utils/baseHelper.js";
 import { updateLeaderboard, updateSubmissionStatus } from "../../utils/submissionHelper.js";
 import { evaluateSubmissionSchema } from "../../utils/validations.js";
+import { facetGenerator, teamLookup } from "../../utils/pipelineHelper.js";
 
 const SUBMISSION_NOT_FOUND_ERR = "Submission not found";
 const SUBMISSION_NOT_FOUND_MESSAGE = "No submission exists in the database for given submissionID";
@@ -10,33 +12,41 @@ const SUBMISSION_NOT_FOUND_MESSAGE = "No submission exists in the database for g
 // function to get all submission records for evaluator
 export const getAllSubmissionsForEvaluator = async (req, res) => {
     try {
-        const { page = 1, pageSize = 10, search = "", searchType = "email" } = req.query;
-        const columns = ["submissionID", "teamName", "topic", "totalScore", "lastUpdated"];
-        const query = buildSearchQuery(search, searchType, columns, "submissionID");
-        query.evaluators = req.params.evaluatorID;
+        const { page = 1, pageSize = 10, search = "", searchType = "" } = req.query;
+        const columns = {
+            submissionID: { path: "submissionID", type: "string" },
+            teamName: { path: "team.teamName", type: "string" },
+            topic: { path: "topic", type: "string" },
+            status: { path: "status", type: "string" }
+        };
+
+        const query = buildSearchQuery(search, searchType, columns, true);
         const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
+        query.push({ $match: { evaluators: new mongoose.Types.ObjectId(req.params.evaluatorID) } });
 
-        //   fetch and count submissions
-        const submissions = await Submission.find(query)
-            .select("submissionID topic updatedAt status")
-            .populate("teamID", "teamName")
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit)
-            .lean();
+        const projectFields = {
+            submissionID: 1,
+            topic: 1,
+            status: 1,
+            updatedAt: 1,
+            createdAt: 1,
+            teamName: "$team.teamName",
+        };
+        const pipeline = [
 
-        const finalSubmissions = submissions.map(submission => {
-            submission.team = submission.teamID;
-            delete submission.teamID;
-            return submission;
-        });
+            ...teamLookup({ teamName: 1 }, "$teamID"),
+            ...query,
+            ...facetGenerator(projectFields, skip, limit, "submissions"),
+        ];
 
-        // fetch total count of model
-        const totalRecords = await Submission.countDocuments(query);
+        //   fetch submissions
+        const result = await Submission.aggregate(pipeline);
+        const { submissions, totalRecords } = result[0];
+        // build pagination record
         const paginationRecord = getPaginationInfo(totalRecords, pageInt, pageSizeInt, skip, limit);
 
         return successResponse(res, "Submissions fetched successfully", {
-            finalSubmissions,
+            submissions,
             pagination: paginationRecord
         });
     } catch (err) {
@@ -108,7 +118,7 @@ export const evaluateSubmission = async (req, res) => {
         await evaluation.save();
         await incrementCounter("evaluationID");
         await updateLeaderboard(submissionID);
-        
+
         return successResponse(res, "Evaluation saved successfully");
     } catch (err) {
         return errorResponse(res, "Server error", err.message, 500);

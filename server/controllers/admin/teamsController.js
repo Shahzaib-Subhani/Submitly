@@ -11,9 +11,16 @@ const TEAM_NOT_FOUND_MESSAGE = "No team exists in the database for given teamID"
 export const getAllTeams = async (req, res) => {
     try {
 
-        const { page = 1, pageSize = 10, search = "", searchType = "email" } = req.query;
-        const columns = ["email", "leaderName", "teamName"];
-        const query = buildSearchQuery(search, searchType, columns, "teamID");
+        const { page = 1, pageSize = 10, search = "", searchType = "" } = req.query;
+        const columns = {
+            teamID: { path: "teamID", type: "number" },
+            email: { path: "email", type: "string" },
+            leaderName: { path: "leaderName", type: "string" },
+            teamName: { path: "teamName", type: "string" }
+        };
+
+
+        const query = buildSearchQuery(search, searchType, columns);
 
         const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
 

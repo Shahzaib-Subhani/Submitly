@@ -1,6 +1,7 @@
 import Evaluator from "../../models/evaluator.js";
 import Submission from "../../models/submission.js";
 import { buildSearchQuery, errorResponse, getPaginationInfo, getSkipAndLimit, successResponse, validate, validateObjectID } from "../../utils/baseHelper.js";
+import { facetGenerator, teamLookup } from "../../utils/pipelineHelper.js";
 import { assignEvaluatorSchema } from "../../utils/validations.js";
 
 const SUBMISSION_NOT_FOUND_ERR = "Submission not found";
@@ -9,23 +10,37 @@ const SUBMISSION_NOT_FOUND_MESSAGE = "No submission exists in the database for g
 // function to get all submission records
 export const getAllSubmissions = async (req, res) => {
     try {
-        const { page = 1, pageSize = 10, search = "", searchType = "email" } = req.query;
-        const columns = ["topic", "status"];
-        const query = buildSearchQuery(search, searchType, columns, "submissionID");
+        const { page = 1, pageSize = 10, search = "", searchType = "" } = req.query;
+        const columns = {
+            topic: { path: "topic", type: "string" },
+            teamName: { path: "team.teamName", type: "string" },
+            status: { path: "status", type: "string" },
+            submissionID: { path: "submissionID", type: "number" }
+        };
+        const query = buildSearchQuery(search, searchType, columns, true);
 
         const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
 
-        //   fetch and count submissions
-        const submissions = await Submission.find(query)
-            .select("-__v -updatedAt")
-            .populate("teamID", "teamName")
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit)
-            .lean();
+        const projectFields = {
+            submissionID: 1,
+            topic: 1,
+            status: 1,
+            updatedAt: 1,
+            createdAt: 1,
+            teamName: "$team.teamName",
+        };
+        const pipeline = [
 
-        // fetch total count of model
-        const totalRecords = await Submission.countDocuments(query);
+            ...teamLookup({ teamName: 1 }, "$teamID"),
+            ...query,
+            ...facetGenerator(projectFields, skip, limit, "submissions"),
+        ];
+
+        //   fetch submissions
+        const result = await Submission.aggregate(pipeline);
+        const { submissions, totalRecords } = result[0];
+
+        // build pagination record
         const paginationRecord = getPaginationInfo(totalRecords, pageInt, pageSizeInt, skip, limit);
 
         return successResponse(res, "Submissions fetched successfully", {

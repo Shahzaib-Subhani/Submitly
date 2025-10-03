@@ -1,47 +1,39 @@
 import Leaderboard from "../../models/leaderboard.js";
 import { buildSearchQuery, errorResponse, escapeRegex, getPaginationInfo, getSkipAndLimit, successResponse } from "../../utils/baseHelper.js";
+import { facetGenerator, submissionLookup, teamLookup } from "../../utils/pipelineHelper.js";
 
 
 // function to get leaderboard
 export const getLeaderboard = async (req, res) => {
     try {
-        const { page = 1, pageSize = 10, search = "", searchType = "email" } = req.query;
+        const { page = 1, pageSize = 10, search = "", searchType = "" } = req.query;
         const columns = {
-            leaderName: "team.leaderName",
-            teamName: "team.teamName",
-            totalScore: "averageScore.totalScore"
+            leaderName: { path: "team.leaderName", type: "string" },
+            teamName: { path: "team.teamName", type: "string" },
+            totalScore: { path: "averageScore.totalScore", type: "number" }
         };
         const query = buildSearchQuery(search, searchType, columns, true);
-        console.log(query);
 
         const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
-
+        const projectFields = {
+            "_id": 0,
+            totalScore: "$averageScore.totalScore",
+            scores: "$averageScore.scores",
+            leaderName: "$team.leaderName",
+            teamName: "$team.teamName"
+        };
         const pipeline = [
-            { $lookup: { from: "submissions", localField: "submissionID", foreignField: "_id", as: "submission" } },
-            { $unwind: { path: "$submission", preserveNullAndEmptyArrays: true } },
-            { $lookup: { from: "teams", localField: "submission.teamID", foreignField: "_id", as: "team" } },
-            { $unwind: { path: "$team", preserveNullAndEmptyArrays: true } },
+            ...submissionLookup({ topic: 1, teamID: 1, submissionID: 1, status: 1 }),
+            ...teamLookup({ teamName: 1, leaderName: 1 }, "$submission.teamID"),
             { $match: { "submission.status": "evaluation completed" } },
             ...query,
-            {
-                $project: {
-                    "_id" : 0,
-                    "averageScore.totalScore": 1,
-                    "averageScore.scores": 1,
-                    "team.leaderName": 1,
-                    "team.teamName": 1
-                }
-            },
-            { $skip: skip },
-            { $limit: limit }
-
+            ...facetGenerator(projectFields, skip, limit, "leaderboard", { "averageScore.totalScore": -1 }),
         ];
 
         // fetch leaderboard
-        const leaderboard = await Leaderboard.aggregate(pipeline);
-
-        // fetch total count of model
-        const totalRecords = await Leaderboard.countDocuments();
+        const result = await Leaderboard.aggregate(pipeline);
+        const { leaderboard, totalRecords } = result[0];
+        // build pagination record
         const paginationRecord = getPaginationInfo(totalRecords, pageInt, pageSizeInt, skip, limit);
 
         return successResponse(res, "Evaluators fetched successfully", {

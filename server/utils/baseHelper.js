@@ -66,16 +66,24 @@ export const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 export const buildSearchQuery = (search, searchType, columns, pipeline = false) => {
 
     if (!search) return pipeline ? [] : {};
-
+    const col = columns[searchType];
     // condition to exact match columnID
-    if (!columns[searchType]) {
+    if (!col) {
         throw new Error(`Invalid Search Type: ${searchType}`);
     }
-    const fieldPath = columns[searchType];
-    const safeSearch = escapeRegex(search);
-    const condition = {
-        [fieldPath]: { $regex: safeSearch, $options: "i" }
-    };
+    let condition;
+    if (col.type === "number") {
+        const num = Number(search);
+        if (isNaN(num)) {
+            throw new Error(`Invalid Search: ${searchType} must be a number`);
+        }
+        condition = { [col.path]: num };
+    } else {
+        const safeSearch = escapeRegex(search);
+        condition = {
+            [col.path]: { $regex: safeSearch, $options: "i" }
+        };
+    }
     return pipeline ? [{ $match: condition }] : condition;
 }
 

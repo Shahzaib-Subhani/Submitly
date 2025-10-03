@@ -18,8 +18,7 @@ const evaluationSchema = new mongoose.Schema({
     },
     totalScore: { type: Number },
     feedback: { type: String },
-    createdAt: { type: Date, default: Date.now }
-});
+}, { timestamps: true });
 
 const Evaluation = mongoose.model("Evaluation", evaluationSchema);
 

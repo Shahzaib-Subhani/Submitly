@@ -10,9 +10,16 @@ const EVALUATOR_NOT_FOUND_MESSAGE = "No evaluator exists in the database for giv
 // function to get all evaluator records
 export const getAllEvaluators = async (req, res) => {
     try {
-        const { page = 1, pageSize = 10, search = "", searchType = "email" } = req.query;
-        const columns = ["name", "email", "qualification", "experience", "status"];
-        const query = buildSearchQuery(search, searchType, columns, "evaluatorID");
+        const { page = 1, pageSize = 10, search = "", searchType = "" } = req.query;
+        const columns = {
+            name: { path: "name", type: "string" },
+            email: { path: "email", type: "string" },
+            qualification: { path: "qualification", type: "string" },
+            experience: { path: "experience", type: "string" },
+            status: { path: "status", type: "string" }
+        };
+
+        const query = buildSearchQuery(search, searchType, columns);
 
         const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
 
@@ -82,7 +89,7 @@ export const updateEvaluator = async (req, res) => {
         if (existingEvaluator) {
             return errorResponse(res, "Email already exists", "This email is already used by another evaluator", 409);
         }
-        
+
         // prepare update data
         const updateData = { email, name, qualification, experience };
         if (password) {

@@ -1,5 +1,6 @@
 import Evaluation from "../../models/evaluation.js";
 import { buildSearchQuery, errorResponse, getPaginationInfo, getSkipAndLimit, successResponse, validateObjectID } from "../../utils/baseHelper.js";
+import { evaluatorLookup, facetGenerator, submissionLookup, teamLookup } from "../../utils/pipelineHelper.js";
 
 
 const EVALUATION_NOT_FOUND_ERR = "Evaluation not found";
@@ -9,43 +10,44 @@ const EVALUATION_NOT_FOUND_MESSAGE = "No evaluation exists in the database for g
 export const getAllEvaluations = async (req, res) => {
     try {
         const { page = 1, pageSize = 10, search = "", searchType = "email" } = req.query;
-        const columns = ["evaluatorName", "submissionID", "teamName", "topic", "totalScore", "lastUpdated"];
-        const query = buildSearchQuery(search, searchType, columns, "evaluationID");
+        const columns = {
+            evaluatorName: { path: "evaluator.name", type: "string" },
+            evaluationID: { path: "evaluationID", type: "number" },
+            teamName: { path: "team.teamName", type: "string" },
+            topic: { path: "submission.topic", type: "string" },
+            totalScore: { path: "totalScore", type: "number" }
+        };
+
+        const query = buildSearchQuery(search, searchType, columns, true);
 
         const { limit, skip, pageInt, pageSizeInt } = getSkipAndLimit(page, pageSize);
+        const projectFields = {
+            evaluatorName: "$evaluator.name",
+            evaluationID: "$evaluationID",
+            submissionID: "$submission.submissionID",
+            "totalScore": 1,
+            "updatedAt": 1,
+            "createdAt": 1,
+            topic: "$submission.topic",
+            teamName: "$team.teamName"
+        };
 
-        //   fetch and count evaluations
-        const evaluations = await Evaluation.find(query)
-            .select("createdAt totalScore evaluationID")
-            .populate({
-                path: "submissionID",
-                select: "teamID submissionID topic",
-                populate: {
-                    path: "teamID",
-                    select: "teamName -_id",
-                },
-            })
-            .populate("evaluatorID", "name -_id")
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit)
-            .lean();
-        const finalEvaluations = evaluations.map(({ _id, evaluatorID, submissionID, evaluationID, totalScore, ...rest }) => ({
-            id: _id,
-            evaluationID: evaluationID,
-            evaluatorName: evaluatorID?.name,
-            submissionID: submissionID?.submissionID,
-            teamName: submissionID?.teamID?.teamName,
-            topic: submissionID?.topic,
-            totalScore,
-            ...rest,
-        }));
-        // fetch total count of model
-        const totalRecords = await Evaluation.countDocuments(query);
+        const pipeline = [
+            ...submissionLookup({ topic: 1, teamID: 1, submissionID: 1 }),
+            ...evaluatorLookup({ name: 1 }),
+            ...teamLookup({ teamName: 1 }, "$submission.teamID"),
+            ...query,
+            ...facetGenerator(projectFields, skip, limit, "evaluations"),
+        ];
+
+        //   fetch evaluations
+        const result = await Evaluation.aggregate(pipeline);
+        const { evaluations, totalRecords } = result[0];
+        // build pagination record
         const paginationRecord = getPaginationInfo(totalRecords, pageInt, pageSizeInt, skip, limit);
 
         return successResponse(res, "Evaluations fetched successfully", {
-            evaluations: finalEvaluations,
+            evaluations,
             pagination: paginationRecord
         });
     } catch (err) {
