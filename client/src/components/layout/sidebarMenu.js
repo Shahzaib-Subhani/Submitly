@@ -12,6 +12,7 @@ import {
     ScrollText,
     Megaphone,
     ShieldUser,
+    LogOut,
 } from "lucide-react";
 
 const sidebarMenu = {
@@ -25,6 +26,7 @@ const sidebarMenu = {
         { icon: ClipboardList, text: "Publish Result", path: "publish-result" },
         { icon: CalendarX2, text: "Set Deadline", path: "set-deadline" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
+        { icon: LogOut, text: "Logout", path: "logout" },
 
     ],
     team: [
@@ -33,7 +35,7 @@ const sidebarMenu = {
         { icon: FilePenLine, text: "Edit Submission", path: "edit-submission" },
         { icon: ScrollText, text: "Evaluation Details", path: "view-evaluation" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
-
+        { icon: LogOut, text: "Logout", path: "logout" },
 
     ],
     evaluator: [
@@ -41,7 +43,7 @@ const sidebarMenu = {
         { icon: TvMinimalPlay, text: "Submissions", path: "submission-list" },
         { icon: FilePenLine, text: "Evaluations", path: "evaluations" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
-
+        { icon: LogOut, text: "Logout", path: "logout" },
 
     ],
 

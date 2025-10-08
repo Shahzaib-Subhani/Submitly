@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import Footer from "../../components/auth/Footer";
 import FormTemplate from "../../components/auth/FormTemplate";
 import AuthForm from "../../components/forms/AuthForm";
@@ -6,6 +7,7 @@ import Input from "../../components/forms/Input";
 import InputPassword from "../../components/forms/InputPassword";
 import useForm from "../../hooks/useForm";
 import usePageTitle from "../../hooks/usePageTitle";
+import { registerTeam } from "../../services/authService";
 import { TeamRegistrationSchema } from "../../validations/authScehma";
 
 const TeamRegister = () => {
@@ -18,6 +20,14 @@ const TeamRegister = () => {
       email: "",
       password: "",
       confirmPassword: "",
+    },
+    async (values) => {
+      const response = await registerTeam(values);
+      const successMsg = {
+        main: response?.message || "Registration successful",
+        sub: false
+      };
+      toast.success(successMsg);
     }
   );
 
@@ -34,7 +44,7 @@ const TeamRegister = () => {
       <FormTemplate
         title={pageTitle}
         description={"Enter your details to create team account"}
-        toastMessage={"Registration Successful"}
+      // toastMessage={"Registration Successful"}
       >
         <AuthForm>
           {formFields.map(({ label, name, type }) => (

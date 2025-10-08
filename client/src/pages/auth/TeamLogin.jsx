@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Footer from "../../components/auth/Footer";
 import FormTemplate from "../../components/auth/FormTemplate";
 import AuthForm from "../../components/forms/AuthForm";
@@ -6,15 +7,23 @@ import Input from "../../components/forms/Input";
 import InputPassword from "../../components/forms/InputPassword";
 import useForm from "../../hooks/useForm";
 import usePageTitle from "../../hooks/usePageTitle";
+import { handleLoginSuccess, loginTeam } from "../../services/authService";
 import { LoginSchema } from "../../validations/authScehma";
+import { useAuth } from "../../context/AuthContext";
 
 const TeamLogin = () => {
   const pageTitle = usePageTitle();
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
   const { formData, errors, handleChange, handleSubmit, loading } = useForm(
     LoginSchema,
     {
       email: "",
       password: "",
+    },
+    async (values) => {
+      const response = await loginTeam(values);
+      handleLoginSuccess(response, navigate, "/team", "team", setUser);
     }
   );
   return (

@@ -22,7 +22,7 @@ const SidebarNav = ({ children }) => {
           className={`py-8 flex ${!expanded ? "lg:justify-center" : "justify-start"
             }`}
         >
-          <Link to="/admin">
+          <Link to="/">
             {expanded ? (
               <>
                 <img

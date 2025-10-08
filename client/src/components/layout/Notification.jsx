@@ -1,8 +1,8 @@
 import { BadgeInfo, CircleCheckBig, CircleX, Info, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const Notification = ({ t, message, type }) => {
-
+const Notification = ({ t, type }) => {
+    const { main, sub } = t.message || {};
     const classNames = {
         success: "border-emerald-500",
         error: "border-rose-500",
@@ -34,7 +34,8 @@ const Notification = ({ t, message, type }) => {
             </div>
 
             <div className="flex-1">
-                <p className="text-md font-medium text-gray-800">{message}</p>
+                <p className="text-md font-medium text-gray-800">{main}</p>
+                {sub && <p className="text-sm text-gray-500 mt-1">{sub}</p>}
             </div>
 
             <button

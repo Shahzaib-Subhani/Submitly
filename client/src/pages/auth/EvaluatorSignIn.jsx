@@ -8,14 +8,23 @@ import AuthForm from "../../components/forms/AuthForm";
 import usePageTitle from "../../hooks/usePageTitle";
 import useForm from "../../hooks/useForm";
 import { LoginSchema } from "../../validations/authScehma";
+import { handleLoginSuccess, loginEvaluator } from "../../services/authService";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 export default function EvaluatorSignIn() {
   const pageTitle = usePageTitle();
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
   const { formData, errors, handleChange, handleSubmit, loading } = useForm(
     LoginSchema,
     {
       email: "",
       password: "",
+    },
+    async (values) => {
+      const response = await loginEvaluator(values);
+      handleLoginSuccess(response, navigate, "/evaluator", "evaluator", setUser);
     }
   );
   return (

@@ -62,7 +62,7 @@ export const teamLogin = async (req, res) => {
             return errorResponse(res, "Password Error", "Incorrect Password for email");
         }
         const token = generateJwtToken({ userId: team.id, role: "team" });
-        return successResponse(res, "Team Logged in successfully", { jwtToken: token });
+        return successResponse(res, "Team Logged in successfully", { jwtToken: token, user: { _id: team._id, teamName: team.teamName } });
     } catch (error) {
         return errorResponse(res, "Server error", error.message, 500);
     }

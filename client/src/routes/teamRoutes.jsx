@@ -6,6 +6,7 @@ import ViewResult from "../pages/team/ViewResult";
 import TeamProfile from "../pages/team/TeamProfile";
 import Chat from "../pages/Chat";
 import UpdatePassword from "../pages/UpdatePassword";
+import Logout from "../components/auth/Logout";
 
 
 
@@ -17,6 +18,7 @@ const teamRoutes = [
   { path: "chat-support", component: Chat },
   { path: "profile", component: TeamProfile },
   { path: "update-password", component: UpdatePassword },
+  { path: "logout", component: Logout },
 ];
 
 export default teamRoutes;

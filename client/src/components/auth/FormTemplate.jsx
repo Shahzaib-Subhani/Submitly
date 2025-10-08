@@ -8,7 +8,6 @@ const FormTemplate = ({ title, description, children = "", toastMessage}) => {
         {(t) => (
           <Notification
             t={t}
-            message={toastMessage}
             type={t.type || "info"}
           />
         )}

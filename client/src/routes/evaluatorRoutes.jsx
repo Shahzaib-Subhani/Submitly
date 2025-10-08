@@ -8,6 +8,7 @@ import Evaluations from "../pages/evaluator/Evaluations";
 import ViewEvaluation from "../pages/admin/evaluation/ViewEvaluation";
 import EvaluatorProfile from "../pages/evaluator/EvaluatorProfile";
 import UpdatePassword from "../pages/UpdatePassword";
+import Logout from "../components/auth/Logout";
 
 
 const evaluatorRoutes = [
@@ -19,6 +20,8 @@ const evaluatorRoutes = [
     { path: "chat-support", component: Chat },
     { path: "profile", component: EvaluatorProfile },
     { path: "update-password", component: UpdatePassword },
+    { path: "logout", component: Logout },
+
 ];
 
 export default evaluatorRoutes;

@@ -17,6 +17,7 @@ import AdminProfile from "../pages/admin/AdminProfile";
 import ViewEvaluation from "../pages/admin/evaluation/ViewEvaluation";
 import UpdatePassword from "../pages/UpdatePassword";
 import LinkPage from "../pages/auth/LinkPage";
+import Logout from "../components/auth/Logout";
 
 const adminRoutes = [
     { path: "dashboard", component: AdminDashboard },
@@ -37,6 +38,8 @@ const adminRoutes = [
     { path: "chat-support", component: ChatSupport },
     { path: "profile", component: AdminProfile },
     { path: "update-password", component: UpdatePassword },
+    { path: "logout", component: Logout },
+
 ];
 
 export default adminRoutes;

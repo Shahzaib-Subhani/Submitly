@@ -6,6 +6,7 @@ import teamRoutes from "./teamRoutes";
 import evaluatorRoutes from "./evaluatorRoutes";
 import authRoutes from "./authRoutes";
 import LandingPage from "../pages/LandingPage";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 
 
@@ -21,21 +22,23 @@ export default function AppRoutes() {
         <Route key={path} path={path} element={<Component />} />
       ))}
 
-      <Route path="admin" element={<MainLayout />}>
-        <Route index element={<Navigate to={"dashboard"} replace />} />
-        {renderNestedRoutes(adminRoutes)}
-
-
+      <Route path="admin" element={<ProtectedRoute role="admin" redirectPath="/admin-signin" />}>
+        <Route element={<MainLayout />}>
+          <Route index element={<Navigate to={"dashboard"} replace />} />
+          {renderNestedRoutes(adminRoutes)}
+        </Route>
       </Route>
-      <Route path="/team" element={<MainLayout />}>
-        <Route index element={<Navigate to={"result"} replace />} />
-        {renderNestedRoutes(teamRoutes)}
-
+      <Route path="/team" element={<ProtectedRoute role="team" redirectPath="/team-signin" />}>
+        <Route element={<MainLayout />}>
+          <Route index element={<Navigate to={"result"} replace />} />
+          {renderNestedRoutes(teamRoutes)}
+        </Route>
       </Route>
-      <Route path="/evaluator" element={<MainLayout />}>
-        <Route index element={<Navigate to={"dashboard"} replace />} />
-        {renderNestedRoutes(evaluatorRoutes)}
-
+      <Route path="/evaluator" element={<ProtectedRoute role="evaluator" redirectPath="/evaluator-signin" />}>
+        <Route element={<MainLayout />}>
+          <Route index element={<Navigate to={"dashboard"} replace />} />
+          {renderNestedRoutes(evaluatorRoutes)}
+        </Route>
       </Route>
 
 

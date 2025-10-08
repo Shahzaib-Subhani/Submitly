@@ -10,6 +10,8 @@ import usePageTitle from "../../hooks/usePageTitle";
 import useForm from "../../hooks/useForm";
 import { EvaluatorRegistrationSchema } from "../../validations/authScehma";
 import InputPassword from "../../components/forms/InputPassword";
+import { registerEvaluator } from "../../services/authService";
+import toast from "react-hot-toast";
 export default function EvaluatorRegister() {
   const pageTitle = usePageTitle();
   const { formData, errors, handleChange, handleSubmit, loading } = useForm(
@@ -21,6 +23,14 @@ export default function EvaluatorRegister() {
       experience: "",
       password: "",
       confirmPassword: "",
+    },
+    async (values) => {
+      const response = await registerEvaluator(values);
+      const successMsg = {
+        main: response?.message || "Registration successful",
+        sub: false
+      };
+      toast.success(successMsg);
     }
   );
   const formFields = [
@@ -36,7 +46,6 @@ export default function EvaluatorRegister() {
       <FormTemplate
         title={pageTitle}
         description={"Enter your details to create Evaluator account"}
-        toastMessage={"Registration Successful"}
 
       >
         <AuthForm>

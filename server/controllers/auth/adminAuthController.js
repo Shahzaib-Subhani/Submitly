@@ -47,7 +47,7 @@ export const adminLogin = async (req, res) => {
         }
         const token = generateJwtToken({ userId: admin.id, role: "admin" });
 
-        return successResponse(res, "Admin Logged in successfully", { jwtToken: token });
+        return successResponse(res, "Admin Logged in successfully", { jwtToken: token, user: { id: admin._id, name: admin.name } });
     } catch (error) {
         return errorResponse(res, "Server error", error.message, 500);
     }
