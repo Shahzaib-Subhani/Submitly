@@ -69,20 +69,3 @@ export const handleLoginSuccess = (response, navigate, redirectPath = "/team", a
         navigate(redirectPath, { replace: true });
     }, 1000);
 };
-
-
-export const getRoleFromPath = (path) => {
-    if (path.includes("team")) return "team";
-    if (path.includes("admin")) return "admin";
-    if (path.includes("evaluator")) return "evaluator";
-    return null;
-};
-
-export const getRedirectPath = (role) => {
-    switch (role) {
-        case "team": return "/team/result";
-        case "admin": return "/admin/dashboard";
-        case "evaluator": return "/evaluator/panel";
-        default: return "/";
-    }
-};

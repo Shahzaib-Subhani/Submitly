@@ -21,8 +21,8 @@ export const getEvaluationForTeam = async (req, res) => {
 
         // fetch evaluations from leaderboard by submissionID
         const leaderboard = await Leaderboard.findOne({ submissionID: submission._id })
-        .select("evaluations averageScore")
-        .lean();
+            .select("evaluations averageScore")
+            .lean();
 
         const result = {
             teamName: submission?.teamID?.teamName,
@@ -31,8 +31,8 @@ export const getEvaluationForTeam = async (req, res) => {
             description: submission?.description,
             learningOutcomes: submission?.learningOutcomes,
             status: submission?.status,
-            evaluations: leaderboard.evaluations,
-            averageScores:leaderboard.averageScore
+            evaluations: leaderboard?.evaluations || null,
+            averageScores: leaderboard?.averageScore || null
         };
         return successResponse(res, "Evaluation fetched successfully", result);
     } catch (err) {

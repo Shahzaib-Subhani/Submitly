@@ -12,7 +12,7 @@ const useForm = (schema, initialValues, onSubmit) => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (resetForm = true) => {
         setLoading(true);
         const result = schema.safeParse(formData);
 
@@ -33,7 +33,9 @@ const useForm = (schema, initialValues, onSubmit) => {
                     const response = await onSubmit(formData);
                     console.log(response);
                     toast.dismiss();
-                    setFormData(initialValues);
+                    if (resetForm) {
+                        setFormData(initialValues);
+                    }
                     setErrors({});
 
                     return response;
@@ -56,7 +58,7 @@ const useForm = (schema, initialValues, onSubmit) => {
             }
         }
     };
-    return { formData, setFormData, errors, handleChange, handleSubmit, loading, setErrors }
+    return { formData, setFormData, errors, handleChange, handleSubmit, loading, setErrors, setLoading }
 }
 
 export default useForm;

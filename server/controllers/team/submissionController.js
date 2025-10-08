@@ -37,7 +37,7 @@ export const getSubmissionById = async (req, res) => {
         if (!validateObjectID(res, teamID, "teamID")) return;
 
         // fetch submission by id
-        const submission = await Submission.find({ teamID }).select("topic videoURL description learningOutcomes").lean();
+        const submission = await Submission.findOne({ teamID }).select("topic videoURL description learningOutcomes").lean();
 
         if (!submission) {
             return errorResponse(res, "Submission not found", "no submission exists with this id", 404);

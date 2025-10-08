@@ -5,6 +5,9 @@ import ComponentCard from '../../components/layout/ComponentCard';
 import { ContentSubmissionSchema } from '../../validations/adminSchemas';
 import FormRenderer from '../../components/forms/FormRenderer';
 import useForm from '../../hooks/useForm';
+import { contentSubmission } from '../../services/teamService';
+import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthContext';
 
 
 const formFields = [
@@ -16,6 +19,7 @@ const formFields = [
 
 const ContentSubmission = () => {
     const pageTitle = usePageTitle();
+    const { user } = useAuth();
     const { formData, errors, handleChange, handleSubmit, loading } = useForm(
         ContentSubmissionSchema,
         {
@@ -23,6 +27,18 @@ const ContentSubmission = () => {
             videoURL: "",
             description: "",
             learningOutcomes: "",
+        },
+        async (values) => {
+            const submissionData = {
+                ...values,
+                teamID: user?._id,
+            }
+            const response = await contentSubmission(submissionData);
+            const successMsg = {
+                main: response?.message || "Content Submission successful",
+                sub: false
+            };
+            toast.success(successMsg);
         }
     );
 
