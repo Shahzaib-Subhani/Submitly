@@ -97,7 +97,7 @@ export const getEvaluationById = async (req, res) => {
         const formattedEvaluation = {
             evaluationID: evalId,
             evaluatorName: evaluator?.name,
-            submissionId: submission?.submissionID,
+            submissionID: submission?.submissionID,
             teamName: submission?.teamID?.teamName,
             topic: submission?.topic,
             scores,
