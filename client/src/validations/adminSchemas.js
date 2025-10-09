@@ -78,15 +78,15 @@ const numberField = (max) =>
             .max(max, { message: `this field cannot exceed ${max}` })
     );
 export const EvaluateSubmissionSchema = z.object({
-    relevanceToObjectives: numberField(5),
-    innovationCreativity: numberField(15),
-    clarityAccessibility: numberField(10),
+    relevance: numberField(5),
+    innovation: numberField(15),
+    clarity: numberField(10),
     depth: numberField(5),
-    interactivityEngagement: numberField(25),
-    useOfTechnology: numberField(5),
-    scalabilityAdaptability: numberField(10),
-    ethicalStandards: numberField(5),
-    practicalApplication: numberField(10),
+    engagement: numberField(25),
+    technology: numberField(5),
+    scalability: numberField(10),
+    ethics: numberField(5),
+    application: numberField(10),
     videoQuality: numberField(10),
     feedback: z.string().min(1, "feedback is required"),
 });

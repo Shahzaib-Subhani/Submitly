@@ -1,11 +1,16 @@
-import React from 'react';
+
 import usePageTitle from '../../hooks/usePageTitle';
 import useForm from '../../hooks/useForm';
 import ComponentCard from '../../components/layout/ComponentCard';
 import DetailsCard from '../../components/dashboard/DetailsCard';
-import FormRenderer from '../../components/forms/FormRenderer';
-import { AssignEvaluatorSchema, EvaluateSubmissionSchema } from '../../validations/adminSchemas';
+import { EvaluateSubmissionSchema } from '../../validations/adminSchemas';
 import EvaluationForm from '../../components/dashboard/EvaluationForm';
+import { evaluateSubmission, fetchEvaluatorSubmissionDetail, formattedDate } from '../../services/evaluatorService';
+import { useAuth } from '../../context/AuthContext';
+import Spinner from '../../components/layout/Spinner';
+import toast from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 const labels = {
     teamID: "Team",
     teamName: "Team Name",
@@ -15,56 +20,98 @@ const labels = {
     description: "Description",
     learningOutcomes: "Learning Outcomes",
     status: "Status",
-    isFinal: "Final Submission",
     lastUpdated: "Last Updated"
 };
 
-const submission = {
-    submissionID: 1,
-    teamID: 101,
-    teamName: "Team no.1 ",
-    leaderName: "Leader no 1",
-    topic: "AI in Education",
-    videoURL: "https://example.com/video.mp4",
-    learningOutcomes: "Improved adaptability, automated grading, personalized content delivery.",
-    status: "Submitted",
-    isFinal: true,
-    lastUpdated: "03-12-2024 10:30 AM",
-    description: "A project exploring how AI can improve personalized learning.",
-};
+
+
 const formFields = [
-    { srNo: 1, label: "Relevance to Learning Objectives/Outcomes", name: "relevanceToObjectives", type: "number", max: 5 },
-    { srNo: 2, label: "Innovation & Creativity", name: "innovationCreativity", type: "number", max: 15 },
-    { srNo: 3, label: "Clarity and Accessibility", name: "clarityAccessibility", type: "number", max: 10 },
+    { srNo: 1, label: "Relevance to Learning Objectives/Outcomes", name: "relevance", type: "number", max: 5 },
+    { srNo: 2, label: "Innovation & Creativity", name: "innovation", type: "number", max: 15 },
+    { srNo: 3, label: "Clarity and Accessibility", name: "clarity", type: "number", max: 10 },
     { srNo: 4, label: "Depth", name: "depth", type: "number", max: 5 },
-    { srNo: 5, label: "Interactivity and Engagement", name: "interactivityEngagement", type: "number", max: 25 },
-    { srNo: 6, label: "Use of Technology", name: "useOfTechnology", type: "number", max: 5 },
-    { srNo: 7, label: "Scalability and Adaptability", name: "scalabilityAdaptability", type: "number", max: 10 },
-    { srNo: 8, label: "Alignment with Ethical Standards", name: "ethicalStandards", type: "number", max: 5 },
-    { srNo: 9, label: "Practical Application", name: "practicalApplication", type: "number", max: 10 },
+    { srNo: 5, label: "Interactivity and Engagement", name: "engagement", type: "number", max: 25 },
+    { srNo: 6, label: "Use of Technology", name: "technology", type: "number", max: 5 },
+    { srNo: 7, label: "Scalability and Adaptability", name: "scalability", type: "number", max: 10 },
+    { srNo: 8, label: "Alignment with Ethical Standards", name: "ethics", type: "number", max: 5 },
+    { srNo: 9, label: "Practical Application", name: "application", type: "number", max: 10 },
     { srNo: 10, label: "Video Quality", name: "videoQuality", type: "number", max: 10 },
 
 ];
 
 const EvaluateSubmission = () => {
     const pageTitle = usePageTitle();
+    const [dataLoading, setDataLoading] = useState(true);
+    const [submissionData, setSubmissionData] = useState(true);
+    const { user } = useAuth();
+    const { submissionID } = useParams();
+
     const { formData, errors, handleSubmit, setFormData, setErrors, loading } = useForm(
         EvaluateSubmissionSchema,
         {
-            relevanceToObjectives: 0,
-            innovationCreativity: 0,
-            clarityAccessibility: 0,
+            relevance: 0,
+            innovation: 0,
+            clarity: 0,
             depth: 0,
-            interactivityEngagement: 0,
-            useOfTechnology: 0,
-            scalabilityAdaptability: 0,
-            ethicalStandards: 0,
-            practicalApplication: 0,
+            engagement: 0,
+            technology: 0,
+            scalability: 0,
+            ethics: 0,
+            application: 0,
             videoQuality: 0,
             total: 0,
             feedback: ""
+        },
+        async (values) => {
+            const { total, feedback, ...scores } = values;
+            const formattedData = {
+                evaluatorID: user.id,
+                scores,
+                feedback
+            };
+            const response = await evaluateSubmission(submissionID, formattedData);
+            const successMsg = {
+                main: response?.message || "Submission evaluated successfully",
+                sub: false
+            };
+            toast.success(successMsg);
+            setFormData((prev) => ({
+                ...prev,
+                ...values,
+            }));
+            
         }
     );
+
+    // Fetch submission data
+    useEffect(() => {
+        const fetchSubmissionDetails = async () => {
+            try {
+                const response = await fetchEvaluatorSubmissionDetail(submissionID, user?.id);
+                if (response?.data) {
+                    setSubmissionData({
+                        submissionID: response.data.submissionID,
+                        teamID: response.data.teamID.teamID,
+                        teamName: response.data.teamID.teamName,
+                        leaderName: response.data.teamID.leaderName,
+                        topic: response.data.topic,
+                        videoURL: response.data.videoURL,
+                        learningOutcomes: response.data.learningOutcomes,
+                        status: response.data.status,
+                        isFinal: true,
+                        lastUpdated: formattedDate(response.data.updatedAt),
+                        description: response.data.description,
+                    });
+
+                }
+            } catch (error) {
+                toast.error({ main: error.message });
+            } finally {
+                setDataLoading(false);
+            }
+        };
+        fetchSubmissionDetails();
+    }, [user._id, setFormData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -79,10 +126,11 @@ const EvaluateSubmission = () => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
+    if (dataLoading) return <Spinner />;
     return (
         <>
             <ComponentCard title={pageTitle}>
-                <DetailsCard labels={labels} title={"Submission Details"} data={submission} />
+                <DetailsCard labels={labels} title={"Submission Details"} data={submissionData} />
                 <EvaluationForm
                     title={"Evaluate Submission"}
                     formFields={formFields}

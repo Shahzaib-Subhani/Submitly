@@ -9,14 +9,6 @@ import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 
 
-// const tableData = [...Array(20)].map((_, i) => ({
-//     id: i + 1,
-//     teamName: `Team ${i + 1}`,
-//     topic: `topic ${i + 1}`,
-//     lastUpdated: getRandomDate(),
-//     status: "active",
-// }));
-
 const columns = [
     { accessorKey: "submissionID", header: "ID" },
     { accessorKey: "teamName", header: "Team Name" },
@@ -32,7 +24,7 @@ const columns = [
         id: "actions",
         accessorKey: "actions",
         header: "Actions",
-        cell: () => <ActionColumn isTextBtn={true} textBtnLabel="Evaluate" textBtnPath="evaluate-submission" />,
+        cell: ({row}) => <ActionColumn isTextBtn={true} textBtnLabel="Evaluate" textBtnPath={`evaluate-submission/${row.original._id}`} />,
     },
 ];
 

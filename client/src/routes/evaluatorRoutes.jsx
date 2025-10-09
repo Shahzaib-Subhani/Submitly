@@ -14,7 +14,7 @@ import Logout from "../components/auth/Logout";
 const evaluatorRoutes = [
     { path: "dashboard", component: EvaluatorDashboard },
     { path: "submission-list", component: SubmissionList },
-    { path: "submission-list/evaluate-submission", component: EvaluateSubmission },
+    { path: "submission-list/evaluate-submission/:submissionID", component: EvaluateSubmission },
     { path: "evaluations", component: Evaluations },
     { path: "evaluations/view-evaluation", component: ViewEvaluation },
     { path: "chat-support", component: Chat },

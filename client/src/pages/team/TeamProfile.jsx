@@ -3,7 +3,6 @@ import ComponentCard from "../../components/layout/ComponentCard";
 import useForm from "../../hooks/useForm";
 import usePageTitle from "../../hooks/usePageTitle";
 import { UpdateTeamProfileSchema } from "../../validations/adminSchemas";
-import LinkButton from '../../components/forms/LinkButton';
 import { fetchTeamProfile, updateTeamProfile } from "../../services/teamService";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
