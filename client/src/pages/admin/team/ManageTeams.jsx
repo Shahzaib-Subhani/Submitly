@@ -5,23 +5,37 @@ import usePageTitle from '../../../hooks/usePageTitle';
 import { TableCell, TableRow } from '../../../components/table/TableComponents';
 import ActionColumn from '../../../components/table/ActionColumn';
 import Modal from '../../../components/layout/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import UseDeleteModal from '../../../hooks/useDeleteModal';
+import { useAuth } from '../../../context/AuthContext';
+import { fetchTeams } from '../../../services/adminService';
 
-const tableData = [...Array(40)].map((_, i) => ({
-    id: i + 1,
-    teamName: `Team ${i + 1}`,
-    leaderName: `Leader ${i + 1}`,
-    email: `leader${i + 1}@example.com`,
-    members: Math.floor(Math.random() * 5) + 1,
-}));
-
+const searchColumns = {
+    teamID: "Team ID",
+    email: "Email",
+    leaderName: "Leader Name",
+    teamName: "Team Name"
+};
 
 
 const ManageTeams = () => {
 
     const pageTitle = usePageTitle();
+    const [tableData, setTableData] = useState([]);
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 5,
+    });
+
+    const [paginationInfo, setPaginationInfo] = useState({
+        totalRecords: 0,
+        totalPages: 1,
+        fromRecord: 0,
+        toRecord: 0,
+    });
+    const [search, setSearch] = useState("");
+    const [searchType, setSearchType] = useState("");
     const {
         isOpen,
         openDeleteModal,
@@ -29,32 +43,67 @@ const ManageTeams = () => {
         confirmDelete,
     } = UseDeleteModal();
 
+    const fetchTeamsList = async (page = 1, pageSize = 5, searchText = "", searchColumn = "") => {
+        try {
+            const response = await fetchTeams(page, pageSize, searchColumn, searchText);
+            const data = response.data;
+
+            setTableData(data.teams);
+            const backendPagination = data.pagination;
+
+            setPagination({
+                pageIndex: backendPagination.currentPage - 1,
+                pageSize: backendPagination.pageSize,
+
+            });
+
+            setPaginationInfo({
+                totalRecords: backendPagination.totalRecords,
+                totalPages: backendPagination.totalPages,
+                fromRecord: backendPagination.fromRecord,
+                toRecord: backendPagination.toRecord,
+            });
+        } catch (error) {
+            toast.error({ main: error.message, sub: error.error });
+        }
+    };
+
+    useEffect(() => {
+        fetchTeamsList(pagination.pageIndex + 1, pagination.pageSize, search, searchType);
+    }, [pagination.pageIndex, pagination.pageSize, search]);
+
     const columns = [
-        { accessorKey: "id", header: "ID" },
+        { accessorKey: "teamID", header: "ID" },
         { accessorKey: "teamName", header: "Team Name" },
         { accessorKey: "leaderName", header: "Leader Name" },
         { accessorKey: "email", header: "Email" },
-        { accessorKey: "members", header: "Members" },
+        { accessorKey: "memberCount", header: "Members" },
         {
             id: "actions",
             accessorKey: "members",
             header: "Actions",
-            cell: () => <ActionColumn
+            cell: ({ row }) => <ActionColumn
                 isDelete={true}
                 isView={true}
-                viewPath={"view-team"}
+                viewPath={`view-team/${row.original._id}`}
                 isEdit={true}
-                editPath={'edit-team'}
+                editPath={`edit-team/${row.original._id}`}
                 isTextBtn={true}
                 textBtnLabel={'Edit Members'}
-                textBtnPath={"edit-members"}
+                textBtnPath={`edit-members/${row.original._id}`}
                 onDelete={openDeleteModal} />,
         },
     ];
     return (
         <>
             <ComponentCard title={pageTitle}>
-                <BaseTable tableHeaders={columns} tableData={tableData}  ></BaseTable>
+                <BaseTable tableHeaders={columns} tableData={tableData} searchColumns={searchColumns}
+                    pagination={pagination}
+                    setPagination={setPagination}
+                    search={search}
+                    paginationInfo={paginationInfo}
+                    setSearch={setSearch}
+                    setSearchType={setSearchType}  ></BaseTable>
                 <Modal isOpen={isOpen} title={"Delete Confirmation"} message={"Are you sure to delete this record ?"} onClose={closeDeleteModal}
                     onConfirm={() => confirmDelete("User")} />
             </ComponentCard>

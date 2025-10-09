@@ -1,39 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ComponentCard from '../../../components/layout/ComponentCard';
 import usePageTitle from '../../../hooks/usePageTitle';
+import { fetchTeamDetails } from '../../../services/adminService';
+import toast from 'react-hot-toast';
+import { useParams } from 'react-router-dom';
+import Spinner from '../../../components/layout/Spinner';
 
-const team = {
-    teamID: 101,
-    teamName: "Black Team",
-    leaderName: "Alice Johnson",
-    email: "blackteam@example.com",
-    password: "hashed_password_here", // usually hidden, but included for schema completeness
-    members: [
-        {
-            memberID: 1,
-            teamID: 101,
-            name: "Bob Smith",
-            email: "bob@example.com",
-            role: "Frontend Developer",
-        },
-        {
-            memberID: 2,
-            teamID: 101,
-            name: "Charlie Brown",
-            email: "charlie@example.com",
-            role: "Backend Developer",
-        },
-        {
-            memberID: 3,
-            teamID: 101,
-            name: "Diana Prince",
-            email: "diana@example.com",
-            role: "UI/UX Designer",
-        },
-    ],
-};
 const ViewTeam = () => {
     const pageTitle = usePageTitle();
+    const [dataLoading, setDataLoading] = useState(true);
+    const [team, setTeam] = useState(true);
+    const { teamID } = useParams();
+
+    useEffect(() => {
+        const fetchSubmissionDetails = async () => {
+            try {
+                const response = await fetchTeamDetails(teamID);
+                if (response?.data) {
+                    const data = response.data;
+                    setTeam(data);
+
+                }
+            } catch (error) {
+                toast.error({ main: error.message });
+            } finally {
+                setDataLoading(false);
+            }
+        };
+        fetchSubmissionDetails();
+    }, [teamID]);
+    if (dataLoading) return <Spinner />;
     return (
         <ComponentCard title={pageTitle}>
             <div className="p-5 border border-gray-200 rounded-2xl  lg:p-6">
@@ -61,7 +57,7 @@ const ViewTeam = () => {
                             <ul className="space-y-2">
                                 {team.members.map((member) => (
                                     <li
-                                        key={member.memberID}
+                                        key={member.teamMemberID}
                                         className="flex justify-between items-center rounded-md border border-gray-400/80 p-3"
                                     >
                                         <div>

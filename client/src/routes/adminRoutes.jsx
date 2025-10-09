@@ -21,7 +21,6 @@ import UpdatePassword from "../pages/admin/UpdatePassword";
 
 const adminRoutes = [
     { path: "dashboard", component: AdminDashboard },
-    { path: "auth-links", component: LinkPage },
     { path: "submissions-list", component: SubmissionsList },
     { path: "submissions-list/view-submission", component: ViewSubmission },
     { path: "submissions-list/assign-evaluator", component: AssignEvaluator },
@@ -30,9 +29,9 @@ const adminRoutes = [
     { path: "evaluations", component: EvaluationsList },
     { path: "evaluations/view-evaluation", component: ViewEvaluation },
     { path: "manage-teams", component: ManageTeams },
-    { path: "manage-teams/view-team", component: ViewTeam },
-    { path: "manage-teams/edit-team", component: EditTeam },
-    { path: "manage-teams/edit-members", component: EditTeamMember },
+    { path: "manage-teams/view-team/:teamID", component: ViewTeam },
+    { path: "manage-teams/edit-team/:teamID", component: EditTeam },
+    { path: "manage-teams/edit-members/:teamID", component: EditTeamMember },
     { path: "publish-result", component: PublishResult },
     { path: "set-deadline", component: SetDeadline },
     { path: "chat-support", component: ChatSupport },

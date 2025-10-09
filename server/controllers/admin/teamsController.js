@@ -26,10 +26,15 @@ export const getAllTeams = async (req, res) => {
 
         //   fetch and count teams
         const teams = await Team.find(query)
-            .select("-password -__v -updatedAt -members")
+            .select("-password -__v -updatedAt")
             .sort({ createdAt: -1 })
             .skip(skip)
-            .limit(limit);
+            .limit(limit)
+            .lean();
+        teams.forEach(team => {
+            team.memberCount = team.members?.length || 0;
+            delete team.members
+        });
 
         // fetch total count of model
         const totalRecords = await Team.countDocuments(query);

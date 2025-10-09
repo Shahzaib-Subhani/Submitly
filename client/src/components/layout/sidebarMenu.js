@@ -18,7 +18,6 @@ import {
 const sidebarMenu = {
     admin: [
         { icon: LayoutDashboard, text: "Dashboard", path: "dashboard" },
-        { icon: ShieldUser, text: "Auth Links", path: "auth-links" },
         { icon: User, text: "Teams", path: "manage-teams" },
         { icon: UserStar, text: "Evaluators", path: "evaluators-list" },
         { icon: ClipboardPlus, text: "Submissions", path: "submissions-list" },
