@@ -43,7 +43,7 @@ export const updateTeam = async (req, res) => {
             { _id: teamID },
             updateData,
             { new: true }
-        ).select("-__v -updatedAt -password");
+        ).select("teamName leaderName email");
         if (!updatedTeam) return errorResponse(res, TEAM_NOT_FOUND_ERR, TEAM_NOT_FOUND_MESSAGE, 404);
 
         return successResponse(res, "Admin updated successfully", updatedTeam);

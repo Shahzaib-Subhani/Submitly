@@ -1,7 +1,10 @@
+import toast from "react-hot-toast";
 import FormRenderer from "../components/forms/FormRenderer";
 import ComponentCard from "../components/layout/ComponentCard";
+import { useAuth } from "../context/AuthContext";
 import useForm from "../hooks/useForm";
 import usePageTitle from "../hooks/usePageTitle";
+import { updateTeamPassword } from "../services/teamService";
 import { UpdatePasswordSchema } from "../validations/adminSchemas";
 
 const formFields = [
@@ -11,11 +14,21 @@ const formFields = [
 
 const UpdatePassword = () => {
     const pageTitle = usePageTitle();
+    const { user } = useAuth();
     const { formData, errors, handleChange, handleSubmit, loading } = useForm(
         UpdatePasswordSchema,
         {
-            password: "MyPassword123!",
-            confirmPassword: "MyPassword123!"
+            password: "",
+            confirmPassword: ""
+        },
+        async (values) => {
+            const response = await updateTeamPassword(user?._id, values);
+            const successMsg = {
+                main: response?.message || "Password updated successfully",
+                sub: false
+            };
+            toast.success(successMsg);
+          
         }
     );
 

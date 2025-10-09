@@ -73,7 +73,7 @@ const ViewEvaluationDetails = () => {
 
         if (user?._id) fetchEvaluation();
     }, [user?._id]);
-    if (loading) return <Spinner text="Loading Evaluation Details..." />;
+    if (loading) return <Spinner />;
 
     return (
         <>

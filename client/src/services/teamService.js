@@ -20,6 +20,20 @@ export const fetchEvaluationDetails = async (teamID) => {
     return await apiClient.get(`api/team/evaluations/${teamID}`);
 };
 
+// fetch evaluation details API
+export const fetchTeamProfile = async (teamID) => {
+    return await apiClient.get(`api/team/profile/${teamID}`);
+};
+
+// update team profile API
+export const updateTeamProfile = async (teamID, data) => {
+    return await apiClient.post(`api/team/profile/${teamID}/update`, data);
+};
+// update team password API
+export const updateTeamPassword = async (teamID, data) => {
+    return await apiClient.post(`api/team/profile/${teamID}/password-update`, data);
+};
+
 
 
 // transform Evaluation Data

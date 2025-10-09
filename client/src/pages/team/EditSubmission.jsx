@@ -60,8 +60,7 @@ const EditSubmission = () => {
                     });
                 }
             } catch (error) {
-                console.error(error);
-                toast.error({ main: "Failed to fetch submission data" });
+                toast.error({ main: error.message });
             } finally {
                 setLoading(false);
             }
@@ -69,7 +68,7 @@ const EditSubmission = () => {
         fetchSubmission();
     }, [user._id, setFormData]);
 
-    if (loading) return <div>Loading submission...</div>;
+    if (loading) return <Spinner />;
 
     return (
         <ComponentCard title={pageTitle}>
