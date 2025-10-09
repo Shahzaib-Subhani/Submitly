@@ -71,7 +71,7 @@ const EvaluatorProfile = () => {
             }
         };
         fetchEvaluator();
-    }, [user._id, setFormData]);
+    }, [user.id, setFormData]);
     if (dataLoading) return <Spinner />;
     return (
         <ComponentCard title={pageTitle}>

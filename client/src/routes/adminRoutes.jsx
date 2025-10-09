@@ -15,9 +15,9 @@ import EvaluationsList from "../pages/admin/evaluation/EvaluationsList";
 import ChatSupport from "../pages/admin/ChatSupport";
 import AdminProfile from "../pages/admin/AdminProfile";
 import ViewEvaluation from "../pages/admin/evaluation/ViewEvaluation";
-import UpdatePassword from "../pages/UpdatePassword";
 import LinkPage from "../pages/auth/LinkPage";
 import Logout from "../components/auth/Logout";
+import UpdatePassword from "../pages/admin/UpdatePassword";
 
 const adminRoutes = [
     { path: "dashboard", component: AdminDashboard },

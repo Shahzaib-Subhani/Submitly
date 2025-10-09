@@ -45,9 +45,9 @@ router.get("/evaluations", authenticateUser, authorizeRole("admin"), getAllEvalu
 router.post("/deadline", authenticateUser, authorizeRole("admin"), setDeadline);
 
 // Profile
-router.post("/profile/:adminID/update", authenticateUser, authorizeRole("evaluator"), updateAdmin);
-router.post("/profile/:adminID/password-update", authenticateUser, authorizeRole("evaluator"), updatePassword);
-router.get("/profile/:adminID", authenticateUser, authorizeRole("evaluator"), getAdminProfile);
+router.post("/profile/:adminID/update", authenticateUser, authorizeRole("admin"), updateAdmin);
+router.post("/profile/:adminID/password-update", authenticateUser, authorizeRole("admin"), updatePassword);
+router.get("/profile/:adminID", authenticateUser, authorizeRole("admin"), getAdminProfile);
 
 // Leaderboard 
 router.get("/leaderboard", authenticateUser, getLeaderboard);
