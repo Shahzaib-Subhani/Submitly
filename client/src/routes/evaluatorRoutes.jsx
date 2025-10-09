@@ -6,9 +6,9 @@ import SubmissionList from "../pages/evaluator/SubmissionList";
 import Chat from "../pages/Chat";
 import Evaluations from "../pages/evaluator/Evaluations";
 import EvaluatorProfile from "../pages/evaluator/EvaluatorProfile";
-import UpdatePassword from "../pages/UpdatePassword";
 import Logout from "../components/auth/Logout";
 import EvaluationDetails from "../pages/evaluator/EvaluationDetails";
+import UpdatePassword from "../pages/evaluator/UpdatePassword";
 
 
 const evaluatorRoutes = [

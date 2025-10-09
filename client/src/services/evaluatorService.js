@@ -22,6 +22,21 @@ export const fetchEvaluationDetail = async (evaluationID, evaluatorID) => {
     return await apiClient.get(`api/evaluator/evaluations/${evaluationID}/evaluator/${evaluatorID}`);
 };
 
+// fetch evaluation details API
+export const fetchEvaluatorProfile = async (evaluatorID) => {
+    return await apiClient.get(`api/evaluator/profile/${evaluatorID}`);
+};
+
+// update evaluator profile API
+export const updateEvaluatorProfile = async (evaluatorID, data) => {
+    return await apiClient.post(`api/evaluator/profile/${evaluatorID}/update`, data);
+};
+// update evaluator password API
+export const updateEvaluatorPassword = async (evaluatorID, data) => {
+    return await apiClient.post(`api/evaluator/profile/${evaluatorID}/password-update`, data);
+};
+
+
 export const formattedDate = (isoDate) => {
     const date = new Date(isoDate);
     const formattedDate = date.toLocaleDateString("en-US", {
