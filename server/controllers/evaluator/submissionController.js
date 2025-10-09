@@ -14,7 +14,7 @@ export const getAllSubmissionsForEvaluator = async (req, res) => {
     try {
         const { page = 1, pageSize = 10, search = "", searchType = "" } = req.query;
         const columns = {
-            submissionID: { path: "submissionID", type: "string" },
+            submissionID: { path: "submissionID", type: "number" },
             teamName: { path: "team.teamName", type: "string" },
             topic: { path: "topic", type: "string" },
             status: { path: "status", type: "string" }

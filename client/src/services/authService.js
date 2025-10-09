@@ -56,6 +56,7 @@ export const handleLoginSuccess = (response, navigate, redirectPath = "/team", a
     const user = response.data.user;
     const userType = users[authType].user;
     const tokenType = users[authType].token;
+    user.role = userType;
 
     saveToken(token, tokenType, user, userType);
     if (setUser) setUser(user);
