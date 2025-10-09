@@ -1,96 +1,114 @@
-import React from 'react';
+
 import usePageTitle from '../../hooks/usePageTitle';
 import ComponentCard from '../../components/layout/ComponentCard';
 import BaseTable from '../../components/table/BaseTable';
-
-const tableData = [
-    {
-    id: "", 
-    teamLead: "", 
-    relevance: 5,
-    innovation: 15,
-    clarity: 10,
-    depth: 5,
-    engagement: 25,
-    technology: 5,
-    scalability: 10,
-    ethics: 5,
-    practical: 10,
-    videoQuality: 10,
-    total: 100,
-  },
-  {
-    id: 1,
-    teamLead: "Adnan Asif",
-    relevance: 0,
-    innovation: 5,
-    clarity: 5,
-    depth: 5,
-    engagement: 10,
-    technology: 2,
-    scalability: 2,
-    ethics: 1,
-    practical: 2,
-    videoQuality: 6,
-    total: 35,
-  },
-  {
-    id: 2,
-    teamLead: "Sara Khan",
-    relevance: 3,
-    innovation: 12,
-    clarity: 8,
-    depth: 4,
-    engagement: 20,
-    technology: 4,
-    scalability: 7,
-    ethics: 3,
-    practical: 9,
-    videoQuality: 8,
-    total: 78,
-  },
-  {
-    id: 3,
-    teamLead: "Ali Raza",
-    relevance: 4,
-    innovation: 10,
-    clarity: 9,
-    depth: 5,
-    engagement: 18,
-    technology: 5,
-    scalability: 6,
-    ethics: 4,
-    practical: 7,
-    videoQuality: 9,
-    total: 77,
-  },
-];
-
+import { useEffect, useState } from 'react';
+import { fetchTeamLeaderboard } from '../../services/teamService';
+import toast from 'react-hot-toast';
 
 const columns = [
-    { accessorKey: "id", header: "Sr. #" },
-    { accessorKey: "teamLead", header: "Name of Team Lead" },
-    { accessorKey: "relevance", header: "Relevance to LOs & Outcomes" },
-    { accessorKey: "innovation", header: "Innovation & Creativity" },
-    { accessorKey: "clarity", header: "Clarity & Accessibility" },
-    { accessorKey: "depth", header: "Depth" },
-    { accessorKey: "engagement", header: "Interactivity & Engagement" },
-    { accessorKey: "technology", header: "Use of Technology" },
-    { accessorKey: "scalability", header: "Scalability & Adaptability" },
-    { accessorKey: "ethics", header: "Alignment with Ethical Standards" },
-    { accessorKey: "practical", header: "Practical Application" },
-    { accessorKey: "videoQuality", header: "Video Quality" },
-    { accessorKey: "total", header: "Evaluation Score" },
+  { accessorKey: "id", header: "Sr. #" },
+  { accessorKey: "leaderName", header: "Name of Team Lead" },
+  { accessorKey: "relevance", header: "Relevance to LOs & Outcomes" },
+  { accessorKey: "innovation", header: "Innovation & Creativity" },
+  { accessorKey: "clarity", header: "Clarity & Accessibility" },
+  { accessorKey: "depth", header: "Depth" },
+  { accessorKey: "engagement", header: "Interactivity & Engagement" },
+  { accessorKey: "technology", header: "Use of Technology" },
+  { accessorKey: "scalability", header: "Scalability & Adaptability" },
+  { accessorKey: "ethics", header: "Alignment with Ethical Standards" },
+  { accessorKey: "practical", header: "Practical Application" },
+  { accessorKey: "videoQuality", header: "Video Quality" },
+  { accessorKey: "total", header: "Evaluation Score" },
 ];
+
+const searchColumns = {
+  leaderName: "Leader Name",
+  teamName: "Team Name",
+  totalScore: "Total Score",
+};
+
 const ViewResult = () => {
-    const pageTitle = usePageTitle();
-    return (
-        <>
-            <ComponentCard title={pageTitle}>
-                <BaseTable tableHeaders={columns} tableData={tableData}  ></BaseTable>
-            </ComponentCard>
-        </>
-    );
+  const pageTitle = usePageTitle();
+  const [tableData, setTableData] = useState([]);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
+  const [paginationInfo, setPaginationInfo] = useState({
+    totalRecords: 0,
+    totalPages: 1,
+    fromRecord: 0,
+    toRecord: 0,
+  });
+  const [search, setSearch] = useState("");
+  const [searchType, setSearchType] = useState("");
+
+  const fetchLeaderboardResult = async (page = 1, pageSize = 5, searchText = "", searchColumn = "") => {
+    try {
+      console.log(searchColumn);
+      
+      const response = await fetchTeamLeaderboard(page, pageSize, searchColumn, searchText);
+      const data = response.data;
+
+      if (response.status) {
+        const leaderboard = data.leaderboard.map((item, index) => ({
+          id: index + 1,
+          leaderName: item.leaderName,
+          teamName: item.teamName,
+          relevance: item.scores.relevance,
+          innovation: item.scores.innovation,
+          clarity: item.scores.clarity,
+          depth: item.scores.depth,
+          engagement: item.scores.engagement,
+          technology: item.scores.technology,
+          scalability: item.scores.scalability,
+          ethics: item.scores.ethics,
+          practical: item.scores.application,
+          videoQuality: item.scores.videoQuality,
+          total: item.totalScore,
+        }));
+
+        setTableData(leaderboard);
+        const backendPagination = data.pagination;
+
+        setPagination({
+          pageIndex: backendPagination.currentPage - 1,
+          pageSize: backendPagination.pageSize,
+
+        });
+
+        setPaginationInfo({
+          totalRecords: backendPagination.totalRecords,
+          totalPages: backendPagination.totalPages,
+          fromRecord: backendPagination.fromRecord,
+          toRecord: backendPagination.toRecord,
+        });
+      }
+    } catch (error) {
+      toast.error({ main: error.message, sub: error.error });
+    }
+  };
+
+  useEffect(() => {
+    fetchLeaderboardResult(pagination.pageIndex + 1, pagination.pageSize, search, searchType);
+  }, [pagination.pageIndex, pagination.pageSize, search]);
+
+  return (
+    <>
+      <ComponentCard title={pageTitle}>
+        <BaseTable tableHeaders={columns} tableData={tableData} searchColumns={searchColumns}
+          pagination={pagination}
+          setPagination={setPagination}
+          search={search}
+          paginationInfo={paginationInfo}
+          setSearch={setSearch}
+          setSearchType={setSearchType}
+        ></BaseTable>
+      </ComponentCard>
+    </>
+  );
 }
 
 export default ViewResult;

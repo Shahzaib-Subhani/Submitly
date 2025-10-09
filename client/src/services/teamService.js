@@ -34,7 +34,10 @@ export const updateTeamPassword = async (teamID, data) => {
     return await apiClient.post(`api/team/profile/${teamID}/password-update`, data);
 };
 
-
+// fetch leaderboard  API
+export const fetchTeamLeaderboard = async (page, pageSize, searchType, search) => {
+    return await apiClient.get(`api/admin/leaderboard?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
+};
 
 // transform Evaluation Data
 export const transformEvaluationData = (data, CRITERIA_KEYS) => {

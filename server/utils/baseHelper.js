@@ -69,7 +69,7 @@ export const buildSearchQuery = (search, searchType, columns, pipeline = false) 
     const col = columns[searchType];
     // condition to exact match columnID
     if (!col) {
-        throw new Error(`Invalid Search Type: ${searchType}`);
+        throw new Error(`Please select a search type first`);
     }
     let condition;
     if (col.type === "number") {

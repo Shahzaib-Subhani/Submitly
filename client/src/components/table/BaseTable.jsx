@@ -4,93 +4,76 @@ import TableFilter from "./TableFilter";
 import TableHeader from "./TableHeader";
 import TablePagination from "./TablePagination";
 import TableBody from "./TableBody";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 
 
 
-const BaseTable = ({ tableHeaders, tableData }) => {
+const BaseTable = ({
+    tableHeaders,
+    tableData,
+    pagination,
+    setPagination,
+    search,
+    setSearch,
+    setSearchType,
+    paginationInfo,
+    searchColumns }) => {
 
     const [globalFilter, setGlobalFilter] = useState("");
-    const [pagination, setPagination] = useState({
-        pageIndex: 0,
-        pageSize: 10,
-    });
 
-    // server-side logic
-    const filteredData = useMemo(() => {
-        if (!globalFilter) return tableData;
-        const filter = globalFilter.toLowerCase();
-        return tableData.filter((row) =>
-            Object.values(row)
-                .join(" ")
-                .toLowerCase()
-                .includes(filter)
-        );
+
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            setSearch(globalFilter);
+        }, 500);
+        return () => clearTimeout(delayDebounce);
     }, [globalFilter]);
 
-    const paginatedData = useMemo(() => {
-        const start = pagination.pageIndex * pagination.pageSize;
-        return filteredData.slice(start, start + pagination.pageSize);
-    }, [filteredData, pagination]);
-
     const table = useReactTable({
-        data: paginatedData,
+        data: tableData,
         columns: tableHeaders,
-        pageCount: Math.ceil(filteredData.length / pagination.pageSize),
-        state: {
-            globalFilter,
-            pagination,
-        },
-        onGlobalFilterChange: setGlobalFilter,
-        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        manualPagination: true,
-        manualFiltering: true,
     });
 
     const tableFilterData = {
         handleSearch: (input) => {
             setGlobalFilter(input);
+            setPagination((prev) => ({ ...prev, pageIndex: 0 }));
         },
         handleSetPageSize: (size) => {
             setPagination((prev) => ({
                 ...prev,
                 pageSize: size,
                 pageIndex: 0,
-            }))
+            }));
+        },
+        handleSearchType: (input) => {
+            setSearchType(input);
         }
-    }
+    };
 
-    const { pageIndex, pageSize } = table.getState().pagination;
-    const totalRows = tableData.length;
+    const { pageIndex } = pagination;
 
     const tablePaginationData = {
         index: pageIndex,
-        totalRecords: totalRows,
-        fromRecord: pageIndex * pageSize + 1,
-        toRecord: Math.min((pageIndex + 1) * pageSize, totalRows),
-        canNext: table.getCanNextPage(),
-        canPrev: table.getCanPreviousPage(),
-        totalPages: table.getPageCount(),
-        handlePrev: () => {
-            table.previousPage()
-        },
-        handleNext: () => {
-            table.nextPage()
-        },
-        handlePageIndex: (i) => {
-            table.setPageIndex(i)
-        }
-    }
+        totalRecords: paginationInfo.totalRecords,
+        totalPages: paginationInfo.totalPages,
+        fromRecord: paginationInfo.fromRecord,
+        toRecord: paginationInfo.toRecord,
+        canPrev: pageIndex > 0,
+        canNext: pageIndex + 1 < paginationInfo.totalPages,
+        totalPages: paginationInfo.totalPages ?? 1,
+        handlePrev: () => setPagination((p) => ({ ...p, pageIndex: p.pageIndex - 1 })),
+        handleNext: () => setPagination((p) => ({ ...p, pageIndex: p.pageIndex + 1 })),
+        handlePageIndex: (i) => setPagination((p) => ({ ...p, pageIndex: i })),
+    };
 
 
     return (
         <>
             <div className="overflow-hidden rounded-xl bg-white ">
-                <TableFilter filterData={tableFilterData} />
+                <TableFilter filterData={tableFilterData} searchColumns={searchColumns} />
                 <div className="max-w-full overflow-x-auto">
                     <table className={"min-w-full border-collapse"}>
                         <TableHeader columns={table.getHeaderGroups()[0]} />

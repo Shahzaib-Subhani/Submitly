@@ -36,7 +36,7 @@ export const getLeaderboard = async (req, res) => {
         // build pagination record
         const paginationRecord = getPaginationInfo(totalRecords, pageInt, pageSizeInt, skip, limit);
 
-        return successResponse(res, "Evaluators fetched successfully", {
+        return successResponse(res, "Leaderboard fetched successfully", {
             leaderboard,
             pagination: paginationRecord
         });
