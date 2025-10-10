@@ -8,6 +8,7 @@ import UseDeleteModal from "../../hooks/useDeleteModal";
 import usePageTitle from "../../hooks/usePageTitle";
 import { approveEvaluator, deleteEvaluator, fetchEvaluators } from "../../services/adminService";
 import toast from "react-hot-toast";
+import Spinner from "../../components/layout/Spinner";
 
 const searchColumns = {
   evaluatorID: "Evaluator ID",
@@ -21,6 +22,8 @@ const searchColumns = {
 const EvaluatorsList = () => {
   const pageTitle = usePageTitle();
   const [tableData, setTableData] = useState([]);
+  const [dataLoading, setDataLoading] = useState(true);
+
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 5,
@@ -63,6 +66,8 @@ const EvaluatorsList = () => {
       });
     } catch (error) {
       toast.error({ main: error.message, sub: error.error });
+    } finally {
+      setDataLoading(false);
     }
   };
 
@@ -79,6 +84,7 @@ const EvaluatorsList = () => {
       const body = {
         status: "approved"
       }
+      
       const response = await approveEvaluator(evaluatorID, body);
       toast.success({ main: "Evaluator approved successfully" });
       fetchEvaluatorsList();
@@ -118,6 +124,8 @@ const EvaluatorsList = () => {
       />,
     },
   ];
+  if (dataLoading) return <Spinner />;
+
   return (
     <>
       <ComponentCard title={pageTitle}>

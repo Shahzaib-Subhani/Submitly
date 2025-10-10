@@ -71,6 +71,9 @@ const SubmissionList = () => {
     } catch (error) {
       toast.error({ main: error.message, sub: error.error });
     }
+    finally {
+      setDataLoading(false);
+    }
   };
 
   const handleOpenDelete = (submissionID) => {

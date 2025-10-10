@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import UseDeleteModal from '../../../hooks/useDeleteModal';
 import { useAuth } from '../../../context/AuthContext';
 import { deleteTeam, fetchTeams } from '../../../services/adminService';
+import Spinner from '../../../components/layout/Spinner';
 
 const searchColumns = {
     teamID: "Team ID",
@@ -23,6 +24,7 @@ const ManageTeams = () => {
 
     const pageTitle = usePageTitle();
     const [tableData, setTableData] = useState([]);
+    const [dataLoading, setDataLoading] = useState(true);
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 5,
@@ -65,6 +67,8 @@ const ManageTeams = () => {
             });
         } catch (error) {
             toast.error({ main: error.message, sub: error.error });
+        } finally {
+            setDataLoading(false);
         }
     };
 
@@ -99,6 +103,8 @@ const ManageTeams = () => {
                 onDelete={() => handleOpenDelete(row.original._id)} />,
         },
     ];
+    if (dataLoading) return <Spinner />;
+
     return (
         <>
             <ComponentCard title={pageTitle}>
