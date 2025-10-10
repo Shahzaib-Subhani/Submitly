@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import UseDeleteModal from '../../../hooks/useDeleteModal';
 import { useAuth } from '../../../context/AuthContext';
-import { fetchTeams } from '../../../services/adminService';
+import { deleteTeam, fetchTeams } from '../../../services/adminService';
 
 const searchColumns = {
     teamID: "Team ID",
@@ -68,6 +68,14 @@ const ManageTeams = () => {
         }
     };
 
+    const handleOpenDelete = (teamID) => {
+        openDeleteModal(
+            teamID,
+            deleteTeam,
+            () => fetchTeamsList(pagination.pageIndex + 1, pagination.pageSize, search, searchType)
+        );
+    };
+
     useEffect(() => {
         fetchTeamsList(pagination.pageIndex + 1, pagination.pageSize, search, searchType);
     }, [pagination.pageIndex, pagination.pageSize, search]);
@@ -88,7 +96,7 @@ const ManageTeams = () => {
                 viewPath={`view-team/${row.original._id}`}
                 isEdit={true}
                 editPath={`edit-team/${row.original._id}`}
-                onDelete={openDeleteModal} />,
+                onDelete={() => handleOpenDelete(row.original._id)} />,
         },
     ];
     return (
@@ -102,7 +110,7 @@ const ManageTeams = () => {
                     setSearch={setSearch}
                     setSearchType={setSearchType}  ></BaseTable>
                 <Modal isOpen={isOpen} title={"Delete Confirmation"} message={"Are you sure to delete this record ?"} onClose={closeDeleteModal}
-                    onConfirm={() => confirmDelete("User")} />
+                    onConfirm={() => confirmDelete()} />
             </ComponentCard>
         </>
     );
