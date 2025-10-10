@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.js"
 import adminRoutes from "./routes/admin.js"
 import teamRoutes from "./routes/team.js"
 import evaluatorRoutes from "./routes/evaluator.js"
+import leaderboardRoutes from "./routes/leaderboard.js"
 import { errorResponse } from "./utils/baseHelper.js"
 import { createDefaultAdmin } from "./utils/authHelper.js"
 
@@ -32,7 +33,7 @@ app.use((req, res, next) => {
     }
     next();
 });
-
+app.use("/api", leaderboardRoutes);
 // Auth Routes
 app.use("/api/auth", authRoutes);
 // Admin Routes

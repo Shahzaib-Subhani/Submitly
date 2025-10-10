@@ -1,6 +1,5 @@
 import axios from "axios";
 import { clearAuthData, fetchUserType, getToken, isAuthError } from "../services/authService";
-import { useAuth } from "../context/AuthContext";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:5000",
@@ -12,7 +11,8 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use((config) => {
   const userType = fetchUserType(config);
-  if (userType === "auth") {
+
+  if (!userType || userType === "auth") {
     return config;
   }
   const token = getToken(userType);
@@ -28,9 +28,8 @@ apiClient.interceptors.response.use(
       const userType = fetchUserType(config);
       clearAuthData(userType);
       window.location.href = `/${userType}/signin`;
-
     }
-    Promise.reject(error.response?.data || error)
+    return Promise.reject(error.response?.data || error)
   }
 );
 

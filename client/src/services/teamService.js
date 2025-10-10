@@ -36,7 +36,7 @@ export const updateTeamPassword = async (teamID, data) => {
 
 // fetch leaderboard  API
 export const fetchTeamLeaderboard = async (page, pageSize, searchType, search) => {
-    return await apiClient.get(`api/admin/leaderboard?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
+    return await apiClient.get(`api/leaderboard?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
 };
 
 // transform Evaluation Data

@@ -12,7 +12,6 @@ import Spinner from '../../components/layout/Spinner';
 
 const SetDeadline = () => {
     const pageTitle = usePageTitle();
-    const [deadlineID, setDeadlineID] = useState("");
     const [dataLoading, setDataLoading] = useState(true);
 
     const { formData, errors, handleChange, handleSubmit, loading, setFormData } = useForm(
@@ -27,7 +26,7 @@ const SetDeadline = () => {
                 deadlineType: "submission",
                 deadlineDate: isoDate
             }
-            const response = await setDeadline(deadlineData);
+            const response = await setDeadline();
             const successMsg = {
                 main: response?.message || "Deadline updated successfully",
                 sub: false
@@ -47,12 +46,9 @@ const SetDeadline = () => {
                 const response = await getDeadline();
                 if (response?.data) {
                     const data = response.data;
-                    console.log(data);
-
                     setFormData({
                         deadlineDate: data.deadlineDate,
                     });
-                    setDeadlineID(data._id);
                 }
             } catch (error) {
                 toast.error({ main: error.message });

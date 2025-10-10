@@ -50,7 +50,4 @@ router.post("/profile/:adminID/update", authenticateUser, authorizeRole("admin")
 router.post("/profile/:adminID/password-update", authenticateUser, authorizeRole("admin"), updatePassword);
 router.get("/profile/:adminID", authenticateUser, authorizeRole("admin"), getAdminProfile);
 
-// Leaderboard 
-router.get("/leaderboard", authenticateUser, getLeaderboard);
-
 export default router;

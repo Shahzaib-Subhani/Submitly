@@ -98,5 +98,10 @@ export const isAuthError = (error) => {
 
 export const fetchUserType = (config) => {
     const segments = config.url.split("/").filter(Boolean);
-    return segments[1] || "team";
+    const userTypes = {
+        team: "team",
+        evaluator: "evaluator",
+        admin: "admin",
+    }
+    return userTypes[segments[1]] || "";
 }

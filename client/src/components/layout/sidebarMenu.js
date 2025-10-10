@@ -42,6 +42,7 @@ const sidebarMenu = {
         { icon: TvMinimalPlay, text: "Submissions", path: "submission-list" },
         { icon: FilePenLine, text: "Evaluations", path: "evaluations" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
+        { icon: ClipboardList, text: "Result", path: "result" },
         { icon: LogOut, text: "Logout", path: "logout" },
 
     ],

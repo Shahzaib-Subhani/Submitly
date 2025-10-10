@@ -9,6 +9,7 @@ import EvaluatorProfile from "../pages/evaluator/EvaluatorProfile";
 import Logout from "../components/auth/Logout";
 import EvaluationDetails from "../pages/evaluator/EvaluationDetails";
 import UpdatePassword from "../pages/evaluator/UpdatePassword";
+import ViewResult from "../pages/team/ViewResult";
 
 
 const evaluatorRoutes = [
@@ -21,6 +22,7 @@ const evaluatorRoutes = [
     { path: "profile", component: EvaluatorProfile },
     { path: "update-password", component: UpdatePassword },
     { path: "logout", component: Logout },
+    { path: "result", component: ViewResult },
 
 ];
 
