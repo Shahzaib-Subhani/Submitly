@@ -13,7 +13,7 @@ const ViewTeam = () => {
     const { teamID } = useParams();
 
     useEffect(() => {
-        const fetchSubmissionDetails = async () => {
+        const fetchTeam = async () => {
             try {
                 const response = await fetchTeamDetails(teamID);
                 if (response?.data) {
@@ -27,7 +27,7 @@ const ViewTeam = () => {
                 setDataLoading(false);
             }
         };
-        fetchSubmissionDetails();
+        fetchTeam();
     }, [teamID]);
     if (dataLoading) return <Spinner />;
     return (

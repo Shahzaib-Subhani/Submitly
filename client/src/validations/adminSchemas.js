@@ -5,12 +5,20 @@ export const EditUserSchema = z.object({
     teamName: z.string().min(1, "Team Name is required"),
     leaderName: z.string().min(1, "Leader Name is required"),
     email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string().min(6, "Confirm Password is required"),
-}).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-});
+    password: z.string().optional(),
+    confirmPassword: z.string().optional(),
+}).refine((data) =>
+    !data.password || (data.password.length >= 6),
+    {
+        message: "Password must be at least 6 characters",
+        path: ["password"],
+    }
+).refine((data) => !data.password || data.password === data.confirmPassword,
+    {
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+    }
+);
 
 // Edit Evaluator Validation Schema
 export const EditEvaluatorSchema = z.object({

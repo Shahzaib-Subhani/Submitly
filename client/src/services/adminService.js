@@ -10,6 +10,11 @@ export const fetchTeamDetails = async (teamID) => {
     return await apiClient.get(`api/admin/teams/${teamID}`);
 };
 
+// update team  API
+export const updateTeamDetails = async (teamID, data) => {
+    return await apiClient.patch(`api/admin/teams/${teamID}`, data);
+};
+
 // fetch evaluation details API
 export const fetchAdminProfile = async (adminID) => {
     return await apiClient.get(`api/admin/profile/${adminID}`);

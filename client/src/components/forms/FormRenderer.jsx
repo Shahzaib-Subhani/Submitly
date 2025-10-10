@@ -29,7 +29,7 @@ const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData,
                                     key={name}
                                     label={label}
                                     name={name}
-                                    value={formData[name]}
+                                    value={formData[name] ?? ""}
                                     onChange={handleChange}
                                     error={errors[name]}
                                 />
@@ -39,7 +39,7 @@ const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData,
                                         key={name}
                                         label={label}
                                         name={name}
-                                        value={formData[name]}
+                                        value={formData[name] ?? ""}
                                         onChange={handleChange}
                                         error={errors[name]}
                                         rows={5}
@@ -49,7 +49,7 @@ const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData,
                                         label={label}
                                         name={name}
                                         type={type}
-                                        value={formData[name]}
+                                        value={formData[name] ?? ""}
                                         onChange={handleChange}
                                         error={errors[name]}
                                     />
