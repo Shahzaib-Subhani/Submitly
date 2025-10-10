@@ -5,6 +5,7 @@ import BaseTable from '../../components/table/BaseTable';
 import { useEffect, useState } from 'react';
 import { fetchTeamLeaderboard } from '../../services/teamService';
 import toast from 'react-hot-toast';
+import Spinner from '../../components/layout/Spinner';
 
 const columns = [
   { accessorKey: "id", header: "Sr. #" },
@@ -31,6 +32,8 @@ const searchColumns = {
 const ViewResult = () => {
   const pageTitle = usePageTitle();
   const [tableData, setTableData] = useState([]);
+  const [dataLoading, setDataLoading] = useState(true);
+
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 5,
@@ -47,8 +50,6 @@ const ViewResult = () => {
 
   const fetchLeaderboardResult = async (page = 1, pageSize = 5, searchText = "", searchColumn = "") => {
     try {
-      console.log(searchColumn);
-      
       const response = await fetchTeamLeaderboard(page, pageSize, searchColumn, searchText);
       const data = response.data;
 
@@ -88,12 +89,16 @@ const ViewResult = () => {
       }
     } catch (error) {
       toast.error({ main: error.message, sub: error.error });
+    } finally {
+      setDataLoading(false);
     }
   };
 
   useEffect(() => {
     fetchLeaderboardResult(pagination.pageIndex + 1, pagination.pageSize, search, searchType);
   }, [pagination.pageIndex, pagination.pageSize, search]);
+
+  if (dataLoading) return <Spinner />;
 
   return (
     <>

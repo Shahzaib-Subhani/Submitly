@@ -5,6 +5,7 @@ import BaseTable from '../../components/table/BaseTable';
 import ActionColumn from '../../components/table/ActionColumn';
 import { useAuth } from '../../context/AuthContext';
 import { fetchEvaluations, formattedDate } from '../../services/evaluatorService';
+import Spinner from '../../components/layout/Spinner';
 
 
 
@@ -35,6 +36,8 @@ const columns = [
 const Evaluations = () => {
     const pageTitle = usePageTitle();
     const [tableData, setTableData] = useState([]);
+    const [dataLoading, setDataLoading] = useState(true);
+
     const { user } = useAuth();
     const [pagination, setPagination] = useState({
         pageIndex: 0,
@@ -77,6 +80,8 @@ const Evaluations = () => {
             });
         } catch (error) {
             toast.error({ main: error.message, sub: error.error });
+        } finally {
+            setDataLoading(false);
         }
     };
 
@@ -84,6 +89,7 @@ const Evaluations = () => {
         fetchSubmissions(pagination.pageIndex + 1, pagination.pageSize, search, searchType);
     }, [pagination.pageIndex, pagination.pageSize, search]);
 
+    if (dataLoading) return <Spinner />;
     return (
         <>
             <ComponentCard title={pageTitle}>

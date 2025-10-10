@@ -7,6 +7,7 @@ import usePageTitle from "../../hooks/usePageTitle";
 import { fetchEvaluatorSubmissions } from "../../services/evaluatorService";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
+import Spinner from "../../components/layout/Spinner";
 
 
 const columns = [
@@ -24,7 +25,7 @@ const columns = [
         id: "actions",
         accessorKey: "actions",
         header: "Actions",
-        cell: ({row}) => <ActionColumn isTextBtn={true} textBtnLabel="Evaluate" textBtnPath={`evaluate-submission/${row.original._id}`} />,
+        cell: ({ row }) => <ActionColumn isTextBtn={true} textBtnLabel="Evaluate" textBtnPath={`evaluate-submission/${row.original._id}`} />,
     },
 ];
 
@@ -39,6 +40,8 @@ const searchColumns = {
 const SubmissionList = () => {
     const pageTitle = usePageTitle();
     const [tableData, setTableData] = useState([]);
+    const [dataLoading, setDataLoading] = useState(true);
+
     const { user } = useAuth();
     const [pagination, setPagination] = useState({
         pageIndex: 0,
@@ -76,12 +79,16 @@ const SubmissionList = () => {
             });
         } catch (error) {
             toast.error({ main: error.message, sub: error.error });
+        } finally {
+            setDataLoading(false);
         }
     };
 
     useEffect(() => {
         fetchSubmissions(pagination.pageIndex + 1, pagination.pageSize, search, searchType);
     }, [pagination.pageIndex, pagination.pageSize, search]);
+
+    if (dataLoading) return <Spinner />;
     return (
         <>
             <ComponentCard title={pageTitle}>
