@@ -31,7 +31,7 @@ const adminRoutes = [
     { path: "manage-teams", component: ManageTeams },
     { path: "manage-teams/view-team/:teamID", component: ViewTeam },
     { path: "manage-teams/edit-team/:teamID", component: EditTeam },
-    { path: "manage-teams/edit-members/:teamID", component: EditTeamMember },
+    { path: "manage-teams/:teamID/edit-members/:memberID", component: EditTeamMember },
     { path: "publish-result", component: PublishResult },
     { path: "set-deadline", component: SetDeadline },
     { path: "chat-support", component: ChatSupport },

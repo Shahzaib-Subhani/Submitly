@@ -45,9 +45,9 @@ export const setDeadlineSchema = z.object({
 // Set Deadline Validation Schema
 
 export const EditMemberSchema = z.object({
-    memberName: z.string().min(1, "Name is required"),
-    memberEmail: z.string().min(1, "Invalid email address"),
-    memberRole: z.string().min(1, "Role is required"),
+    name: z.string().min(1, "Name is required"),
+    email: z.string().min(1, "Invalid email address"),
+    role: z.string().min(1, "Role is required"),
 });
 
 

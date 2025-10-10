@@ -88,9 +88,6 @@ const ManageTeams = () => {
                 viewPath={`view-team/${row.original._id}`}
                 isEdit={true}
                 editPath={`edit-team/${row.original._id}`}
-                isTextBtn={true}
-                textBtnLabel={'Edit Members'}
-                textBtnPath={`edit-members/${row.original._id}`}
                 onDelete={openDeleteModal} />,
         },
     ];
