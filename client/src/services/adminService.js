@@ -18,9 +18,17 @@ export const updateTeamDetails = async (teamID, data) => {
 export const deleteTeam = async (teamID) => {
     return await apiClient.delete(`api/admin/teams/${teamID}`);
 };
+// add team Member  API
+export const createTeamMember = async (teamID, data) => {
+    return await apiClient.post(`api/admin/teams/${teamID}/members`, data);
+};
 // update team Member  API
 export const updateTeamMember = async (teamID, memberID, data) => {
     return await apiClient.patch(`api/admin/teams/${teamID}/members/${memberID}`, data);
+};
+// delete team Member  API
+export const deleteTeamMember = async (teamID, memberID) => {
+    return await apiClient.delete(`api/admin/teams/${teamID}/members/${memberID}`);
 };
 
 // fetch evaluation details API

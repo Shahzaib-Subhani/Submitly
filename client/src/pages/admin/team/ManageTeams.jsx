@@ -71,7 +71,7 @@ const ManageTeams = () => {
     const handleOpenDelete = (teamID) => {
         openDeleteModal(
             teamID,
-            deleteTeam,
+            () => deleteTeam(teamID),
             () => fetchTeamsList(pagination.pageIndex + 1, pagination.pageSize, search, searchType)
         );
     };

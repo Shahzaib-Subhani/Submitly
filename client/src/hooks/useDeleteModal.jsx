@@ -3,28 +3,25 @@ import toast from 'react-hot-toast';
 
 const UseDeleteModal = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [target, setTarget] = useState(null);
     const [deleteFn, setDeleteFn] = useState(null);
     const [refreshFn, setRefreshFn] = useState(null);
 
     const openDeleteModal = (id, apiFn, onSuccess) => {
-        setTarget(id);
         setDeleteFn(() => apiFn);
         setRefreshFn(() => onSuccess);
         setIsOpen(true);
     };
 
     const closeDeleteModal = () => {
-        setTarget(null);
         setDeleteFn(null);
         setRefreshFn(null);
         setIsOpen(false);
     };
 
     const confirmDelete = async () => {
-        if (!deleteFn || !target) return;
+        if (!deleteFn) return;
         try {
-            await deleteFn(target);
+            await deleteFn();
             toast.success({ main: "Record Deleted successfully" });
             if (refreshFn) await refreshFn();
         } catch (error) {

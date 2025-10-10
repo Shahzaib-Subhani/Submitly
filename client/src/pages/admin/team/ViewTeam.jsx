@@ -1,35 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import ComponentCard from '../../../components/layout/ComponentCard';
 import usePageTitle from '../../../hooks/usePageTitle';
-import { fetchTeamDetails } from '../../../services/adminService';
+import { deleteTeamMember, fetchTeamDetails } from '../../../services/adminService';
 import toast from 'react-hot-toast';
 import { Link, useParams } from 'react-router-dom';
 import Spinner from '../../../components/layout/Spinner';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Trash2 } from 'lucide-react';
+import UseDeleteModal from '../../../hooks/useDeleteModal';
+import Modal from '../../../components/layout/Modal';
 
 const ViewTeam = () => {
     const pageTitle = usePageTitle();
     const [dataLoading, setDataLoading] = useState(true);
     const [team, setTeam] = useState(true);
     const { teamID } = useParams();
+    const {
+        isOpen,
+        openDeleteModal,
+        closeDeleteModal,
+        confirmDelete,
+    } = UseDeleteModal();
+
+    const fetchTeam = async () => {
+        try {
+            const response = await fetchTeamDetails(teamID);
+            if (response?.data) {
+                const data = response.data;
+                setTeam(data);
+
+            }
+        } catch (error) {
+            toast.error({ main: error.message });
+        } finally {
+            setDataLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchTeam = async () => {
-            try {
-                const response = await fetchTeamDetails(teamID);
-                if (response?.data) {
-                    const data = response.data;
-                    setTeam(data);
 
-                }
-            } catch (error) {
-                toast.error({ main: error.message });
-            } finally {
-                setDataLoading(false);
-            }
-        };
         fetchTeam();
     }, [teamID]);
+    const handleOpenDelete = (teamID, memberID) => {
+        openDeleteModal(
+            teamID,
+            () => deleteTeamMember(teamID, memberID),
+            () => fetchTeam()
+        );
+    };
     if (dataLoading) return <Spinner />;
     return (
         <ComponentCard title={pageTitle}>
@@ -54,7 +71,15 @@ const ViewTeam = () => {
 
                         {/* Members */}
                         <div className="mt-10 w-full">
-                            <p className="mb-2 text-sm text-gray-500">Team Members</p>
+                            <div className="flex justify-between items-center mb-2">
+                                <p className="text-sm text-gray-500">Team Members</p>
+                                <Link
+                                    to={`/admin/manage-teams/${team._id}/add-member`}
+                                    className="flex items-center gap-1 text-sm text-sky-600 hover:text-sky-700 font-medium"
+                                >
+                                    <Plus size={16} /> Add Member
+                                </Link>
+                            </div>
                             <ul className="space-y-2">
                                 {team.members.map((member) => (
                                     <li
@@ -74,22 +99,26 @@ const ViewTeam = () => {
                                             >
                                                 <Pencil size={20} />
                                             </Link>
-                                            <Link
-                                                // to={action.path}
-                                                title={"Edit"}
+                                            <button
+                                                title={"Delete"}
                                                 className={`text-gray-500 inline-flex items-center border border-gray-200 justify-center p-1 rounded hover:text-rose-500  hover:bg-rose-100`}
+                                                onClick={() => handleOpenDelete(team._id, member._id)}
                                             >
                                                 <Trash2 size={20} />
-                                            </Link>
+                                            </button>
                                         </div>
                                     </li>
                                 ))}
                             </ul>
+
                         </div>
 
                     </div>
                 </div>
             </div>
+
+            <Modal isOpen={isOpen} title={"Delete Confirmation"} message={"Are you sure to delete this record ?"} onClose={closeDeleteModal}
+                onConfirm={() => confirmDelete()} />
         </ComponentCard>
     );
 }
