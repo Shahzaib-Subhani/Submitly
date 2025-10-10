@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ComponentCard from '../../../components/layout/ComponentCard';
 import usePageTitle from '../../../hooks/usePageTitle';
 import DetailsCard from '../../../components/dashboard/DetailsCard';
+import { useParams } from 'react-router-dom';
+import Spinner from '../../../components/layout/Spinner';
+import { fetchSubmissionDetails } from '../../../services/adminService';
+import { formattedDate } from '../../../services/evaluatorService';
+import toast from 'react-hot-toast';
 const labels = {
     teamID: "Team",
     teamName: "Team Name",
@@ -11,29 +16,47 @@ const labels = {
     description: "Description",
     learningOutcomes: "Learning Outcomes",
     status: "Status",
-    isFinal: "Final Submission",
     lastUpdated: "Last Updated"
 };
 
-const submission = {
-    submissionID: 1,
-    teamID: 101,
-    teamName: "Team no.1 ",
-    leaderName: "Leader no 1",
-    topic: "AI in Education",
-    videoURL: "https://example.com/video.mp4",
-    learningOutcomes: "Improved adaptability, automated grading, personalized content delivery.",
-    status: "Submitted",
-    isFinal: true,
-    lastUpdated: "03-12-2024 10:30 AM",
-    description: "A project exploring how AI can improve personalized learning.",
-};
 const ViewSubmission = () => {
     const pageTitle = usePageTitle();
+    const [dataLoading, setDataLoading] = useState(true);
+    const [submission, setSubmission] = useState(true);
+    const { submissionID } = useParams();
+    useEffect(() => {
+        const fetchSubmission = async () => {
+            try {
+                const response = await fetchSubmissionDetails(submissionID);
+                if (response?.data) {
+                    const data = response.data;
+                    setSubmission({
+                        submissionID: data.submissionID,
+                        teamID: data.teamID.teamID,
+                        teamName: data.teamID.teamName,
+                        leaderName: data.teamID.leaderName,
+                        topic: data.topic,
+                        videoURL: data.videoURL,
+                        learningOutcomes: data.learningOutcomes,
+                        status: data.status,
+                        lastUpdated: formattedDate(data.updatedAt),
+                        description: data.description,
+                    });
+
+                }
+            } catch (error) {
+                toast.error({ main: error.message });
+            } finally {
+                setDataLoading(false);
+            }
+        };
+        fetchSubmission();
+    }, [submissionID]);
+    if (dataLoading) return <Spinner />;
     return (
         <>
             <ComponentCard title={pageTitle}>
-                <DetailsCard labels={labels} data={submission} />
+                <DetailsCard labels={labels} title={"Submission Details"} data={submission} />
             </ComponentCard>
         </>
     );

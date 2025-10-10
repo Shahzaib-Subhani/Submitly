@@ -22,18 +22,23 @@ import AddTeamMember from "../pages/admin/team/AddTeamMember";
 
 const adminRoutes = [
     { path: "dashboard", component: AdminDashboard },
+    // submissions
     { path: "submissions-list", component: SubmissionsList },
-    { path: "submissions-list/view-submission", component: ViewSubmission },
-    { path: "submissions-list/assign-evaluator", component: AssignEvaluator },
+    { path: "submissions-list/view-submission/:submissionID", component: ViewSubmission },
+    { path: "submissions-list/assign-evaluator/:submissionID", component: AssignEvaluator },
+    // Evaluators
     { path: "evaluators-list", component: EvaluatorList },
     { path: "evaluators-list/edit-evaluator/:evaluatorID", component: EditEvaluator },
+    // Evaluations
     { path: "evaluations", component: EvaluationsList },
     { path: "evaluations/view-evaluation", component: ViewEvaluation },
+    // Teams
     { path: "manage-teams", component: ManageTeams },
     { path: "manage-teams/view-team/:teamID", component: ViewTeam },
     { path: "manage-teams/edit-team/:teamID", component: EditTeam },
     { path: "manage-teams/:teamID/edit-members/:memberID", component: EditTeamMember },
     { path: "manage-teams/:teamID/add-member", component: AddTeamMember },
+    // Extra
     { path: "publish-result", component: PublishResult },
     { path: "set-deadline", component: SetDeadline },
     { path: "chat-support", component: ChatSupport },

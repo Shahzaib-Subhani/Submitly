@@ -59,7 +59,7 @@ export const getSubmissionById = async (req, res) => {
         const { submissionID } = req.params;
         if (!validateObjectID(res, submissionID, "submissionID")) return;
         // fetch submission by id
-        const submission = await Submission.findById(submissionID).select(" -__v -updatedAt").populate("teamID", "teamID teamName leaderName");
+        const submission = await Submission.findById(submissionID).select(" -__v ").populate("teamID", "teamID teamName leaderName");
 
         if (!submission) {
             return errorResponse(res, SUBMISSION_NOT_FOUND_ERR, SUBMISSION_NOT_FOUND_MESSAGE, 404);

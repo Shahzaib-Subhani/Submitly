@@ -5,11 +5,12 @@ export const fetchTeams = async (page, pageSize, searchType, search) => {
     return await apiClient.get(`api/admin/teams?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
 };
 
+// -----------------Teams--------------------
+
 // fetch team by ID  API
 export const fetchTeamDetails = async (teamID) => {
     return await apiClient.get(`api/admin/teams/${teamID}`);
 };
-
 // update team  API
 export const updateTeamDetails = async (teamID, data) => {
     return await apiClient.patch(`api/admin/teams/${teamID}`, data);
@@ -31,6 +32,7 @@ export const deleteTeamMember = async (teamID, memberID) => {
     return await apiClient.delete(`api/admin/teams/${teamID}/members/${memberID}`);
 };
 
+// -------------Evaluators--------------------
 
 // fetch evaluators list  API
 export const fetchEvaluators = async (page, pageSize, searchType, search) => {
@@ -55,6 +57,31 @@ export const approveEvaluator = async (evaluatorID, data) => {
     return await apiClient.patch(`api/admin/evaluators/${evaluatorID}/verify`, data);
 };
 
+// ---------------Submissions--------------------
+
+// fetch evaluators list  API
+export const fetchSubmissions = async (page, pageSize, searchType, search) => {
+    return await apiClient.get(`api/admin/submissions?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
+};
+
+//  fetch submission by ID  API
+export const fetchSubmissionDetails = async (submissionID) => {
+    return await apiClient.get(`api/admin/submissions/${submissionID}`);
+};
+//  fetch evaluators for submission
+export const fetchEvaluatorsForSubmission = async () => {
+    return await apiClient.get(`api/admin/evaluators/list/name`);
+};
+
+// assign evaluator submission  API
+export const assignSubmission = async (submissionID, data) => {
+    return await apiClient.patch(`api/admin/submissions/${submissionID}/assign-evaluators`, data);
+};
+// delete submission  API
+export const deleteSubmission = async (submissionID) => {
+    return await apiClient.delete(`api/admin/submissions/${submissionID}`);
+};
+// app
 
 // fetch admin profile API
 export const fetchAdminProfile = async (adminID) => {

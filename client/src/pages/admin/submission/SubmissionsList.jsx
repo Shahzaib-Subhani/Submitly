@@ -5,34 +5,35 @@ import usePageTitle from "../../../hooks/usePageTitle";
 import TableBadge from "../../../components/table/TableBadge";
 import Modal from "../../../components/layout/Modal";
 import UseDeleteModal from "../../../hooks/useDeleteModal";
+import { useEffect, useState } from "react";
+import { deleteSubmission, fetchSubmissions } from "../../../services/adminService";
+import toast from "react-hot-toast";
+import { formattedDate } from "../../../services/evaluatorService";
 
-function getRandomDate(start = new Date(2020, 0, 1), end = new Date()) {
-  const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-  const pad = (n) => String(n).padStart(2, "0");
-
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
-
-  hours = hours % 12;
-  hours = hours ? hours : 12;
-
-  return `${pad(date.getDate())}-${pad(date.getMonth() + 1)}-${date.getFullYear()} ${hours}:${pad(minutes)} ${ampm}`;
-}
-
-
-const tableData = [...Array(20)].map((_, i) => ({
-  id: i + 1,
-  teamName: `Team ${i + 1}`,
-  topic: `topic ${i + 1}`,
-  lastUpdated: getRandomDate(),
-  status: "active",
-}));
-
+const searchColumns = {
+  submissionID: "Submission ID",
+  teamName: "Team Name",
+  topic: "Topic",
+  status: "Status"
+};
 
 
 const SubmissionList = () => {
   const pageTitle = usePageTitle();
+  const [tableData, setTableData] = useState([]);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
+  const [paginationInfo, setPaginationInfo] = useState({
+    totalRecords: 0,
+    totalPages: 1,
+    fromRecord: 0,
+    toRecord: 0,
+  });
+  const [search, setSearch] = useState("");
+  const [searchType, setSearchType] = useState("");
   const {
     isOpen,
     openDeleteModal,
@@ -40,11 +41,53 @@ const SubmissionList = () => {
     confirmDelete,
   } = UseDeleteModal();
 
+  const fetchSubmissionsList = async (page = 1, pageSize = 5, searchText = "", searchColumn = "") => {
+    try {
+      const response = await fetchSubmissions(page, pageSize, searchColumn, searchText);
+      const data = response.data;
+      const formattedData = data.submissions.map((row) => {
+        return {
+          ...row,
+          updatedAt: formattedDate(row.updatedAt)
+        }
+      });
+      setTableData(formattedData);
+      const backendPagination = data.pagination;
+
+      setPagination({
+        pageIndex: backendPagination.currentPage - 1,
+        pageSize: backendPagination.pageSize,
+
+      });
+
+      setPaginationInfo({
+        totalRecords: backendPagination.totalRecords,
+        totalPages: backendPagination.totalPages,
+        fromRecord: backendPagination.fromRecord,
+        toRecord: backendPagination.toRecord,
+      });
+    } catch (error) {
+      toast.error({ main: error.message, sub: error.error });
+    }
+  };
+
+  const handleOpenDelete = (submissionID) => {
+    openDeleteModal(
+      submissionID,
+      () => deleteSubmission(submissionID),
+      () => fetchSubmissionsList(pagination.pageIndex + 1, pagination.pageSize, search, searchType)
+    );
+  };
+
+  useEffect(() => {
+    fetchSubmissionsList(pagination.pageIndex + 1, pagination.pageSize, search, searchType);
+  }, [pagination.pageIndex, pagination.pageSize, search]);
+
   const columns = [
-    { accessorKey: "id", header: "ID" },
+    { accessorKey: "submissionID", header: "ID" },
     { accessorKey: "teamName", header: "Team Name" },
     { accessorKey: "topic", header: "Topic" },
-    { accessorKey: "lastUpdated", header: "Last updated" },
+    { accessorKey: "updatedAt", header: "Last updated" },
     {
       accessorKey: "status",
       header: "Status",
@@ -55,22 +98,28 @@ const SubmissionList = () => {
       id: "actions",
       accessorKey: "actions",
       header: "Actions",
-      cell: () => <ActionColumn
+      cell: ({ row }) => <ActionColumn
         isDelete={true}
         isView={true}
-        viewPath="view-submission"
+        viewPath={`view-submission/${row.original._id}`}
         isTextBtn={true}
         textBtnLabel="Assign Evaluator"
-        textBtnPath="assign-evaluator"
-        onDelete={openDeleteModal} />,
+        textBtnPath={`assign-evaluator/${row.original._id}`}
+        onDelete={() => handleOpenDelete(row.original._id)} />,
     },
   ];
   return (
     <>
       <ComponentCard title={pageTitle}>
-        <BaseTable tableHeaders={columns} tableData={tableData}  ></BaseTable>
+        <BaseTable tableHeaders={columns} tableData={tableData} searchColumns={searchColumns}
+          pagination={pagination}
+          setPagination={setPagination}
+          search={search}
+          paginationInfo={paginationInfo}
+          setSearch={setSearch}
+          setSearchType={setSearchType}  ></BaseTable>
         <Modal isOpen={isOpen} title={"Delete Confirmation"} message={"Are you sure to delete this record ?"} onClose={closeDeleteModal}
-          onConfirm={() => confirmDelete("Submission")} />
+          onConfirm={() => confirmDelete()} />
       </ComponentCard>
     </>
   );

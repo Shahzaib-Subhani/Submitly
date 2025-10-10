@@ -4,9 +4,11 @@ import Button from '../../components/forms/Button';
 import InputPassword from '../../components/forms/InputPassword';
 import TextArea from './TextArea';
 import LinkButton from './LinkButton';
+import { ChevronDown } from 'lucide-react';
+import SelectInput from './SelectInput';
 
 
-const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData, errors, loading, col = 3, linkButton }) => {
+const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData, errors, loading, col = 3, linkButton, selectOptions = {} }) => {
     const colClasses = {
         1: "md:grid-cols-1",
         2: "md:grid-cols-2",
@@ -23,7 +25,7 @@ const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData,
                             <LinkButton path={linkButton.path} variant={linkButton.variant} color={linkButton.color}>{linkButton.title}</LinkButton>
                         </div>}
                     <div className={`grid grid-cols-1 gap-4 ${colClasses[col] || "md:grid-cols-1"}`}>
-                        {formFields.map(({ label, name, type }) => (
+                        {formFields.map(({ label, name, type, placeholder = "" }) => (
                             type === "password"
                                 ? <InputPassword
                                     key={name}
@@ -44,15 +46,26 @@ const FormRenderer = ({ title, formFields, handleSubmit, handleChange, formData,
                                         error={errors[name]}
                                         rows={5}
                                     />
-                                    : <Input
-                                        key={name}
-                                        label={label}
-                                        name={name}
-                                        type={type}
-                                        value={formData[name] ?? ""}
-                                        onChange={handleChange}
-                                        error={errors[name]}
-                                    />
+                                    :
+                                    type === "select" ?
+                                        <SelectInput key={name}
+                                            label={label}
+                                            name={name}
+                                            placeholder={placeholder}
+                                            value={formData[name] ?? ""}
+                                            onChange={handleChange}
+                                            error={errors[name]}
+                                            options={selectOptions}
+                                             />
+                                        : <Input
+                                            key={name}
+                                            label={label}
+                                            name={name}
+                                            type={type}
+                                            value={formData[name] ?? ""}
+                                            onChange={handleChange}
+                                            error={errors[name]}
+                                        />
 
                         ))}
 
