@@ -19,6 +19,7 @@ import LinkPage from "../pages/auth/LinkPage";
 import Logout from "../components/auth/Logout";
 import UpdatePassword from "../pages/admin/UpdatePassword";
 import AddTeamMember from "../pages/admin/team/AddTeamMember";
+import ViewResult from "../pages/team/ViewResult";
 
 const adminRoutes = [
     { path: "dashboard", component: AdminDashboard },
@@ -39,7 +40,7 @@ const adminRoutes = [
     { path: "manage-teams/:teamID/edit-members/:memberID", component: EditTeamMember },
     { path: "manage-teams/:teamID/add-member", component: AddTeamMember },
     // Extra
-    { path: "publish-result", component: PublishResult },
+    { path: "result", component: ViewResult },
     { path: "set-deadline", component: SetDeadline },
     { path: "chat-support", component: ChatSupport },
     { path: "profile", component: AdminProfile },

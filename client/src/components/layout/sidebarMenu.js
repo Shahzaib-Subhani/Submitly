@@ -22,7 +22,7 @@ const sidebarMenu = {
         { icon: UserStar, text: "Evaluators", path: "evaluators-list" },
         { icon: ClipboardPlus, text: "Submissions", path: "submissions-list" },
         { icon: FilePenLine, text: "Evaluations", path: "evaluations" },
-        { icon: ClipboardList, text: "Publish Result", path: "publish-result" },
+        { icon: ClipboardList, text: "Result", path: "result" },
         { icon: CalendarX2, text: "Set Deadline", path: "set-deadline" },
         { icon: MessageCircleQuestionMark, text: "Chat Support", path: "chat-support" },
         { icon: LogOut, text: "Logout", path: "logout" },

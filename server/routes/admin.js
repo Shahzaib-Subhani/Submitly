@@ -4,7 +4,7 @@ import { deleteTeam, getAllTeams, getTeamById, updateTeam } from "../controllers
 import { addTeamMember, deleteTeamMember, getAllTeamMembers, updateTeamMember } from "../controllers/admin/teamMemberController.js";
 import { deleteEvaluator, fetchEvaluators, getAllEvaluators, getEvaluatorById, updateEvaluator, verifyEvaluator } from "../controllers/admin/evaluatorController.js";
 import { assignEvaluator, deleteSubmission, getAllSubmissions, getSubmissionById } from "../controllers/admin/submissionController.js";
-import { setDeadline } from "../controllers/admin/deadlineController.js";
+import { fetchDeadline, setDeadline } from "../controllers/admin/deadlineController.js";
 import { getAdminProfile, updateAdmin, updatePassword } from "../controllers/admin/profileController.js";
 import { getAllEvaluations, getEvaluationById } from "../controllers/admin/evaluationController.js";
 import { getLeaderboard } from "../controllers/admin/leaderboardController.js";
@@ -43,6 +43,7 @@ router.get("/evaluations", authenticateUser, authorizeRole("admin"), getAllEvalu
 
 // deadline route
 router.post("/deadline", authenticateUser, authorizeRole("admin"), setDeadline);
+router.get("/deadline", authenticateUser, authorizeRole("admin"), fetchDeadline);
 
 // Profile
 router.post("/profile/:adminID/update", authenticateUser, authorizeRole("admin"), updateAdmin);

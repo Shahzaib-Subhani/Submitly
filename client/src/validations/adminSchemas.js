@@ -44,7 +44,7 @@ export const EditEvaluatorSchema = z.object({
 // Set Deadline Validation Schema
 
 export const setDeadlineSchema = z.object({
-    date: z.string()
+    deadlineDate: z.string()
         .min(1, "Date is required")
         .regex(/^\d{2}-\d{2}-\d{4}$/, "Invalid date format (dd-mm-yyyy)"),
 });

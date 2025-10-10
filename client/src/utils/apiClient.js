@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken } from "../services/authService";
+import { clearAuthData, fetchUserType, getToken, isAuthError } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 
 const apiClient = axios.create({
@@ -11,21 +11,27 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const segments = config.url.split("/").filter(Boolean);
-  const userType = segments[1] || "team";
+  const userType = fetchUserType(config);
   if (userType === "auth") {
     return config;
-
   }
   const token = getToken(userType);
-
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
 apiClient.interceptors.response.use(
   (response) => response.data,
-  (error) => Promise.reject(error.response?.data || error)
+  (error) => {
+    const { config } = error;
+    if (isAuthError(error)) {
+      const userType = fetchUserType(config);
+      clearAuthData(userType);
+      window.location.href = `/${userType}/signin`;
+
+    }
+    Promise.reject(error.response?.data || error)
+  }
 );
 
 export default apiClient;

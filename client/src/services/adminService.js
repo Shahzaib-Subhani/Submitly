@@ -94,6 +94,20 @@ export const fetchEvaluationDetails = async (evaluationID) => {
     return await apiClient.get(`api/admin/evaluations/${evaluationID}`);
 };
 
+// -------------Set Deadline-----------------
+
+// fetch deadline API
+export const getDeadline = async () => {
+    return await apiClient.get(`api/admin/deadline`);
+};
+// update deadline API
+export const setDeadline = async (data) => {
+    return await apiClient.post(`api/admin/deadline`, data);
+};
+
+
+// ----------Admin Profile----------------
+
 // fetch admin profile API
 export const fetchAdminProfile = async (adminID) => {
     return await apiClient.get(`api/admin/profile/${adminID}`);

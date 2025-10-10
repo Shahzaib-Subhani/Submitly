@@ -44,8 +44,7 @@ export const getToken = (userType) => localStorage.getItem(users[userType].token
 
 // handle logout
 export const logout = (navigate, userType) => {
-    localStorage.removeItem(users[userType].token);
-    localStorage.removeItem(users[userType].user);
+    clearAuthData(userType);
     navigate("/login");
 };
 
@@ -70,3 +69,34 @@ export const handleLoginSuccess = (response, navigate, redirectPath = "/team", a
         navigate(redirectPath, { replace: true });
     }, 1000);
 };
+
+export const clearAuthData = (userType = "team") => {
+    if (!users[userType]) return;
+
+    const tokenKey = users[userType].token;
+    const userKey = users[userType].user;
+
+    localStorage.removeItem(tokenKey);
+    localStorage.removeItem(userKey);
+};
+
+
+
+// Check AUth token
+export const isAuthError = (error) => {
+    const status = error?.response?.status;
+    const message = error?.response?.data?.message?.toLowerCase?.() || "";
+    return (
+        status === 401 &&
+        (message.includes("jwt expired") ||
+            message.includes("invalid token") ||
+            message.includes("invalid signature") ||
+            message.includes("unauthorized"))
+    );
+};
+
+
+export const fetchUserType = (config) => {
+    const segments = config.url.split("/").filter(Boolean);
+    return segments[1] || "team";
+}

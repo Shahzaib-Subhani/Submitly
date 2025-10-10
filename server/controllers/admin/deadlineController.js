@@ -12,7 +12,7 @@ export const setDeadline = async (req, res) => {
 
         checkDeadline(deadlineDate);
         // create or update deadline
-      await Deadline.findOneAndUpdate(
+        await Deadline.findOneAndUpdate(
             { deadlineType },
             { deadlineType, deadlineDate },
             { new: true, upsert: true }
@@ -21,5 +21,17 @@ export const setDeadline = async (req, res) => {
         return successResponse(res, "Deadline set successfully");
     } catch (error) {
         return errorResponse(res, "Server error", error.message, 500);
+    }
+};
+
+// function to fetch deadline
+export const fetchDeadline = async (req, res) => {
+    try {
+        // fetch deadline
+        const deadline = await Deadline.findOne({ deadlineType: "submission" }).select("deadlineDate");
+
+        return successResponse(res, "Deadline fetched successfully", deadline);
+    } catch (err) {
+        return errorResponse(res, "Server error", err.message, 500);
     }
 };

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getToken, users } from "../services/authService";
+import { clearAuthData, getToken, users } from "../services/authService";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -27,13 +27,7 @@ export const AuthProvider = ({ children, userType = "team" }) => {
     }, [userType]);
 
     const logout = () => {
-        if (!users[userType]) return;
-
-        const tokenKey = users[userType].token;
-        const userKey = users[userType].user;
-
-        localStorage.removeItem(tokenKey);
-        localStorage.removeItem(userKey);
+        clearAuthData(userType)
         setUser(null);
     };
 
