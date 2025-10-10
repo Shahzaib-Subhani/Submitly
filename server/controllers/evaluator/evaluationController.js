@@ -69,7 +69,7 @@ export const getEvaluationById = async (req, res) => {
                 select: "teamID submissionID topic",
                 populate: {
                     path: "teamID",
-                    select: "teamName -_id",
+                    select: "teamName -_id leaderName teamID",
                 },
             })
             .populate("evaluatorID", "name _id")
@@ -98,7 +98,9 @@ export const getEvaluationById = async (req, res) => {
             evaluationID: evalId,
             evaluatorName: evaluator?.name,
             submissionID: submission?.submissionID,
+            teamID: submission?.teamID?.teamID,
             teamName: submission?.teamID?.teamName,
+            leaderName: submission?.teamID?.leaderName,
             topic: submission?.topic,
             scores,
             totalScore,

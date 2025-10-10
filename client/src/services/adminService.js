@@ -59,7 +59,7 @@ export const approveEvaluator = async (evaluatorID, data) => {
 
 // ---------------Submissions--------------------
 
-// fetch evaluators list  API
+// fetch submission list  API
 export const fetchSubmissions = async (page, pageSize, searchType, search) => {
     return await apiClient.get(`api/admin/submissions?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
 };
@@ -81,7 +81,18 @@ export const assignSubmission = async (submissionID, data) => {
 export const deleteSubmission = async (submissionID) => {
     return await apiClient.delete(`api/admin/submissions/${submissionID}`);
 };
-// app
+
+// ---------------Evaluations--------------------
+
+// fetch evaluations list  API
+export const fetchEvaluations = async (page, pageSize, searchType, search) => {
+    return await apiClient.get(`api/admin/evaluations?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
+};
+
+//  fetch evaluation by ID  API
+export const fetchEvaluationDetails = async (evaluationID) => {
+    return await apiClient.get(`api/admin/evaluations/${evaluationID}`);
+};
 
 // fetch admin profile API
 export const fetchAdminProfile = async (adminID) => {

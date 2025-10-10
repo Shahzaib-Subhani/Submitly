@@ -13,6 +13,7 @@ export const getAllEvaluations = async (req, res) => {
         const columns = {
             evaluatorName: { path: "evaluator.name", type: "string" },
             evaluationID: { path: "evaluationID", type: "number" },
+            submissionID: { path: "submission.submissionID", type: "number" },
             teamName: { path: "team.teamName", type: "string" },
             topic: { path: "submission.topic", type: "string" },
             totalScore: { path: "totalScore", type: "number" }
@@ -69,7 +70,7 @@ export const getEvaluationById = async (req, res) => {
                 select: "teamID submissionID topic",
                 populate: {
                     path: "teamID",
-                    select: "teamName -_id",
+                    select: "teamName -_id leaderName teamID",
                 },
             })
             .populate("evaluatorID", "name _id")
@@ -82,7 +83,9 @@ export const getEvaluationById = async (req, res) => {
         const formattedEvaluation = {
             evaluationID: evaluation.evaluationID,
             evaluatorName: evaluation.evaluatorID?.name,
-            submissionId: evaluation.submissionID?.submissionID,
+            submissionID: evaluation.submissionID?.submissionID,
+            leaderName: evaluation.submissionID?.teamID?.leaderName,
+            teamID: evaluation.submissionID?.teamID?.teamID,
             teamName: evaluation.submissionID?.teamID?.teamName,
             topic: evaluation.submissionID?.topic,
             scores: evaluation.scores,

@@ -1,55 +1,102 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ComponentCard from '../../../components/layout/ComponentCard';
 import BaseTable from '../../../components/table/BaseTable';
 import ActionColumn from '../../../components/table/ActionColumn';
 import usePageTitle from '../../../hooks/usePageTitle';
+import Spinner from '../../../components/layout/Spinner';
+import toast from 'react-hot-toast';
+import { fetchEvaluations } from '../../../services/adminService';
+import { formattedDate } from '../../../services/evaluatorService';
 
-function getRandomDate(start = new Date(2020, 0, 1), end = new Date()) {
-    const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    const pad = (n) => String(n).padStart(2, "0");
-
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-
-    return `${pad(date.getDate())}-${pad(date.getMonth() + 1)}-${date.getFullYear()} ${hours}:${pad(minutes)} ${ampm}`;
-}
-
-
-const tableData = [...Array(20)].map((_, i) => ({
-    id: i + 2,
-    evaluatorName: `Evaluator ${i + 2}`,
-    submissionId: `${i + 2}`,
-    teamName: `Team ${i + 2}`,
-    topic: `topic ${i + 2}`,
-    totalScore: `${i + 2}`,
-    evaluatedAt: getRandomDate(),
-}));
-
+const searchColumns = {
+    evaluationID: "Evaluation ID",
+    evaluatorName: "Evaluator Name",
+    submissionID: "Submission ID",
+    teamName: "Team Name",
+    topic: "Topic",
+    totalScore: "Total Score"
+};
 const columns = [
-    { accessorKey: "id", header: "ID" },
+    { accessorKey: "evaluationID", header: "ID" },
     { accessorKey: "evaluatorName", header: "Evaluator Name" },
-    { accessorKey: "submissionId", header: "Submission ID" },
+    { accessorKey: "submissionID", header: "Submission ID" },
     { accessorKey: "teamName", header: "Team Name" },
     { accessorKey: "topic", header: "Topic" },
     { accessorKey: "totalScore", header: "Total Score" },
-    { accessorKey: "evaluatedAt", header: "Last updated" },
+    { accessorKey: "updatedAt", header: "Evaluated At" },
     {
         id: "actions",
         accessorKey: "actions",
         header: "Actions",
-        cell: () => <ActionColumn isView={true} viewPath='view-evaluation' />,
+        cell: ({row}) => <ActionColumn isView={true} viewPath={`view-evaluation/${row.original._id}`} />,
     },
 ];
 const EvaluationsList = () => {
     const pageTitle = usePageTitle();
+    const [tableData, setTableData] = useState([]);
+    const [dataLoading, setDataLoading] = useState(true);
+
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 5,
+    });
+
+    const [paginationInfo, setPaginationInfo] = useState({
+        totalRecords: 0,
+        totalPages: 1,
+        fromRecord: 0,
+        toRecord: 0,
+    });
+    const [search, setSearch] = useState("");
+    const [searchType, setSearchType] = useState("");
+
+    const fetchEvaluationList = async (page = 1, pageSize = 5, searchText = "", searchColumn = "") => {
+        try {
+            const response = await fetchEvaluations(page, pageSize, searchColumn, searchText);
+            const data = response.data;
+            const formattedData = data.evaluations.map((row) => {
+                return {
+                    ...row,
+                    updatedAt: formattedDate(row.updatedAt)
+                }
+            });
+            setTableData(formattedData);
+            const backendPagination = data.pagination;
+
+            setPagination({
+                pageIndex: backendPagination.currentPage - 1,
+                pageSize: backendPagination.pageSize,
+
+            });
+
+            setPaginationInfo({
+                totalRecords: backendPagination.totalRecords,
+                totalPages: backendPagination.totalPages,
+                fromRecord: backendPagination.fromRecord,
+                toRecord: backendPagination.toRecord,
+            });
+        } catch (error) {
+            toast.error({ main: error.message, sub: error.error });
+        } finally {
+            setDataLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchEvaluationList(pagination.pageIndex + 1, pagination.pageSize, search, searchType);
+    }, [pagination.pageIndex, pagination.pageSize, search]);
+
+    if (dataLoading) return <Spinner />;
 
     return (
         <ComponentCard title={pageTitle}>
-            <BaseTable tableHeaders={columns} tableData={tableData}  ></BaseTable>
+            <BaseTable tableHeaders={columns} tableData={tableData} searchColumns={searchColumns}
+                pagination={pagination}
+                setPagination={setPagination}
+                search={search}
+                paginationInfo={paginationInfo}
+                setSearch={setSearch}
+                setSearchType={setSearchType} ></BaseTable>
         </ComponentCard>
     );
 }

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { deleteSubmission, fetchSubmissions } from "../../../services/adminService";
 import toast from "react-hot-toast";
 import { formattedDate } from "../../../services/evaluatorService";
+import Spinner from "../../../components/layout/Spinner";
 
 const searchColumns = {
   submissionID: "Submission ID",
@@ -21,6 +22,7 @@ const searchColumns = {
 const SubmissionList = () => {
   const pageTitle = usePageTitle();
   const [tableData, setTableData] = useState([]);
+  const [dataLoading, setDataLoading] = useState(true);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 5,
@@ -108,6 +110,8 @@ const SubmissionList = () => {
         onDelete={() => handleOpenDelete(row.original._id)} />,
     },
   ];
+
+  if (dataLoading) return <Spinner />;
   return (
     <>
       <ComponentCard title={pageTitle}>

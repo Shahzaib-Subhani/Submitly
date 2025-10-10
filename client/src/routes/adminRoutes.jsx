@@ -31,7 +31,7 @@ const adminRoutes = [
     { path: "evaluators-list/edit-evaluator/:evaluatorID", component: EditEvaluator },
     // Evaluations
     { path: "evaluations", component: EvaluationsList },
-    { path: "evaluations/view-evaluation", component: ViewEvaluation },
+    { path: "evaluations/view-evaluation/:evaluationID", component: ViewEvaluation },
     // Teams
     { path: "manage-teams", component: ManageTeams },
     { path: "manage-teams/view-team/:teamID", component: ViewTeam },
