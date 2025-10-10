@@ -2,7 +2,6 @@ import SubmissionsList from "../pages/admin/submission/SubmissionsList";
 import AssignEvaluator from "../pages/admin/submission/AssignEvaluator";
 import EvaluatorList from "../pages/admin/EvaluatorsList";
 import ManageTeams from "../pages/admin/team/ManageTeams";
-import PublishResult from "../pages/admin/PublishResult";
 import SetDeadline from "../pages/admin/SetDeadline";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 
