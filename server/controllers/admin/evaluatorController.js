@@ -12,6 +12,7 @@ export const getAllEvaluators = async (req, res) => {
     try {
         const { page = 1, pageSize = 10, search = "", searchType = "" } = req.query;
         const columns = {
+            evaluatorID: { path: "evaluatorID", type: "number" },
             name: { path: "name", type: "string" },
             email: { path: "email", type: "string" },
             qualification: { path: "qualification", type: "string" },

@@ -9,6 +9,11 @@ import { useState } from 'react';
 import { EditEvaluatorSchema } from '../../validations/adminSchemas';
 import useForm from '../../hooks/useForm';
 import FormRenderer from '../../components/forms/FormRenderer';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
+import Spinner from '../../components/layout/Spinner';
+import { fetchEvaluatorDetails, updateEvaluatorDetails } from '../../services/adminService';
 
 
 const formFields = [
@@ -22,7 +27,9 @@ const formFields = [
 
 const EditEvaluator = () => {
     const pageTitle = usePageTitle();
-    const { formData, errors, handleChange, handleSubmit, loading } = useForm(
+    const [dataLoading, setDataLoading] = useState(true);
+    const { evaluatorID } = useParams();
+    const { formData, errors, handleChange, handleSubmit, loading, setFormData } = useForm(
         EditEvaluatorSchema,
         {
             name: "",
@@ -31,10 +38,49 @@ const EditEvaluator = () => {
             experience: "",
             password: "",
             confirmPassword: "",
+        },
+        async (values) => {
+            const response = await updateEvaluatorDetails(evaluatorID, values);
+            const successMsg = {
+                main: response?.message || "Evaluator updated successfully",
+                sub: false
+            };
+            toast.success(successMsg);
+            setFormData((prev) => ({
+                ...prev,
+                ...values,
+                password: "",
+                confirmPassword: "",
+
+            }));
         }
     );
 
+    // Fetch team data
+    useEffect(() => {
+        const fetchEvaluator = async () => {
+            try {
+                const response = await fetchEvaluatorDetails(evaluatorID);
+                if (response?.data) {
+                    const data = response.data;
+                    setFormData({
+                        name: data.name,
+                        email: data.email,
+                        qualification: data.qualification,
+                        experience: data.experience,
+                    });
+                }
+            } catch (error) {
+                toast.error({ main: error.message });
+            } finally {
+                setDataLoading(false);
+            }
+        };
+        fetchEvaluator();
+    }, [evaluatorID, setFormData]);
 
+    
+    if (dataLoading) return <Spinner />;
 
 
     return (
@@ -42,7 +88,7 @@ const EditEvaluator = () => {
             <FormRenderer
                 formFields={formFields}
                 handleChange={handleChange}
-                handleSubmit={handleSubmit}
+                handleSubmit={() => handleSubmit(false)}
                 formData={formData}
                 errors={errors}
                 loading={loading}

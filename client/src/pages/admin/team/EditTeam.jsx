@@ -42,6 +42,8 @@ const EditTeam = () => {
             setFormData((prev) => ({
                 ...prev,
                 ...values,
+                password: "",
+                confirmPassword: "",
             }));
         }
     );

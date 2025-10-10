@@ -31,7 +31,32 @@ export const deleteTeamMember = async (teamID, memberID) => {
     return await apiClient.delete(`api/admin/teams/${teamID}/members/${memberID}`);
 };
 
-// fetch evaluation details API
+
+// fetch evaluators list  API
+export const fetchEvaluators = async (page, pageSize, searchType, search) => {
+    return await apiClient.get(`api/admin/evaluators?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
+};
+
+//  fetch evaluator by ID  API
+export const fetchEvaluatorDetails = async (evaluatorID) => {
+    return await apiClient.get(`api/admin/evaluators/${evaluatorID}`);
+};
+
+// update evaluator  API
+export const updateEvaluatorDetails = async (evaluatorID, data) => {
+    return await apiClient.patch(`api/admin/evaluators/${evaluatorID}`, data);
+};
+// delete evaluator  API
+export const deleteEvaluator = async (evaluatorID) => {
+    return await apiClient.delete(`api/admin/evaluators/${evaluatorID}`);
+};
+// approve evaluator  API
+export const approveEvaluator = async (evaluatorID, data) => {
+    return await apiClient.patch(`api/admin/evaluators/${evaluatorID}/verify`, data);
+};
+
+
+// fetch admin profile API
 export const fetchAdminProfile = async (adminID) => {
     return await apiClient.get(`api/admin/profile/${adminID}`);
 };

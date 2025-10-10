@@ -26,12 +26,20 @@ export const EditEvaluatorSchema = z.object({
     email: z.string().email("Invalid email address"),
     qualification: z.string().min(1, "Qualification is required"),
     experience: z.string().min(1, "Experience is required"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string().min(6, "Confirm Password is required"),
-}).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-});
+    password: z.string().optional(),
+    confirmPassword: z.string().optional(),
+}).refine((data) =>
+    !data.password || (data.password.length >= 6),
+    {
+        message: "Password must be at least 6 characters",
+        path: ["password"],
+    }
+).refine((data) => !data.password || data.password === data.confirmPassword,
+    {
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+    }
+);
 
 // Set Deadline Validation Schema
 

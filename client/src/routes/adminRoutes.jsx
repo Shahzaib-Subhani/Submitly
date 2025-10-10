@@ -26,7 +26,7 @@ const adminRoutes = [
     { path: "submissions-list/view-submission", component: ViewSubmission },
     { path: "submissions-list/assign-evaluator", component: AssignEvaluator },
     { path: "evaluators-list", component: EvaluatorList },
-    { path: "evaluators-list/edit-evaluator", component: EditEvaluator },
+    { path: "evaluators-list/edit-evaluator/:evaluatorID", component: EditEvaluator },
     { path: "evaluations", component: EvaluationsList },
     { path: "evaluations/view-evaluation", component: ViewEvaluation },
     { path: "manage-teams", component: ManageTeams },

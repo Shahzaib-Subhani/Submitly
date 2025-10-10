@@ -12,14 +12,15 @@ const ActionColumn = ({
     deletePath = "",
     textBtnPath = "",
     textBtnLabel = "",
-    onDelete
+    onDelete,
+    textBtnClick = false,
 }) => {
 
     const baseClasses =
         "text-gray-500 inline-flex items-center border border-gray-200 justify-center p-1 rounded";
     const actions = useMemo(
         () => [
-            { enabled: isTextBtn, label: textBtnLabel, path: textBtnPath, hover: "hover:text-indigo-500  hover:bg-indigo-50", },
+            { enabled: isTextBtn, label: textBtnLabel, path: textBtnPath, hover: "hover:text-indigo-500  hover:bg-indigo-50", onClick: textBtnClick },
             { enabled: isView, label: "View", path: viewPath, icon: <Eye size={20} />, hover: "hover:text-emerald-500  hover:bg-emerald-50" },
             { enabled: isEdit, label: "Edit", path: editPath, icon: <Pencil size={20} />, hover: "hover:text-sky-500  hover:bg-sky-100" },
             { enabled: isDelete, label: "Delete", path: deletePath, icon: <Trash2 size={20} />, hover: "hover:text-rose-500  hover:bg-rose-100", onClick: onDelete },
