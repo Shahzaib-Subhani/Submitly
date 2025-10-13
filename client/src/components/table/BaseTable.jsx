@@ -58,7 +58,6 @@ const BaseTable = ({
     const tablePaginationData = {
         index: pageIndex,
         totalRecords: paginationInfo.totalRecords,
-        totalPages: paginationInfo.totalPages,
         fromRecord: paginationInfo.fromRecord,
         toRecord: paginationInfo.toRecord,
         canPrev: pageIndex > 0,

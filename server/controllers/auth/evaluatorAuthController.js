@@ -48,7 +48,7 @@ export const evaluatorLogin = async (req, res) => {
         const token = generateJwtToken({ userId: evaluator.id, role: "evaluator" });
 
 
-        return successResponse(res, "Evaluator Logged in successfully", { jwtToken: token, user: { id: evaluator._id, name: evaluator.name } });
+        return successResponse(res, "Evaluator Logged in successfully", { jwtToken: token, user: { id: evaluator._id, evaluatorID: evaluator.evaluatorID, name: evaluator.name } });
     } catch (error) {
         return errorResponse(res, "Server error", error.message, 500);
     }

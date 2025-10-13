@@ -1,12 +1,11 @@
 import ContentSubmission from "../pages/team/ContentSubmission";
 import EditSubmission from "../pages/team/EditSubmission";
-import TeamDashboard from "../pages/team/TeamDashboard";
 import ViewEvaluationDetails from "../pages/team/ViewEvaluationDetails";
 import ViewResult from "../pages/team/ViewResult";
 import TeamProfile from "../pages/team/TeamProfile";
-import Chat from "../pages/Chat";
 import UpdatePassword from "../pages/UpdatePassword";
 import Logout from "../components/auth/Logout";
+import Chat from "../pages/team/Chat";
 
 
 

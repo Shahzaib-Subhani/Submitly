@@ -1,6 +1,7 @@
 import React from 'react';
 
 const SentMessage = ({message, time}) => {
+    
     return (
         <div className="flex justify-end">
             <div className="text-right">

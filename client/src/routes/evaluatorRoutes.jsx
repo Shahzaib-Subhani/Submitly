@@ -3,13 +3,13 @@
 import EvaluatorDashboard from "../pages/evaluator/EvaluatorDashboard";
 import EvaluateSubmission from "../pages/evaluator/EvaluateSubmission";
 import SubmissionList from "../pages/evaluator/SubmissionList";
-import Chat from "../pages/Chat";
 import Evaluations from "../pages/evaluator/Evaluations";
 import EvaluatorProfile from "../pages/evaluator/EvaluatorProfile";
 import Logout from "../components/auth/Logout";
 import EvaluationDetails from "../pages/evaluator/EvaluationDetails";
 import UpdatePassword from "../pages/evaluator/UpdatePassword";
 import ViewResult from "../pages/team/ViewResult";
+import Chat from "../pages/team/Chat";
 
 
 const evaluatorRoutes = [

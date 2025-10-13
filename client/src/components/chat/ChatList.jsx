@@ -1,7 +1,11 @@
-import React from 'react';
-import ChatProfile from './ChatProfile';
 
-const ChatList = () => {
+import { useState } from 'react';
+import ChatProfile from './ChatProfile';
+import { getSocket, joinAdminRoom } from '../../services/chatService';
+import { useEffect } from 'react';
+
+const ChatList = ({ activeUsers, handleSelectUser, selectedUser }) => {
+
     return (
         <div className="flex-col rounded-2xl border border-gray-200 bg-white xl:flex xl:w-1/4">
             <div className="sticky px-4 pt-4 pb-4 sm:px-5 sm:pt-5 xl:pb-0">
@@ -82,13 +86,23 @@ const ChatList = () => {
 
                 <div className="flex flex-col max-h-full px-4 overflow-auto sm:px-5">
                     <div className="max-h-full space-y-1 overflow-auto custom-scrollbar">
-                        {/* Example of one chat item, repeat as needed */}
-                       
+                        {activeUsers.length === 0 ? (
+                            <p className="text-gray-500 text-sm text-center py-4">
+                                No active users right now
+                            </p>
+                        ) : (
+                            activeUsers.map((user, i) => (
+                                <ChatProfile
+                                    key={i}
+                                    name={`${user.userName} [${user.id}]`}
+                                    lastMessage={"Online"}
+                                    role={user.userType}
+                                    handleSelect={() => !selectedUser && handleSelectUser(user)}
+                                    selected={selectedUser?.id === user?.id || false}
 
-                          <ChatProfile name={"Team No. 1"} lastMessage={"3:35 PM"} role={"Team"}  />
-                          <ChatProfile name={"Evaluator No. 1"} lastMessage={"3:35 PM"} role={"Evaluator"}  />
-                        
-                        {/* Repeat for other chat items as in your original code */}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
             </div>

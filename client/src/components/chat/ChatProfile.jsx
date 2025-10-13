@@ -1,8 +1,8 @@
 import React from 'react';
 
-const ChatProfile = ({ name, role, lastMessage }) => {
+const ChatProfile = ({ name, role, lastMessage, handleSelect, selected }) => {
     return (
-        <div className="flex cursor-pointer items-center gap-3 rounded-lg p-3 hover:bg-gray-100">
+        <div className={`flex cursor-pointer items-center gap-3 rounded-lg p-3 ${selected ? "bg-gray-100" : "hover:bg-gray-100"}`} onClick={handleSelect}>
             <div className="w-full">
                 <div className="flex items-start justify-between">
                     <div>
@@ -12,7 +12,7 @@ const ChatProfile = ({ name, role, lastMessage }) => {
                     <span className="text-gray-400 text-xs">{lastMessage}</span>
                 </div>
             </div>
-       </div>
+        </div>
     );
 }
 
