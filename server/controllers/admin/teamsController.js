@@ -3,6 +3,9 @@ import { buildSearchQuery, errorResponse, getPaginationInfo, getSkipAndLimit, su
 import TeamMember from "../../models/teamMember.js";
 import { teamUpdateSchema } from "../../utils/validations.js";
 import { hashPassword } from "../../utils/authHelper.js";
+import Submission from "../../models/submission.js";
+import Evaluation from "../../models/evaluation.js";
+import Leaderboard from "../../models/leaderboard.js";
 
 const TEAM_NOT_FOUND_ERR = "Team not found";
 const TEAM_NOT_FOUND_MESSAGE = "No team exists in the database for given teamID";
@@ -76,6 +79,17 @@ export const deleteTeam = async (req, res) => {
         if (!team) return errorResponse(res, TEAM_NOT_FOUND_ERR, TEAM_NOT_FOUND_MESSAGE, 404);
         // delete all team members 
         await TeamMember.deleteMany({ _id: { $in: team.members } });
+
+        // get submission
+        const submission = await Submission.findOne({ teamID });
+        if(submission){
+            // delete evaluations
+            await Evaluation.deleteMany({ submissionID: submission._id });
+            // delete leaderboard
+            await Leaderboard.findOneAndDelete({ submissionID: submission._id });
+            // delete submission
+            await Submission.findByIdAndDelete(submission._id)
+        }
         // delete team
         await Team.findByIdAndDelete(teamID);
 

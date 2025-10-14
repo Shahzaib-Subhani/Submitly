@@ -1,4 +1,6 @@
+import Evaluation from "../../models/evaluation.js";
 import Evaluator from "../../models/evaluator.js";
+import Leaderboard from "../../models/leaderboard.js";
 import Submission from "../../models/submission.js";
 import { buildSearchQuery, errorResponse, getPaginationInfo, getSkipAndLimit, successResponse, validate, validateObjectID } from "../../utils/baseHelper.js";
 import { facetGenerator, teamLookup } from "../../utils/pipelineHelper.js";
@@ -76,7 +78,13 @@ export const deleteSubmission = async (req, res) => {
         const { submissionID } = req.params;
         if (!validateObjectID(res, submissionID, "submissionID")) return;
         // fetch evaluator
-        const submission = await Submission.findByIdAndDelete(submissionID);
+        const submission = await Submission.findById(submissionID);
+        // delete evaluations
+        await Evaluation.deleteMany({ submissionID: submission._id });
+        // delete leaderboard
+        await Leaderboard.findOneAndDelete({ submissionID: submission._id });
+        // delete submission
+        await Submission.findByIdAndDelete(submission._id)
         if (!submission) return errorResponse(res, SUBMISSION_NOT_FOUND_ERR, SUBMISSION_NOT_FOUND_MESSAGE, 404);
         return successResponse(res, "Submission deleted successfully");
     } catch (err) {
