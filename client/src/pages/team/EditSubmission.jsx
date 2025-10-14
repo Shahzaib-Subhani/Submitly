@@ -7,6 +7,7 @@ import { ContentSubmissionSchema } from '../../validations/adminSchemas';
 import { fetchSubmissionDetails, updateSubmission } from '../../services/teamService';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import Spinner from '../../components/layout/Spinner';
 const formFields = [
     { label: "Topic", name: "topic", type: "text" },
     { label: "Video Link", name: "videoURL", type: "text" },

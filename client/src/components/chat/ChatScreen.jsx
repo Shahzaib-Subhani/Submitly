@@ -1,43 +1,9 @@
 import { Send } from 'lucide-react';
-import React from 'react';
 import SentMessage from './SentMessage';
 import ReceivedMessage from './ReceivedMessage';
 import { useState } from 'react';
-import { formatTime, getSocket, sendMessage } from '../../services/chatService';
+import { formatTime, getSocket } from '../../services/chatService';
 import { useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-//  
-//     {
-//         type: "received",
-//         message: "I want to make an appointment tomorrow from 2:00 to 5:00pm?",
-//         time: "3:31 PM",
-//         sender: "Kaiya George"
-//     },
-//     {
-//         type: "sent",
-//         message: "If don’t like something, I’ll stay away from it.",
-//         time: "3:35 PM",
-//         sender: "You"
-//     },
-//     {
-//         type: "received",
-//         message: "I want more detailed information.",
-//         time: "3:40 PM",
-//         sender: "Lindsey Curtis"
-//     },
-//     {
-//         type: "sent",
-//         message: "They got there early, and got really good seats.",
-//         time: "3:45 PM",
-//         sender: "You"
-//     },
-//     {
-//         type: "received",
-//         message: "Please preview the image",
-//         time: "3:50 PM",
-//         sender: "Lindsey Curtis"
-//     }
-// ];
 
 const ChatScreen = ({ name, user }) => {
     const [message, setMessage] = useState("");

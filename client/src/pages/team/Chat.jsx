@@ -37,7 +37,7 @@ const Chat = () => {
     return (
         <>
             <ComponentCard title={pageTitle}>
-                <div className="h-[calc(100vh-150px)] overflow-hidden sm:h-[calc(100vh-174px)]">
+                <div className="h-[calc(100vh-255px)] overflow-hidden sm:h-[calc(100vh-280px)]">
                     {chatStarted ?
                         <ChatScreen name={"Submittly Admin"} user={authUser} />
                         :
