@@ -8,8 +8,12 @@ import { fetchDeadline, setDeadline } from "../controllers/admin/deadlineControl
 import { getAdminProfile, updateAdmin, updatePassword } from "../controllers/admin/profileController.js";
 import { getAllEvaluations, getEvaluationById } from "../controllers/admin/evaluationController.js";
 import { getLeaderboard } from "../controllers/admin/leaderboardController.js";
+import { fetchDashboardData } from "../controllers/admin/dashboardController.js";
 
 const router = express.Router();
+
+// dashboard
+router.get("/dashboard", authenticateUser, authorizeRole("admin"), fetchDashboardData);
 
 // Team Routes
 router.get("/teams", authenticateUser, authorizeRole("admin"), getAllTeams);

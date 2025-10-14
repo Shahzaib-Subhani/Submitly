@@ -128,3 +128,9 @@ export const checkDeadline = async () => {
 
     return now <= deadlineDate;
 };
+
+// format number
+export const formatNumber = (num) => {
+  if (num === null || num === undefined) return "0";
+   return new Intl.NumberFormat("en-US").format(num || 0);
+};

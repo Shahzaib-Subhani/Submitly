@@ -30,7 +30,7 @@ export const authenticateUser = async (req, res, next) => {
             return errorResponse(res, "Unauthorized: User not found", null, 401);
         }
 
-        req.user = { id: userId, role, email: user.email };
+        req.user = { id: user._id.toString(), role, email: user.email };
         next();
 
     } catch (err) {
