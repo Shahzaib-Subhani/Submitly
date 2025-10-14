@@ -26,7 +26,7 @@ const SetDeadline = () => {
                 deadlineType: "submission",
                 deadlineDate: isoDate
             }
-            const response = await setDeadline();
+            const response = await setDeadline(deadlineData);
             const successMsg = {
                 main: response?.message || "Deadline updated successfully",
                 sub: false

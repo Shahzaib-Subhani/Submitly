@@ -8,6 +8,7 @@ import { fetchEvaluationDetails, transformEvaluationData } from '../../services/
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import Spinner from '../../components/layout/Spinner';
+import FeedbackSection from '../../components/dashboard/FeedbackSection';
 
 
 const labels = {
@@ -81,6 +82,7 @@ const ViewEvaluationDetails = () => {
         <>
             <ComponentCard title={pageTitle}>
                 <DetailsCard labels={labels} data={evaluation} />
+                <FeedbackSection feedbacks={evaluation.feedbacks}/>
                 <TeamEvaluation title={"Criteria Scores"} evaluation={evaluation.evaluationRecord} total={evaluation.totalScore} />
             </ComponentCard>
         </>

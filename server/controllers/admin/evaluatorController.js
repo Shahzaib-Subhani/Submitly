@@ -138,7 +138,7 @@ export const verifyEvaluator = async (req, res) => {
 // function to get all evaluators for assignment
 export const fetchEvaluators = async (req, res) => {
     try {
-        const evaluators = await Evaluator.find({}, "_id evaluatorID name");
+        const evaluators = await Evaluator.find({ status: "approved" }, "_id evaluatorID name");
 
         return successResponse(res, "Evaluators fetched successfully", evaluators);
     } catch (err) {

@@ -46,6 +46,9 @@ export const transformEvaluationData = (data, CRITERIA_KEYS) => {
     const getScore = (index, key) =>
         hasEvaluations ? data.evaluations[index]?.scores?.[key] ?? "-" : "-";
 
+    const getFeedback = (index) =>
+        hasEvaluations ? data.evaluations[index]?.feedback ?? "-" : "-";
+
     const criteriaScores = CRITERIA_KEYS.map((item, index) => ({
         srNo: index + 1,
         label: item.label,
@@ -71,6 +74,23 @@ export const transformEvaluationData = (data, CRITERIA_KEYS) => {
             : { evaluator1: "-", evaluator2: "-", evaluator3: "-" },
         average: hasEvaluations ? data.averageScores?.totalScore ?? 0 : "-",
     };
+    const feedbacks = [
+        {
+            evaluator: "Evaluator 1",
+            feedback: getFeedback(0),
+            score: hasEvaluations ? data.evaluations[0]?.totalScore ?? "-" : "-",
+        },
+        {
+            evaluator: "Evaluator 2",
+            feedback: getFeedback(1),
+            score: hasEvaluations ? data.evaluations[1]?.totalScore ?? "-" : "-",
+        },
+        {
+            evaluator: "Evaluator 3",
+            feedback: getFeedback(2),
+            score: hasEvaluations ? data.evaluations[2]?.totalScore ?? "-" : "-",
+        },
+    ];
 
     return {
         teamName: data.teamName || "-",
@@ -81,5 +101,6 @@ export const transformEvaluationData = (data, CRITERIA_KEYS) => {
         status: data.status || "-",
         totalScore: hasEvaluations ? data.averageScores?.totalScore ?? 0 : "-",
         evaluationRecord: [...criteriaScores, totalRow],
+        feedbacks,
     };
 };

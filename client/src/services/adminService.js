@@ -1,5 +1,12 @@
 import apiClient from "../utils/apiClient";
 
+
+// fetch dashboard API
+export const fetchDashboardDetails = async () => {
+    return await apiClient.get(`api/admin/dashboard`);
+};
+
+
 // fetch teams list  API
 export const fetchTeams = async (page, pageSize, searchType, search) => {
     return await apiClient.get(`api/admin/teams?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
