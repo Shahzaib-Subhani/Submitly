@@ -1,7 +1,7 @@
 import { Send } from 'lucide-react';
 import SentMessage from './SentMessage';
 import ReceivedMessage from './ReceivedMessage';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { formatTime, getSocket } from '../../services/chatService';
 import { useEffect } from 'react';
 
@@ -11,9 +11,23 @@ const ChatScreen = ({ name, user }) => {
     const [adminJoined, setAdminJoined] = useState(false);
 
     const roomId = `${user.role}_${user.id}`;
+    const socket = getSocket();
+
+    const addSystemMessage = useCallback((text) => {
+        setChatMessages((prev) => [
+            ...prev,
+            { message: text, type: "system", time: formatTime() },
+        ]);
+    }, []);
+
+    const addChatMessage = useCallback((msg, type) => {
+        setChatMessages((prev) => [
+            ...prev,
+            { message: msg, type, time: formatTime() },
+        ]);
+    }, []);
 
     useEffect(() => {
-        const socket = getSocket();
 
         socket.emit("joinUserRoom", {
             userId: user.id,
@@ -22,52 +36,38 @@ const ChatScreen = ({ name, user }) => {
             id: user.userID
         });
 
-
-        const handleAdminJoined = (data) => {
-            if (data.roomId === roomId) {
+        const events = {
+            adminJoined: ({ roomId: id }) => {
+                if (id !== roomId) return;
                 setAdminJoined(true);
-                setChatMessages(prev => [
-                    ...prev,
-                    { message: "🟢 Admin has joined the chat.", type: "system", time: formatTime() }
-                ]);
-            }
-        };
-
-        const handleAdminLeft = (data) => {
-            if (data.roomId === roomId) {
+                addSystemMessage("🟢 Admin has joined the chat.");
+            },
+            adminLeft: ({ roomId: id }) => {
+                if (id !== roomId) return;
                 setAdminJoined(false);
-                setChatMessages(prev => [
-                    ...prev,
-                    { message: "🔴 Admin has left the chat.", type: "system", time: formatTime() }
-                ]);
-            }
+                addSystemMessage("🔴 Admin has left the chat.");
+            },
+            receiveMessage: ({ roomId: id, message, from }) => {
+                if (id === roomId && from.type === "admin") {
+                    addChatMessage(message, "received");
+                }
+            },
         };
 
-        const handleReceiveMessage = ({ roomId: msgRoomId, message: msg, from }) => {
-            if (msgRoomId === roomId && from.type === "admin") {
-                setChatMessages(prev => [
-                    ...prev,
-                    { message: msg, type: "received", time: formatTime() }
-                ]);
-            }
-        };
+        Object.entries(events).forEach(([event, handler]) =>
+            socket.on(event, handler)
+        );
 
-        socket.on("adminJoined", handleAdminJoined);
-        socket.on("adminLeft", handleAdminLeft);
-        socket.on("receiveMessage", handleReceiveMessage);
-
-        return () => {
-            socket.off("adminJoined");
-            socket.off("adminLeft");
-            socket.off("receiveMessage");
-        };
-    }, [user]);
+        return () =>
+            Object.entries(events).forEach(([event, handler]) =>
+                socket.off(event, handler)
+            );
+    }, [socket, roomId, user, addSystemMessage, addChatMessage]);
 
     const handleSendMessage = () => {
 
         if (!message.trim()) return;
         const socket = getSocket();
-        const time = formatTime();
 
         socket.emit("sendMessageToRoom", {
             roomId,
@@ -75,7 +75,7 @@ const ChatScreen = ({ name, user }) => {
             from: { id: user.id, type: user.role },
         });
 
-        setChatMessages((prev) => [...prev, { message, type: "sent", time }]);
+        addChatMessage(message, "sent");
         setMessage("");
     };
 

@@ -1,5 +1,5 @@
 import { Send } from 'lucide-react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import SentMessage from './SentMessage';
 import ReceivedMessage from './ReceivedMessage';
 import { useState } from 'react';
@@ -10,34 +10,31 @@ import { useEffect } from 'react';
 const AdminChatScreen = ({ selectedUser, onClose }) => {
     const [message, setMessage] = useState("");
     const [chatMessages, setChatMessages] = useState([]);
+
     const roomId = selectedUser.roomId;
+    const socket = getSocket();
+
+    const addMessage = useCallback((msg, type) => {
+        setChatMessages((prev) => [...prev, { message: msg, type, time: formatTime() }]);
+    }, []);
 
     useEffect(() => {
-        const socket = getSocket();
         if (!selectedUser) return;
         // Admin joins that user's room
         socket.emit("adminJoinUserRoom", { roomId });
-
         // Listen for messages in that room only
-        const handleReceiveMessage = ({ roomId: msgRoomId, message: msg, from }) => {
-            if (msgRoomId === roomId && from.type !== "admin") {
-                setChatMessages(prev => [
-                    ...prev,
-                    { message: msg, type: "received", time: formatTime() }
-                ]);
+        const handleReceiveMessage = ({ roomId: id, message, from }) => {
+            if (id === roomId && from.type !== "admin") {
+                addMessage(message, "received");
             }
         };
-
         socket.on("receiveMessage", handleReceiveMessage);
 
         return () => socket.off("receiveMessage", handleReceiveMessage);
-    }, [roomId]);
+    }, [roomId, selectedUser, socket, addMessage]);
 
     const handleSendMessage = () => {
         if (!message.trim()) return;
-
-        const socket = getSocket();
-        const time = formatTime();
 
         // Emit message to that specific room
         socket.emit("sendMessageToRoom", {
@@ -45,8 +42,7 @@ const AdminChatScreen = ({ selectedUser, onClose }) => {
             message,
             from: { id: "admin", type: "admin" },
         });
-
-        setChatMessages((prev) => [...prev, { message, type: "sent", time }]);
+        addMessage(message, "sent");
         setMessage("");
     };
 
