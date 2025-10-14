@@ -78,6 +78,7 @@ export const transformEvaluationData = (data, CRITERIA_KEYS) => {
         videoURL: data.videoURL || "-",
         description: data.description || "-",
         learningOutcomes: data.learningOutcomes || "-",
+        status: data.status || "-",
         totalScore: hasEvaluations ? data.averageScores?.totalScore ?? 0 : "-",
         evaluationRecord: [...criteriaScores, totalRow],
     };

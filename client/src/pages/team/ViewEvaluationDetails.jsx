@@ -16,6 +16,7 @@ const labels = {
     videoURL: "Video Link",
     description: "Description",
     learningOutcomes: "Learning Outcomes",
+    status: "Status",
     totalScore: "Total Average Score",
 };
 const DEFAULT_EVALUATION = {
@@ -25,6 +26,7 @@ const DEFAULT_EVALUATION = {
     description: "-",
     learningOutcomes: "-",
     totalScore: "-",
+    status: "-",
     evaluationRecord: [],
 };
 

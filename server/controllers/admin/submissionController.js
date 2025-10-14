@@ -104,7 +104,7 @@ export const assignEvaluator = async (req, res) => {
         // update evaluator record
         const updatedSubmission = await Submission.findByIdAndUpdate(
             submissionID,
-            { evaluators: evaluatorIDs, status: "assigned" },
+            { evaluators: evaluatorIDs },
             { new: true }
         ).select(" -__v -updatedAt").populate("teamID", "teamID teamName leaderName");
         if (!updatedSubmission) return errorResponse(res, "Submission not found", "Submission not found", 404);

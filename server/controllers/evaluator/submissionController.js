@@ -31,11 +31,17 @@ export const getAllSubmissionsForEvaluator = async (req, res) => {
             updatedAt: 1,
             createdAt: 1,
             teamName: "$team.teamName",
+            evaluatorCount: 1,
         };
         const pipeline = [
 
             ...teamLookup({ teamName: 1 }, "$teamID"),
             ...query,
+            {
+                $addFields: {
+                    evaluatorCount: { $size: { $ifNull: ["$evaluators", []] } }
+                }
+            },
             ...facetGenerator(projectFields, skip, limit, "submissions"),
         ];
 
@@ -97,8 +103,8 @@ export const evaluateSubmission = async (req, res) => {
         const { scores, evaluatorID, feedback } = validatedData;
 
         // check existing evaluation for submissionID and evaluatorID
-        const existingEvaluation = await Evaluation.findOne({ submissionID, evaluatorID });
-        if (existingEvaluation) {
+        const existingEvaluation = await Evaluation.findOne({ submissionID, evaluatorID }).populate("submissionID", "status");
+        if (existingEvaluation && existingEvaluation.submissionID.status !== "updated") {
             return errorResponse(res, "Duplicate Evaluation", "You have already evaluated this submission", 409);
         }
 
@@ -107,15 +113,18 @@ export const evaluateSubmission = async (req, res) => {
         const evaluationID = await fetchNextId("evaluationID");
 
         // save evaluation record
-        const evaluation = new Evaluation({
-            evaluationID,
-            submissionID,
-            evaluatorID,
-            scores,
-            feedback,
-            totalScore: total,
-        });
-        await evaluation.save();
+        const evaluation = await Evaluation.findOneAndUpdate(
+            { submissionID, evaluatorID }, {
+            $set: {
+                scores,
+                feedback,
+                totalScore: total,
+            },
+            $setOnInsert: {
+                evaluationID,
+            },
+        }, { upsert: true }
+        );
         await incrementCounter("evaluationID");
         await updateLeaderboard(submissionID);
 
