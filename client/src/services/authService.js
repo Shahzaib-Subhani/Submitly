@@ -3,26 +3,26 @@ import apiClient from "../utils/apiClient";
 
 // handle register team API
 export const registerTeam = async (teamData) => {
-    return await apiClient.post("api/auth/team/register", teamData);
+    return await apiClient.post("/api/auth/team/register", teamData);
 };
 
 // handle team login API
 export const loginTeam = async (teamData) => {
-    return await apiClient.post("api/auth/team/signin", teamData);
+    return await apiClient.post("/api/auth/team/signin", teamData);
 };
 
 // handle register evaluator API
 export const registerEvaluator = async (data) => {
-    return await apiClient.post("api/auth/evaluator/register", data);
+    return await apiClient.post("/api/auth/evaluator/register", data);
 };
 
 // handle login evaluator API
 export const loginEvaluator = async (data) => {
-    return await apiClient.post("api/auth/evaluator/signin", data);
+    return await apiClient.post("/api/auth/evaluator/signin", data);
 };
 // handle login admin API
 export const loginAdmin = async (data) => {
-    return await apiClient.post("api/auth/admin/signin", data);
+    return await apiClient.post("/api/auth/admin/signin", data);
 };
 
 export const users = {

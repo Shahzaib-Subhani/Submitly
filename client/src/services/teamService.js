@@ -2,41 +2,41 @@ import apiClient from "../utils/apiClient";
 
 // team content submission  API
 export const contentSubmission = async (data) => {
-    return await apiClient.post("api/team/submission", data);
+    return await apiClient.post("/api/team/submission", data);
 };
 
 // fetch content submission API
 export const fetchSubmissionDetails = async (teamID) => {
-    return await apiClient.get(`api/team/submission/${teamID}`);
+    return await apiClient.get(`/api/team/submission/${teamID}`);
 };
 
 // update content submission API
 export const updateSubmission = async (teamID, data) => {
-    return await apiClient.patch(`api/team/submission/${teamID}`, data);
+    return await apiClient.patch(`/api/team/submission/${teamID}`, data);
 };
 
 // fetch evaluation details API
 export const fetchEvaluationDetails = async (teamID) => {
-    return await apiClient.get(`api/team/evaluations/${teamID}`);
+    return await apiClient.get(`/api/team/evaluations/${teamID}`);
 };
 
 // fetch evaluation details API
 export const fetchTeamProfile = async (teamID) => {
-    return await apiClient.get(`api/team/profile/${teamID}`);
+    return await apiClient.get(`/api/team/profile/${teamID}`);
 };
 
 // update team profile API
 export const updateTeamProfile = async (teamID, data) => {
-    return await apiClient.post(`api/team/profile/${teamID}/update`, data);
+    return await apiClient.post(`/api/team/profile/${teamID}/update`, data);
 };
 // update team password API
 export const updateTeamPassword = async (teamID, data) => {
-    return await apiClient.post(`api/team/profile/${teamID}/password-update`, data);
+    return await apiClient.post(`/api/team/profile/${teamID}/password-update`, data);
 };
 
 // fetch leaderboard  API
 export const fetchTeamLeaderboard = async (page, pageSize, searchType, search) => {
-    return await apiClient.get(`api/leaderboard?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
+    return await apiClient.get(`/api/leaderboard?page=${page}&pageSize=${pageSize}&search=${search}&searchType=${searchType}`);
 };
 
 // transform Evaluation Data

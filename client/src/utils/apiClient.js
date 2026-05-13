@@ -2,7 +2,7 @@ import axios from "axios";
 import { clearAuthData, fetchUserType, getToken, isAuthError } from "../services/authService";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "/",
   headers: {
     "Content-Type": "application/json",
   },
