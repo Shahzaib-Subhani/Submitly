@@ -5,7 +5,7 @@ import { SidebarItem } from "../sidebar/SidebarItem";
 import { Navigate, useLocation } from "react-router-dom";
 import { useContext, useMemo } from "react";
 import { SidebarContext } from "../../context/SidebarContext";
-import sidebarMenu from "./sidebarMenu";
+import sidebarMenu from "./SidebarMenu";
 
 
 
