@@ -1,21 +1,17 @@
-import connectDB from "./config/db.js"
-import dotenv from 'dotenv'
-import express from "express"
-import cors from "cors"
-import authRoutes from "./routes/auth.js"
-import adminRoutes from "./routes/admin.js"
-import teamRoutes from "./routes/team.js"
-import evaluatorRoutes from "./routes/evaluator.js"
-import leaderboardRoutes from "./routes/leaderboard.js"
-import { errorResponse } from "./utils/baseHelper.js"
-import { createDefaultAdmin } from "./utils/authHelper.js"
+import connectDB from "./config/db.js";
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import authRoutes from "./routes/auth.js";
+import adminRoutes from "./routes/admin.js";
+import teamRoutes from "./routes/team.js";
+import evaluatorRoutes from "./routes/evaluator.js";
+import leaderboardRoutes from "./routes/leaderboard.js";
+import { errorResponse } from "./utils/baseHelper.js";
+import { createDefaultAdmin } from "./utils/authHelper.js";
 
 // load .env variables
 dotenv.config();
-// connect to mongoDB
-connectDB();
-// create a default admin in DB
-await createDefaultAdmin();
 
 // initialize express app
 const app = express();
@@ -24,14 +20,25 @@ app.use(cors());
 // parse request into json
 app.use(express.json());
 
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    await createDefaultAdmin();
+    next();
+  } catch (error) {
+    console.error("Database initialization failed:", error);
+    return errorResponse(res, "Database connection error", {}, 500);
+  }
+});
+
 // check for POST and PATCH requests having empty request body
 app.use((req, res, next) => {
-    if (req.method === "POST" || req.method === "PATCH") {
-        if (!req.body || Object.keys(req.body).length === 0) {
-            return errorResponse(res, "Request body is missing or empty");
-        }
+  if (req.method === "POST" || req.method === "PATCH") {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return errorResponse(res, "Request body is missing or empty");
     }
-    next();
+  }
+  next();
 });
 app.use("/api", leaderboardRoutes);
 // Auth Routes
@@ -45,9 +52,8 @@ app.use("/api/evaluator", evaluatorRoutes);
 
 // Route for capturing errors
 app.use((err, req, res, next) => {
-    const errMessage = err.message || "Internal server Error";
-    return errorResponse(res, errMessage, {}, 500)
-
+  const errMessage = err.message || "Internal server Error";
+  return errorResponse(res, errMessage, {}, 500);
 });
 
 export default app;
